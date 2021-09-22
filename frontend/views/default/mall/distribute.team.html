@@ -1,0 +1,45 @@
+{include file="user.header.html"}
+<div id="page-member">
+  <div class="main dcenter">
+    <div class="d-header">
+      <div class="mark-text clearfix"> {$lang.my_team}<a class="more-link" href="{url route='distribute/trade'}">{$lang.my_profit}<i class="wind-icon-font">&#xe61d;</i></a> </div>
+      <div class="amount-box clearfix"><span class="amount">{$distribute.teams|default:0}</span><a href="{url route='deposit/withdraw'}">{$lang.withdraw}</a></div>
+    </div>
+    <div class="team">
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <div class="bd"> <a href="[1]">
+            <div class="item webkit-box"> 
+                <p class="gray fs12 flex1 webkit-box"> <img src="[2]"><span class="flex1 box-align-center ml10">[3]</span></p>
+                <p class="gray fs12 box-align-center">[4]{$lang.ren}<i class="wind-icon-font">&#xe629;</i></p>
+            </div>
+            </a> </div>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, team) {
+				html += sprintf(template.html(), url(['distribute/team', { id:team.userid}]), url_format(team.portrait),team.username,team.childcount);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

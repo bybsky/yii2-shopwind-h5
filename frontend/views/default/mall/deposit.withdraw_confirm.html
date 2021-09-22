@@ -1,0 +1,51 @@
+{include file="user.header.html"}
+<div class="deposit">
+  <div class="deposit-withdraw-confirm">
+    <form method="post" id="deposit-withdraw-confirm" class="fun-form-style">
+      <div class="form">
+        <div class="confirm-info">
+          <p class="mt10 mb10">{$lang.draw_money}</p>
+          <h3> <span class="money price" style="font-size:30px;color:#222;">{$withdraw.money|price_format}</span> 
+          </h3>
+        </div>
+        <!--{if $withdraw.money gt $deposit_account.money}-->
+        <div class="notice-word draw-notice-word pl10 pr10 bgf">
+          <p class="yellow">{sprintf($lang.draw_money_notice, $withdraw.money, $deposit_account.money)}</p>
+        </div>
+        <!--{/if}-->
+        
+          <!--{if $withdraw.fee}-->
+          <dl class="clearfix" style="display:none">
+            <dd class="webkit-box"> <span>{$lang.fuwufei}</span>
+              <p class="flex1 mr10" style="text-align:right;">{$withdraw.fee|price_format}</p>
+            </dd>
+          </dl>
+          <dl class="clearfix" style="display:none">
+            <dd class="webkit-box"> <span>{$lang.real_money}</span>
+              <p class="flex1 mr10" style="text-align:right;">{$withdraw.money|price_format}</p>
+            </dd>
+          </dl>
+          <!--{/if}--> 
+          <dl class="clearfix">
+            <dd class="webkit-box"> <span>{$lang.pay_password}</span>
+              <input type="password" id="password" name="password" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.pay_password}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+          <dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+            <input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+            <img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> </dd>
+        </dl>
+        
+
+          <div class="extra">
+          	<input type="hidden" name="money" value="{$withdraw.money}" />
+            <input type="hidden" name="bid" value="{$bank.bid}" />
+            <input type="submit" class="btn-alipay" value="{$lang.confim_draw}" {if $withdraw.money gt $deposit_account.money} disabled="disabled" {/if}/>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

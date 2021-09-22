@@ -1,0 +1,111 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.brand}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='brand/index'}">{$lang.manage}</a></li>
+      <li><span>{if $brand.brand_id}{$lang.edit}{else}{$lang.add}{/if}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.brand_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" id="brand_name" type="text" name="brand_name" value="{$brand.brand_name|escape}" />
+            <label class="field_notice">{$lang.brand_name}</label></td>
+        </tr>
+		    <tr>
+          <th class="paddingT15"> {$lang.letter}:</th>
+          <td class="paddingT15 wordSpacing5">
+            <input class="infoTableInput2" id="letter" type="text" name="letter" value="{$brand.letter|escape}" />
+            <label class="field_notice">{$lang.letter_desc}</label>
+          </td>
+        </tr>
+        
+        <tr>
+          <th class="paddingT15">{$lang.belong_category}:</th>
+          <td class="paddingT15 wordSpacing5">
+            <div id="gcategory">
+              <select name="cate_id">
+                <option>{$lang.select_pls}</option>
+                {html_options options=$gcategories selected=$brand.cate_id}
+              </select> 
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.tag}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" id="tag" type="text" name="tag" value="{$brand.tag|escape}" />
+            <label class="field_notice">{$lang.tag}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.brand_logo}:</th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" name="textfield" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="brand_logo" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal" value="brand_logo" />
+              <label class="field_notice">200px*88px {$lang.limit_img}</label>
+              </span> 
+              
+              <!--{if $brand.brand_logo}-->
+              <div class="show_img"><img height="50" src="{$brand.brand_logo|url_format}" /></div>
+              <!--{/if}--> </div></td>
+        </tr> 
+        <tr>
+          <th class="paddingT15">{$lang.brand_image}:</th>
+          <td class="paddingT15 wordSpacing5">
+            <div class="input-file-show">
+              <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span>
+              <span class="type-file-box">
+                <input type="text" name="textfield" class="type-file-text" />
+                <input type="button" name="button" value="选择上传..." class="type-file-button" />
+                <input class="type-file-file" name="brand_image" type="file" size="30" hidefocus="true">
+                <input type="hidden" name="fileValBig" value="brand_image" />
+                <label class="field_notice">278px*285px {$lang.limit_img}</label>
+              </span>
+              <!--{if $brand.brand_image}-->
+              <div class="show_img"><img src="{$brand.brand_image|url_format}" /></div>
+              <!--{/if}-->
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.description}:</th>
+          <td class="paddingT15 wordSpacing5">
+             <textarea name="description">{$brand.description}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.if_recommended}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $brand.recommended}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$brand.recommended}selected{/if}">{$lang.no}</label>
+            <input name="recommended" value="1" type="radio" {if $brand.recommended}checked{/if}>
+            <input name="recommended" value="0" type="radio" {if !$brand.recommended}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.if_show}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $brand.if_show}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$brand.if_show}selected{/if}">{$lang.no}</label>
+            <input name="if_show" value="1" type="radio" {if $brand.if_show}checked{/if}>
+            <input name="if_show" value="0" type="radio" {if !$brand.if_show}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" id="sort_order" type="text" name="sort_order" value="{$brand.sort_order}" />
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

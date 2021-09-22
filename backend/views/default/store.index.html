@@ -1,0 +1,102 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.manage}</p>
+    <ul class="subnav">
+      <!--{if $smarty.get.state eq 'applying'}-->
+      <li><a class="btn1" href="{url route='store/index'}">{$lang.list}</a></li>
+      <li><span>{$lang.applying}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.list}</span></li>
+      <li><a class="btn1" href="{url route='store/index' state='applying'}">{$lang.applying}</a></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="store/index" />
+      <input type="hidden" name="state" value="{$smarty.get.state}" />
+      {$lang.owner_name}
+      <input class="queryInput" type="text" name="owner_name" value="{$smarty.get.owner_name|escape}" />
+      {$lang.store_name}
+      <input class="queryInput" type="text" name="store_name" value="{$smarty.get.store_name|escape}" />
+	  {$lang.stype}
+      <select class="querySelect" name="stype">
+        <option value="">{$lang.select_pls}</option>
+        	{html_options options=$stypes selected=$smarty.get.stype}
+      </select>
+      {$lang.sgrade}
+      <select class="querySelect" name="sgrade">
+        <option value="">{$lang.select_pls}</option>
+        	{html_options options=$sgrades selected=$smarty.get.sgrade}
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='store/index' state=$smarty.get.state}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['store/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.username}', name : 'username', width : 50, sortable : true, align: 'center'},
+			{ display: '{$lang.owner_name}', name : 'owner_name', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.store_name}', name : 'store_name', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.region_name}', name : 'region_name', width : 200, sortable : true, align: 'center'},
+			{ display: '{$lang.stype}', name : 'stype', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.sgrade}', name : 'sgrade', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.add_time}', name : 'add_time', width: 100, sortable : true, align : 'center'},
+			{ display: '{$lang.end_time}', name : 'end_time', width: 100, sortable : true, align : 'center'},
+			{ display: '{$lang.state}', name : 'state', width: 50, sortable : true, align : 'center'},  
+			{ display: '{$lang.sort_order}', name : 'sort_order', width: 50, sortable : true, align : 'center'},
+			{ display: '{$lang.recommended}', name : 'recommended', width: 50, sortable : true, align : 'center'}	
+    	],
+        buttons : [
+			{ display: '<i class="fa fa-edit"></i>{$lang.batch_edit}', name : 'edit', bclass : 'edit', title : '{$lang.batch_edit}', onpress : fg_operate },
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+    	sortname: "store_id",
+    	sortorder: "desc",
+    	title: '{$lang.store_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'edit') {
+	   if($('.trSelected',bDiv).length==0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       window.location.href = url(['store/batch', { id: itemlist.join(',')}]);
+	}
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length==0){
+		 	layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'store');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+		   layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'store');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'store');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"} 

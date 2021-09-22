@@ -1,0 +1,72 @@
+ {use class="common\library\Def"}
+  <div class="dialog-form scroll spec-form">
+    <div class="dialog_content_scroll">
+         <div  class="mb10">
+         	<p class="pos_txt">{$lang.note_for_add_spec_popup}</p>
+			<div class="spec-table clearfix" ectype="spec_editor" id="dialog_object_spec_editor">
+			   <ul class="th webkit-box">
+				  <li class="flex1"><span class="input-wraper"><input col="spec_name_1" type="text"  /></span></li>
+				  <li class="flex1"><span class="input-wraper"><input col="spec_name_2" type="text"  /></span></li>
+				  <li class="flex1">{$lang.price}</li>
+				  <li class="flex1">{$lang.stock}</li>
+				  <li class="flex1">{$lang.sku}</li>
+				  <li class="flex1">{$lang.spec_image}</li>
+			   </ul>
+			   <ul class="td webkit-box" ectype="spec_item">
+				   <li class="flex1"><span class="input-wraper"><input item="spec_1" type="text" /></span></li>
+				   <li class="flex1"><span class="input-wraper"><input item="spec_2" type="text" /></span></li>  
+				   <li class="flex1"><span class="input-wraper"><input item="price" type="text" /></span></li>
+				   <li class="flex1"><span class="input-wraper"><input item="stock" type="text" /></span></li>
+				   <li class="flex1"><span class="input-wraper">
+					   <input item="sku" type="text" />
+					   <input item="spec_id" type="hidden" /></span>
+				   </li>
+				   <li class="flex1">
+			   			<span class="spec_image">
+                      		<input ectype="spec_image" type="file" name="file" size="1" hidefocus="true" maxlength="0" runat="server">
+                      		<i class="wind-icon-font">&#xe6e8;</i>
+                      	</span>
+                      	<ins class="spec-item-del wind-icon-font hidden" ectype="drop_spec_item">&#xe670;</ins>
+				   </li>
+			   </ul>
+			   <div class="pt10 pl5 btn-op-spec pb10">
+					<a href="javascript:;" ectype="add_spec_item" class="mr10">{$lang.add_spec_item}</a>
+					<a href="javascript:;" ectype="del_spec_item" class="mr10">{$lang.del_spec_item}</a>
+				</div>
+			</div> 
+         </div>
+    </div>
+    <div class="clearfix">
+      <input type="button" value="{$lang.submit}" id="gs_submit" class="btn-alipay" />
+    </div>
+  </div>
+<script type="text/javascript">
+$(function(){
+	spec_editor();
+	$('body').find('#gs_submit').unbind('click').on('click', function(){
+		if(save_spec() == true){
+			DialogManager.close('my_goods_editspec');
+		}
+	});
+	$('input[ectype="spec_image"]').wrap("<form action='{url route='upload/index'}' method='post' enctype='multipart/form-data'></form>");
+	$('input[ectype="spec_image"]').after("<input type='hidden' name='belong' value='{Def::BELONG_GOODS_SPEC}'><input type='hidden' name='fileVal' value='file'>");
+	$('body').on('change','input[ectype="spec_image"]',function(){
+		  var sp = $(this).parents('.spec_image').find('i');
+		  $(this).parent('form').ajaxSubmit({
+			  dataType:  'json',
+			  success: function(data) {
+				  if(data.done){
+					sp.removeClass('no-pic');
+					sp.html('<img width="20" height="20" src="'+ url_format(data.retval) +'">');
+				  }else{
+					  layer.open({ content:data.msg});
+				  }
+			  }
+		  });
+		  return false; // 阻止表单自动提交事件
+	});
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("my_goods_editspec");
+	});
+});
+</script>

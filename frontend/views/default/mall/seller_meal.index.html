@@ -1,0 +1,108 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-promotool" class="page-promotool">
+    <div class="seller-meal"> 
+      <!--{if $appAvailable neq 'true'}-->
+      <div class="notice-word mt10">
+        <p>{$appAvailable.msg}</p>
+      </div>
+      <!--{else}--> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li item_id="[1]" class="item webkit-box">
+            <div class="img mr5"><a href="[2]" class="relative block"><img src="[3]" class="block" width="60" height="60" /> <em class="absolute fff fs11 pl5">[4]<i class="wind-icon-font fs11">&#xe7b2;</i><i class="wind-icon-font fs10">&#xe629;</i></em></a></div>
+            <div class="lp flex1 pr10">
+              <p class="title fs13">[5]</p>
+              <dl class="mt5 fs12">
+                <span>{$lang.org_price}：</span><em class="gray">[6]</em>
+              </dl>
+              <dl class="mt5 fs12">
+                <span>{$lang.yikoujia}：</span><span class="price fs12">[7]</span>
+              </dl>
+            </div>
+            <div class="rp [8]">
+              <div class="bg"></div>
+              <p class="status">[9]</p>
+            </div>
+          </li>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+      <div class="clearfix">
+        <p class="fixed-gap"></p>
+      	<a href="{url route='seller_meal/add'}" class="btn-alipay btn-alipay-fixed">{$lang.meal_add}</a>
+      </div>
+      <!--{/if}--> 
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend', '.weui_actions_mask', function(){
+		$.closeActions();
+	});
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, meal) {
+				html += sprintf(template.html(), meal.meal_id, url(['meal/index', { id:meal.meal_id}]), url_format(meal.default_image), meal.quantity, meal.title, meal.total, price_format(meal.price), meal.status == 1 ? 'available' : 'unavailable' , meal.status_label);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		o.unbind('click');
+		o.click(function(){
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: [
+				{
+					text: lang.view,
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['meal/index', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: lang.edit,
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['seller_meal/edit', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: lang.drop,
+					onClick: function() {
+						ajaxSubmit('GET', url(['seller_meal/delete', { id:item_id}]), null, '', o);
+					}
+				}]
+			});
+		})
+	});
+}
+</script> 
+{include file="footer.html"}

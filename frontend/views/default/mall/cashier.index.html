@@ -1,0 +1,132 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="page-depopay bgf">
+    <div class="depopay">
+      <div class="depay-form">
+        <form method="post" id="depayform">
+          <div class="clearfix">
+            <div class="order-info" style="background:#eee;">
+              <div class="center"> <span class="pt20 gray block">{$lang.pay_money}</span>
+                <p class="f60 pt20" style="font-size:40px; padding-bottom:30px; color:#6C6;">{$orderInfo.amount|price_format}</p>
+              </div>
+            </div>
+            <div class="netpay bgf">
+              <div class="netpay-content clearfix">
+                <div class="clearfix">
+                  <ul class="ui-list-icons clearfix J_SelectPaymentMethod radioUiWraper">
+                    <!--{foreach from=$payments item=payment name=fe_payment}-->
+                    <li class="webkit-box radioUiStyle radioUiStyle2 {if $payment.disabled}disabled{elseif $payment.selected}active{/if}">
+                      <div class="lp flex1 webkit-box"> <span class="icon-payment icon-payment-{$payment.code}"></span> <span class="block flex1 ml10 mr10 {if $payment.disabled_desc}two-col{/if}">
+                        <p>{$payment.subname|default:$payment.name}</p>
+                        <p class="fs12 desc hidden"> 
+                          <!--{if in_array($payment.code, array('deposit'))}--> 
+                          <!--{if $payment.disabled}--> 
+                          {$payment.disabled_desc} 
+                          <!--{else}--> 
+                          {$deposit_account.money}{$lang.yuankeyong}
+                          <!--{/if}-->
+                          <!--{/if}--> 
+                        </p>
+                        </span> </div>
+                      <div class="input rp box-align-center">
+                        <input type="radio" name="payment_code" id="payment_{$payment.code}" value="{$payment.code}" {if $payment.disabled}disabled="disabled" {elseif $payment.selected} checked="checked"{/if} />
+                      </div>
+                    </li>
+                    <!--{/foreach}-->
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="pop-layer-common password-pop-layer J_PasswordPopLayer">
+              <div class="wraper has-title">
+                <div class="hd"><i class="closed popClosed"></i>{$lang.input_password}</div>
+                <div class="bd radioUiWraper">
+                  <div class="paysubmit J_DepositPassword hidden">
+                    <dl class="clearfix padding10">
+                      <dd class="relative pay-password webkit-box">
+                        <input type="password" class="flex1 clearInput J_Password" name="password" oninput="javascript:clearInput(this)" placeholder="{$lang.pay_password}" />
+                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="ft"><a class="pop-btn J_Pay" href="javascript:;">{$lang.pay_submit}</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="extra">
+            <div class="fixed-gap"></div>
+            <input type="button" class="btn-alipay btn-alipay-fixed J_Submit J_PopLayer" value="{$lang.pay_submit}" data-PopLayer="{ popLayer:'.J_PasswordPopLayer',top:'45%', fixedBody: true}"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	if($(window).height() <= 700) {
+		$('.page-depopay').css('height', $(window).height()).find('.fixed-gap').css('background', '#fff');
+	}
+	
+	// 是否需要输入支付密码（余额支付需要，其他支付不需要）
+	var checkPassword = false;
+	
+	// 如果首次加载，默认选择的不是余额支付（如余额不够或余额支付未开启）
+	if($.inArray($('.J_SelectPaymentMethod li').find('input[name="payment_code"]:checked').val(), ["deposit"]) < 0) {
+		$('.J_PopLayer').addClass('disabled');
+	} else {
+		checkPassword = true;
+		$('.J_DepositPassword').show();
+		$('.J_PopLayer').removeClass('disabled');
+	}
+	
+	$('.J_SelectPaymentMethod li').click(function(){
+		if($(this).find('input[name="payment_code"]').prop('disabled') != true) {
+			$(this).parent().find('li').removeClass('active');
+			$(this).addClass('active');
+			//$(this).find('input[name="payment_code"]').prop('checked', true);
+			
+			if($.inArray($(this).find('input[name="payment_code"]').val(), ["deposit"]) > -1) {
+				checkPassword = true;
+				$('.J_DepositPassword').show();
+				$('.J_PopLayer').removeClass('disabled');
+			}
+			else
+			{
+				checkPassword = false;
+				$('.J_DepositPassword').hide();
+				$('.J_PopLayer').addClass('disabled');
+			}
+		}
+	})
+	
+	$('.J_Submit').click(function(){
+		if(!checkPassword) {
+			$('#depayform').submit();
+		} else return false;
+	});
+	$('.J_Pay').click(function(){
+		var password = $.trim($('.J_Password').val());
+		if((password == undefined) || (password == '')) {
+			layer.open({ content:lang.password_empty});
+			return false;
+		}
+		else
+		{
+			$.ajaxSettings.async = false;
+			$.getJSON("{url route='deposit/ckpaypassword'}", { password: password}, function(data) {
+				if(data == false) {
+					layer.open({ content:lang.password_error});
+					return false;
+				} else {
+					$('#depayform').submit();
+				}
+			});
+			return false;
+		}
+	});
+});
+</script>
+{include file="footer.html"}

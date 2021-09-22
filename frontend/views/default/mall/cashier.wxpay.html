@@ -1,0 +1,50 @@
+{include file="header.html"}
+<style type="text/css">
+body{ background:#f1f1f1;}#header {  display:none}
+</style>
+<script type="text/javascript">
+$(function(){
+	callpay();
+});
+
+function jsApiCall()
+{
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest', {$payform.jsApiParameters}, function(res){
+			if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+				layer.open({ content:lang.pay_successed, time: 1, shade: 0, end: function(){
+						location.href = "{$payform.notifyUrl}";
+					}
+				});
+			}
+			else if(res.err_msg == "get_brand_wcpay_request:cancel") {
+				layer.open({ content:lang.pay_cancel, time: 1,shade: 0, end: function(){
+						location.href = "{$payform.orderUrl}";
+					}
+				});
+			}
+			else {
+				layer.open({ content:lang.pay_fail_reason + res.err_msg, time: 2, shade: 0,end: function(){
+						location.href = "{$payform.orderUrl}";
+					}
+				});
+			}
+		}
+	);
+}
+
+function callpay()
+{
+	if (typeof WeixinJSBridge == "undefined"){
+		if( document.addEventListener ){
+			document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		}else if (document.attachEvent){
+			document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+			document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		}
+	}else{
+		jsApiCall();
+	}
+}
+</script>
+{include file="footer.html"}

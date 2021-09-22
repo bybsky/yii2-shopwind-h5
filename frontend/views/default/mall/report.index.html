@@ -1,0 +1,42 @@
+{include file="user.header.html"}
+<div id="main" class="report w-full">
+    <div class="content mb20 mt10 w">
+        <form method="post" id="reportForm" class="fun-form-style">
+        	<h3>{$lang.be_report_man}</h3>
+        	<p class="padding10"><a href="{url route='store/index' id=$goods.store_id}">{$goods.store_name|escape}</a></p>
+            <h3>{$lang.be_report_goods}</h3>
+            <div class="goods clearfix webkit-box">
+                 <div class="info-img mr10">
+                      <a href="{url route='goods/index' id=$goods.goods_id}">
+                         <img src="{$goods.default_image|url_format}" width="60" height="60">
+                       </a>
+                 </div>
+                 <ul class="info-label">
+                     <li class="l1">
+                        <label>{$lang.goods}ID:</label>
+                        <span>{$goods.goods_id}</span>
+                     </li>
+                     <li class="l2 line-clamp-2">
+                         <label>{$lang.goods_name}:</label>
+                         <a href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name|escape}</a>
+                     </li>
+                </ul>
+            </div>
+            <h3 class="title">{$lang.report_describe}: </h3>
+            <div class="textarea pt10 pb10">
+            <textarea name="content" placeholder="{$lang.describe_problem}"></textarea>
+          	</div>
+ 			<div class="form">
+                <dl>
+                   <dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+                     <input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+                     <img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> </dd>
+                </dl>
+            </div>
+            <div class="extra mt20 ml10 mr10">
+              <input type="submit" class="J_AjaxSubmit btn-alipay mt10" value="{$lang.submit}" />
+            </div>
+        </form>
+    </div>
+</div>
+{include file="footer.html"}

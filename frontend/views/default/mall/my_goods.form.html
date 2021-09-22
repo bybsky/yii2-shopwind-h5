@@ -1,0 +1,317 @@
+{use class="common\library\Def"}
+{include file="user.header.html"}
+<script type="text/javascript">	
+var SPEC = {$goods.spec_json};
+$(function(){
+	$('.filePicker').compressUpload({
+		server: url(['upload/add',{ instance:'goods_image'}]),
+		pick: '.filePicker',
+		fileVal: 'goods_image',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_GOODS}",
+			item_id: '{$goods.goods_id}'
+		},
+		crop: true,
+		callback: function(file, response, pick, target) {
+			if($('.goods-images').children().length == 0){
+				var cover = '<span class="cover"><em><ins>封面</ins></em></span>';
+			}else{
+				var cover = '';
+			}
+			var file_data = response.retval;
+			var tpl = '<li class="image-item mr10 mt10" file_id="'+file_data.file_id+'">'+cover+'<input type="hidden" value="'+file_data.file_id +'" name="goods_file_id[]"/><ins class="wind-icon-font drop-image" onClick="dropImage('+file_data.file_id+');">&#xe60a;</ins><img  onclick="set_cover('+file_data.file_id+');" src="'+url_format(file_data.file_path)+'"/></li>';
+
+			$('.goods-images').append(tpl);
+		}
+	});
+	$('.filePicker').compressUpload({
+		server: url(['upload/add',{ instance:'desc_image'}]),
+		pick: '.filePicker2',
+		fileVal: 'desc_image',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_GOODS}",
+			item_id: '{$goods.goods_id}',
+		},
+		resize : true,
+		compressWidth: 640,
+		compressHeight: 2000,
+		quality: 100,
+		crop: false,
+		callback: function(file, response, pick, target) {
+			var file_data = response.retval;
+			var tpl = '<li class="image-item  mr10 mt10 insertToEditor" file_id="'+file_data.file_id+'"><input type="hidden" value="'+file_data.file_id +'" name="desc_file_id[]"/><ins class="wind-icon-font drop-image" onClick="dropImage('+file_data.file_id+');">&#xe60a;</ins><img src="'+url_format(file_data.file_path)+'"/></li>';	
+			$('.desc-images').append(tpl);
+		}
+	});
+
+	$('.J_GetScatePopLayer').ajaxSwitcher({
+		model: '.switcher-region',
+		url: url(['mlselection/index', { type:'gcategory'}]),
+		title:'请选择商品分类',
+	});
+	
+	$('.J_BrandPopLayer').on('click','ol',function(){
+		var brand_name = $(this).attr('data-value');
+		$('#showBrandName').text(brand_name);
+	})
+	
+	var name = $('.J_DeliveryPopLayer ol.active').attr('data-name');
+	$('#showDeliveryName').html(name);
+	
+	$('.J_DeliveryPopLayer').on('click','ol',function(){
+		name = $(this).attr('data-name');
+		$('#showDeliveryName').html(name);
+	})
+	
+	$('#description_content').artEditor({
+		insertImgTar: '.insertToEditor',
+		formInputId : 'description',
+		data: {},
+		placeholader: '请输入商品介图文绍',
+		validHtml: ["br"]
+	});
+
+    spec_update();	
+});
+
+function set_cover(file_id){
+	$('.goods-images > *').find('.cover').remove();
+	
+    var obj = $('.goods-images *[file_id="'+ file_id +'"]');
+    var tpl = $('.goods-images *[file_id="'+ file_id +'"]').clone(true);
+	
+	tpl.append('<span class="cover"><em><ins>封面</ins></em></span>');
+	tpl.prependTo('.goods-images');
+    obj.remove();
+}
+
+function dropImage(goods_file_id)
+{
+	layer.open({
+		content: lang.uploadedfile_drop_confirm
+		,btn: ['确定', '取消']
+		,yes: function(index){
+            $.getJSON(url(['my_goods/deleteimage']), { id:goods_file_id}, function(data){
+                if (data.done)
+                {
+                    $('*[file_id="' + goods_file_id + '"]').remove();
+                }
+                else
+                {
+                    layer.open({ content: data.msg, time: 3});
+                }
+            });
+		  	layer.close(index);
+		}
+	 });
+}
+</script>
+<div id="page-my-goods">
+	<div class="fun-form-style">
+    	<form method="post" id="goods_form">
+            <section class="form">
+            	<dl class="mt10 J_GetScatePopLayer">
+				  <dd class="webkit-box"> 
+				  	<span>分类</span>
+					<input type="hidden" name="cate_id" value="{$goods.cate_id}" class="mls_id" />
+					<input type="hidden" name="cate_name" value="{$goods.cate_name|escape}" class="mls_names" />
+					<p class="flex1 mls_names">{$goods.cate_name|escape}</p>
+					<i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+				</dl>
+                <dl>
+                    <dd class="webkit-box">
+                    	<span>标题</span>
+                        <input type="text"  name="goods_name" class="input clearInput flex1" value="{$goods.goods_name|escape}" oninput="javascript:clearInput(this)"/>
+                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                    </dd>
+                </dl>
+                <dl>
+                    <dd class="webkit-box J_PopLayer"  data-PopLayer="{ popLayer:'.J_BrandPopLayer',top:'35%', fixedBody: true}">
+                    	<span>品牌</span>
+                        <span id="showBrandName" class="flex1" style="color:#000; padding: 0;">{$goods.brand}</span>
+                        <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i>
+                    </dd>
+                    <div class="pop-layer-common pop-wrap-b J_BrandPopLayer">
+                       <div class="wraper has-title">
+                            <div class="hd"><i class="closed popClosed"></i>品牌列表</div>
+                            <div class="bd radioUiWraper">
+                                <!--{foreach from=$brandList item=brand name=fe_brand}-->
+                                <ol style="margin:0;" class="border-bottom pl10 webkit-box popClosed radioUiStyle radioUiStyle2 {if $goods.brand eq $brand.brand_name}active{/if}" data-value="{$brand.brand_name}">
+                                    <li class="flex1">
+                                        {$brand.brand_name}
+                                    </li>
+                                    <li class="input"><input  {if $goods.brand_id eq $brand.brand_id}checked="checked"{/if} type="radio" name="brand_id" value="{$brand.brand_id}"/></li>
+                                </ol>
+                                <!--{/foreach}-->
+                            </div>
+                            <div class="ft pop-btn popClosed">关闭</div>
+                       </div>
+                   </div>
+                </dl>
+                <dl  ectype="no_spec">
+                    <dd class="webkit-box">
+                    	<span>{$lang.price}</span>
+                        <input name="spec_id" value="{$goods._specs.0.spec_id}" type="hidden" />
+                        <input type="text"  name="price" class="input clearInput flex1" value="{$goods._specs.0.price}" oninput="javascript:clearInput(this)"/>
+                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                    </dd>
+                </dl>
+                <dl  ectype="no_spec">
+                    <dd class="webkit-box">
+                    	<span>{$lang.stock}</span>
+                        <input type="text"  name="stock" class="input clearInput flex1" value="{$goods._specs.0.stock}" oninput="javascript:clearInput(this)"/>
+                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                    </dd>
+                </dl>
+                <dl  ectype="no_spec">
+                    <dd class="webkit-box">
+                    	<span>货号</span>
+                        <input type="text"  name="sku" class="input clearInput flex1" value="{$goods._specs.0.sku}" oninput="javascript:clearInput(this)"/>
+                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                    </dd>
+                </dl>
+ 				<dl ectype="no_spec">
+                   	<a href="javascript:;" ectype="dialog" dialog_id="my_goods_editspec" dialog_title="{$lang.editspec}" uri="{url route='my_goods/editspec' id=$goods.goods_id}" dialog_class="simple-blue scroll" dialog_position="bottom">
+                    <dd class="webkit-box">
+                    	<span class="pl5">规格</span>
+						<span class="flex1" style="padding: 0;">填写颜色、尺码等规格信息</span>
+						<i class="wind-icon-font box-align-center mr10 gray">&#xe6f6;</i>
+                    </dd>
+                    </a>
+                </dl>
+                <div  class="mb10"  ectype="has_spec" style="display: none">
+                	<dl>
+                    	<dd class="webkit-box">
+                    		<span>规格</span>
+                    	</dd>
+                	</dl>
+                	<div class="spec-table clearfix">
+                		<div ectype="spec_result" class="spec_result">
+						   <ul class="th webkit-box">
+							  <li class="flex1" col="spec_name_1"></li>
+							  <li class="flex1" col="spec_name_2"></li>
+							  <li class="flex1">{$lang.price}</li>
+							  <li class="flex1">{$lang.stock}</li>
+							  <li class="flex1">{$lang.sku}</li>
+							  <li class="flex1">图片</li>
+						   </ul>
+						   <ul class="td webkit-box" ectype="spec_item">
+							   <li class="flex1" item="spec_1"></li>
+							   <li class="flex1" item="spec_2"></li>  
+							   <li class="flex1" item="price"></li>
+							   <li class="flex1" item="stock"></li>
+							   <li class="flex1" item="sku"></li>
+							   <li class="flex1" item="spec_image"></li>
+						   </ul>
+						</div>
+                    </div> 
+               		<div class="pt10 pl5 btn-op-spec">
+               			<a href="javascript:;" ectype="dialog" dialog_id="my_goods_editspec" dialog_title="{$lang.editspec}" uri="{url route='my_goods/editspec' id=$goods.goods_id}" dialog_class="simple-blue scroll" dialog_position="bottom" class="mr10">编辑规格</a>
+                        <a href="javascript:;" ectype="disable_spec">关闭规格</a>
+               		</div>
+			</div>
+                <div class="uploadPicBox">
+                    <div class="upload pl10 pr10">
+                        <div class="webkit-box">
+                            <p class="mr10 lp"><ins class="wind-icon-font relative">&#xe6cf;<em class="filePicker"></em></ins></p>
+                            <div class="tip flex1">
+                                <h3>商品图片</h3>
+                                <p class="desc mt10">支持格式JPG,PNG,GIF,点击图片设置为封面</p>
+                            </div>
+                            <input type="hidden" name="goods_image" value="" />
+                        </div>
+                    </div>
+                    <div class="list">
+                    	<ul class="goods-images webkit-box  webkit-box flex-wrap pl10">
+                           <!--{foreach from=$goods.goods_images item=goods_image name=fe_image}-->
+                           <li class="image-item mt10 mr10" file_id="{$goods_image.file_id}">
+                                <!--{if $smarty.foreach.fe_image.first}-->
+                                <span class="cover"><em><ins>封面</ins></em></span>
+                                <!--{/if}-->
+                                <input type="hidden" name="goods_file_id[]" value="{$goods_image.file_id}">
+                                <ins class="wind-icon-font drop-image" onClick="dropImage({$goods_image.file_id});">&#xe60a;</ins><img  onclick="set_cover({$goods_image.file_id});" src="{$goods_image.thumbnail|url_format}"/>
+                           </li>
+                           <!--{/foreach}-->
+                       </ul>	
+                    </div>
+                </div>
+                <div class="description">
+                	<div class="wraper">
+                        <p class="mt fs14">{$lang.description}</p>
+                        <div class="mc mt5">
+                            <div id="description_content" class="editorImage" style="min-height:150px;max-height:250px;overflow-y:scroll;color:#666;">{$goods.description}</div>
+                            <textarea id="description" class="hidden" name="description">{$goods.description|escape}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="uploadPicBox mb10">
+                    <div class="upload pl10 pr10">
+                        <div class="webkit-box">
+                            <p class="mr10 lp"><ins class="wind-icon-font relative">&#xe6cf;<em class="filePicker filePicker2"></em></ins></p>
+                            <div class="tip flex1">
+                                <h3>描述图片</h3>
+                                <p class="desc mt10">支持格式JPG,PNG,GIF,点击图片添加到编辑框</p>
+                            </div>
+                            <input type="hidden" name="desc_image" value="" />
+                        </div>
+                    </div>
+                    <div class="list">
+                    	<ul class="desc-images webkit-box  webkit-box flex-wrap pl10">
+                           <!--{foreach from=$goods.desc_images item=desc_image name=fe_image}-->
+                           <li class="image-item mt10 mr10 insertToEditor"  file_id="{$desc_image.file_id}">
+                                <input type="hidden" name="desc_file_id[]" value="{$desc_image.file_id}">
+                                <ins class="wind-icon-font drop-image" onClick="dropImage({$desc_image.file_id});">&#xe60a;</ins><img src="{$desc_image.file_path|url_format}"/>
+                           </li>
+                           <!--{/foreach}-->
+                       </ul>	
+                    </div>
+                </div>
+                <dl>
+                   <dd class="webkit-box J_PopLayer" data-PopLayer="{ popLayer:'.J_DeliveryPopLayer',top:'35%'}">
+                     	<span class="flex1">运费模板</span>
+                     	<em class="fs12 f99 mr10" id="showDeliveryName"></em>
+                     	<i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i>
+                  </dd>
+                  <div class="pop-layer-common pop-wrap-b J_DeliveryPopLayer">
+                       <div class="wraper has-title">
+                            <div class="hd"><i class="closed popClosed"></i>选择运费模板</div>
+                            <div class="bd radioUiWraper">
+                                <!--{foreach from=$deliverys item=delivery name=fe_delivery}-->
+                                <ol style="margin:0;" class="border-bottom pl10 webkit-box popClosed radioUiStyle radioUiStyle2 {if $goods.dt_id eq $delivery.template_id || (!$goods.dt_id && $smarty.foreach.fe_delivery.first)}active{/if}" data-value="{$delivery.template_id}" data-name="{$delivery.name}">
+                                    <li class="flex1">
+                                        {$delivery.name}
+                                    </li>
+                                    <li class="input"><input  {if $goods.dt_id eq $delivery.template_id || (!$goods.dt_id && $smarty.foreach.fe_delivery.first)}checked="checked"{/if} type="radio" name="dt_id" value="{$delivery.template_id}"/></li>
+                                </ol>
+                                <!--{/foreach}-->
+                            </div>
+                            <div class="ft pop-btn popClosed">关闭</div>
+                       </div>
+                 </div>
+              </dl>
+                <!--{if $integral_enabled}--> 
+                <dl>
+                    <dd class="webkit-box">
+                        <span>积分抵扣</span>
+						<input name="max_exchange" value="{$goods.max_exchange}" class="flex1 input" type="text" placeholder="请填写最大可抵扣的积分"/>
+                        <span class="ml10">个积分</span>
+                    </dd>
+                </dl>   
+               <!--{/if}-->      
+              <dl>
+               <dd style="padding:0 15px;">
+                  <label class="switch-checkbox-radio w-full block mb20 box-align-center J_SwtcherInput  {if $goods.if_show}checked{/if}"  for="switcher1"> <span class="block flex1">{$lang.if_show}</span> <span  style="width:50px;" class="switcher-style block"></span> </label>
+            	  <input name="if_show" class="hidden"  {if $goods.if_show}checked="checked" {/if} id="switcher1" value="1" type="checkbox">
+               </dd>
+             </dl>
+        	<div class="clearfix">
+              <p class="fixed-gap"></p>
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+        </section>
+       </form>
+	</div>
+</div>
+{include file="footer.html"}

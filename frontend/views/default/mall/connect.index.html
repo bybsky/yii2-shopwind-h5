@@ -1,0 +1,36 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div id="page-member-bind" class="w-full page-auth">
+    <ul class="bind-list">
+      <!--{foreach from=$binds item=item}-->
+      <li class="bgf padding10 border-bottom">
+        <label class="switch-checkbox-radio w-full block box-align-center J_SwtcherInput {if $item.enabled}checked{/if}" for="switcher" data-id="{$item.code}"> <em class="block flex1 fs14">{$item.name}</em> <span class="switcher-style block"></span> </label>
+        <input name="{$item.code}" class="hidden" id="switcher" value="1" type="checkbox" {if $item.enabled}checked="checked"{/if} />
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_SwtcherInput').click(function(){
+		var checked = $(this).parent().find('input').prop('checked');
+		var code = $(this).attr("data-id");
+		
+		// 未绑定，提示跳转绑定
+		if(checked == false)
+		{
+			$(this).removeClass('checked');
+			$(this).parent().find('input').prop('checked', false);
+				
+			location.href = url(['connect/'+code]);
+		}
+		// 已绑定过，取消绑定
+		else
+		{
+			ajaxSubmit('GET', url(['connect/relieve', { code: code}]));
+		}
+	});
+});
+</script>
+{include file="footer.html"} 

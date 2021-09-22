@@ -1,0 +1,37 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="deposit-withdraw deposit-transfer"> 
+      <!--{if $deposit_account.money gt 0}-->
+      <form method="get" class="fun-form-style" action="{url route='deposit/transferconfirm'}">
+        <!--{if !$app->urlManager->enablePrettyUrl}-->
+      	<input type="hidden" name="r" value="deposit/transferconfirm" />
+      	<!--{/if}-->
+        <div class="title webkit-box">
+          <p class="fs14 flex1">{sprintf($lang.available_balance, $deposit_account.money)}</p>
+        </div>
+        <div class="form">
+          <dl class="mt10 clearfix">
+            <dd class="webkit-box"> <span>{$lang.transfer_account}</span>
+              <input type="text" id="account" name="account" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.transfer_account}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dd class="webkit-box"> <span>{$lang.transfer_money}</span>
+              <input type="text" id="money" name="money" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.transfer_money}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <div class="extra">
+            <input class="btn-alipay" type="submit" value="{$lang.next_step}" />
+          </div>
+        </div>
+      </form>
+      <!--{else}-->
+      <div class="notice-empty"><i>&#xe715;</i>
+        <p>{$lang.transfer_money_not_enough}</p>
+      </div>
+      <!--{/if}--> 
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

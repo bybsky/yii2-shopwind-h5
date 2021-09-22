@@ -1,0 +1,89 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.msg_manage}</p>
+    <ul class="subnav">
+	  <li><span>{$lang.sendlog}</span></li>
+	  <li><a class="btn1" href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+      <li><a class="btn1" href="{url route='msg/user'}">{$lang.msguser}</a></li>
+	  <li><a class="btn1" href="{url route='msg/add'}">{$lang.addmsg}</a></li>
+	  <li><a class="btn1" href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+      <li><a class="btn1" href="{url route='msg/send'}">{$lang.sendmsg}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="msg/index" />
+      {$lang.msguser}
+      <input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+      {$lang.receiver}
+	  <input class="queryInput" type="text" name="receiver" value="{$smarty.get.receiver|escape}" />
+	  {$lang.smsplat}
+	  <select class="querySelect" name="code">
+		<option value="">{$lang.select_pls}</option>
+		{html_options options=$smslist selected=$smarty.get.code}
+	  </select>
+      {$lang.status}
+      <select class="querySelect" name="status">
+        <option value="">{$lang.select_pls}</option>
+        	{html_options options=$status_list selected=$smarty.get.status}
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='msg/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['msg/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 80, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.msguser}', name : 'username', width : 100, sortable : true, align: 'center'}, 
+			{ display: '{$lang.receiver}', name : 'receiver', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.smsplat}', name : 'code', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.content}', name : 'content', width : 400, sortable : true, align: 'center'},
+    		{ display: '{$lang.quantity}', name : 'quantity', width : 50, sortable : true, align: 'center'},
+			{ display: '{$lang.add_time}', name : 'add_time', width : 150, sortable : true, align: 'center'},
+			{ display: '{$lang.status}', name : 'status', width : 50, sortable : true, align: 'center'},    		
+			{ display: '{$lang.message}', name : 'message', width: 150, sortable : true, align : 'center'}		
+    	],
+        buttons : [
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+		sortname: "id",
+    	sortorder: "desc",
+    	title: '{$lang.msg_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+		   	layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'msg');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+		   layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'msg');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'msg');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"}

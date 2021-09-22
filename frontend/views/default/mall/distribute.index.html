@@ -1,0 +1,37 @@
+{include file="user.header.html"}
+<div id="page-member">
+  <div class="main dcenter">
+    <div class="d-header">
+      <div class="mark-text clearfix"> {$lang.my_profit}<a class="more-link" href="{url route='distribute/trade'}">{$lang.view_detail}<i class="wind-icon-font">&#xe61d;</i></a> </div>
+      <div class="amount-box clearfix"><span class="amount">{$distribute.amount|price_format}</span><a href="{url route='deposit/withdraw'}">{$lang.withdraw}</a></div>
+    </div>
+    <div class="outlet-nav">
+      <ul class="clearfix">
+      	<li> <a href="{url route='distribute/goods'}"> <i class="wind-icon-font icon-yemiantuiguang">&#xe78a;</i>
+          <div class="title">{$lang.distribute_goods}</div>
+          <em class="num">{$distribute.goods|default:0}</em> </a> </li>
+        <!--<li> <a href="{url route='distribute/store'}"> <i class="wind-icon-font icon-hongbao">&#xe656;</i>
+          <div class="title">{$lang.distribute_store}</div>
+          <em class="num">{$distribute.store|default:0}</em> </a> </li>-->
+         <li> <a href="{url route='distribute/order'}"> <i class="wind-icon-font icon-fenxiao">&#xe64d;</i>
+          <div class="title">{$lang.distribute_order}</div>
+          <em class="num">{$distribute.orders|default:0}</em> </a> </li>
+         <li> <a href="{url route='distribute/team'}"> <i class="wind-icon-font icon-wodekehu">&#xe61a;</i>
+          <div class="title">{$lang.distribute_team}</div>
+          <em class="num">{$distribute.teams|default:0}</em> </a> </li>
+        
+        <li> <a href="{url route='distribute/trade'}"> <i class="wind-icon-font icon-qiandaizi">&#xe65e;</i>
+          <div class="title">{$lang.distribute_profit}</div>
+          </a> </li>
+       <li> <a href="{url route='distribute/rank'}"> <i class="wind-icon-font icon-icon2">&#xe65d;</i>
+          <div class="title">{$lang.distribute_rank}</div>
+          </a> </li>
+       <li> <a href="{url route='distribute/qrcode'}"> <i class="wind-icon-font icon-icon2">&#xe6df;</i>
+          <div class="title">{$lang.goods_qrcode}</div>
+          </a> </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

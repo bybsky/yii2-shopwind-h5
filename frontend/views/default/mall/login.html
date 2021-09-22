@@ -1,0 +1,53 @@
+{include file="header.html"}
+<div id="main" class="pb20">
+  <div id="page-login" class="page-auth">
+    <form method="POST" class="fun-form-style">
+      <div class="form pb20">
+        <dl>
+          <dd class="webkit-box"> <span>用户名</span>
+            <input type="text" id="username" name="username" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="用户名/手机号/邮箱" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"> <span>密<s style="margin:0 7px"></s>码</span>
+            <input type="password" name="password" id="password" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_password}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <!--{if $app->params['captcha_status']['login']}-->
+        <dl>
+          <dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+            <input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+            <img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> </dd>
+        </dl>
+        <!--{/if}-->
+        
+        <div class="extra">
+          <p style="display:none">
+            <label class="switch-checkbox-radio w-full block mb20 box-align-center J_SwtcherInput checked" for="switcher"> <em class="block flex1 gray">七日内免登录</em> <span class="switcher-style block"></span> </label>
+            <input name="rememberMe" class="autoLogin hidden" id="switcher" value="1" type="checkbox" checked="checked">
+          </p>
+          <p>
+            <input type="hidden" class="J_AjaxFormRetUrl" name="redirect" value="{$redirect}" />
+            <input type="submit" class="J_AjaxSubmit btn-alipay mt10" value="{$lang.login}" />
+          </p>
+        </div>
+      </div>
+    </form>
+    <div class="partner pl10 pr10">
+      <div class="mt webkit-box"> <ins class="vleft vline flex1"></ins><span class="fs14 gray">合作账号登录</span><ins class="vright vline flex1"></ins> </div>
+      <div class="mc webkit-box"> <a href="{url route='connect/qq' redirect=$redirect}" class="flex1"><i class="qq wind-icon-font">&#xe6bd;</i></a> 
+        <!--{if !$isWeixin}--> 
+        <a href="{url route='connect/alipay' redirect=$redirect}" class="flex1"><i class="alipay wind-icon-font">&#xe6bb;</i></a> 
+        <!--{/if}--> 
+        <!--{if $isWeixin}--> 
+        <a href="{url route='connect/weixin' redirect=$redirect}" class="flex1"><i class="weixin wind-icon-font">&#xe6f4;</i></a> 
+        <!--{/if}--> 
+        <a href="{url route='connect/xwb' redirect=$redirect}" class="flex1"><i class="xwb wind-icon-font">&#xe6b7;</i></a> </div>
+    </div>
+    <div class="auth-fixed webkit-box"> 
+    <a class="fs14 center flex1" href="{url route='user/register' redirect=$redirect}">{$lang.register}</a> 
+    <a class="fs14 center flex1" href="{url route='user/phonelogin' redirect=$redirect}">{$lang.phone_mob_login}</a>
+    <a class="fs14 center flex1" href="{url route='find_password/index'}" style="border-right:0;">{$lang.find_password}</a> </div>
+  </div>
+</div>
+{include file="footer.html"}

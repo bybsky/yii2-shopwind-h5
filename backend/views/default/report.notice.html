@@ -1,0 +1,34 @@
+{include file="header.html"}
+<style type="text/css">
+#short_msg_desc { margin-top:10px; }
+#short_msg_desc a { color:#0099CC; }
+#short_msg_desc div { display:none;color:#646665;border:1px solid #CCCCCC;padding:5px;width:340px;background-color:#F5F5F5;line-height:25px; }
+</style>
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.report_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='report/index'}">{$lang.manage}</a></li>
+      <li><span>发送信息</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr id="user_list">
+          <th class="paddingT15"> {$lang.receiver}:</th>
+          <td class="paddingT15 wordSpacing5">{$user.username|escape}</td>
+        </tr>
+        <tr id="msg">
+          <th class="paddingT15">{$lang.notice_content}:</th>
+          <td class="paddingT15 wordSpacing5"><textarea name="content" style="width:400px; height:300px;"></textarea></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> </th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

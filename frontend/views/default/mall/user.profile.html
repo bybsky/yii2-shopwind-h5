@@ -1,0 +1,49 @@
+{include file="user.header.html"}
+<div id="page-my-profile">
+  <div class="page-body my-profile fun-form-style">
+  	<!--{if !$smarty.get.field || in_array($smarty.get.field, array('real_name', 'im_qq', 'birthday'))}-->
+    <form method="post">
+      <div class="form">
+        <!--{if !$smarty.get.field || in_array($smarty.get.field, array('real_name'))}-->
+        <dl class="mb10">
+          <dd class="webkit-box"> <span>{$lang.real_name}</span>
+            <input type="text" id="real_name" name="real_name" class="input clearInput flex1" value="{$visitor.real_name}" oninput="javascript:clearInput(this)" placeholder="{$lang.input_real_name}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <!--{/if}--> 
+        
+        <!--{if !$smarty.get.field || in_array($smarty.get.field, array('birthday'))}-->
+        <dl class="mb10">
+          <dd class="webkit-box"> <span>{$lang.birthday}</span>
+            <input type="text" id="birthday" name="birthday" class="input flex1" value="{$visitor.birthday} " placeholder="{$lang.input_birthday}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <!--{/if}--> 
+        
+        <!--{if !$smarty.get.field || in_array($smarty.get.field, array('im_qq'))}-->
+        <dl class="mb10">
+          <dd class="webkit-box"> <span>{$lang.im_qq}</span>
+            <input type="text" id="im_qq" name="im_qq" class="input clearInput flex1" value="{$visitor.im_qq}" oninput="javascript:clearInput(this)" placeholder="{$lang.input_im_qq}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <!--{/if}-->
+        <div class="extra">
+        	<input type="hidden" value="{url route='user/setting'}" class="J_AjaxFormRetUrl" />
+        	<input type="submit" value="{$lang.submit}" class="J_AjaxSubmit btn-alipay" />
+        </div>
+      </div>
+    </form>
+    <!--{else}-->
+    <div class="notice-empty"><i class="wind-icon-font">&#xe6a1;</i><p>{$lang.no_records}</p></div>
+    <!--{/if}-->
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#birthday').datetimePicker({
+		title: '{$lang.input_birthday}',
+		times: function () { return false;}
+	});
+});
+</script>
+{include file="footer.html"} 

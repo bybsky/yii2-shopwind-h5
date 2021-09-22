@@ -1,0 +1,58 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.sgrade}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='sgrade/index'}">{$lang.manage}</a></li>
+      <li><span>{if $sgrade.grade_id}{$lang.edit}{else}{$lang.add}{/if}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.grade_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="grade_name" type="text" id="grade_name" value="{$sgrade.grade_name}" />
+            <label class="field_notice">{$lang.grade_name}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.goods_limit}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="goods_limit" type="text" id="goods_limit" value="{$sgrade.goods_limit}" />
+            <label class="field_notice">{$lang.note_for_limit}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.space_limit}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="space_limit" type="text" id="space_limit" value="{$sgrade.space_limit}" />
+            <label class="field_notice">{$lang.note_for_limit}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.charge}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="charge" type="text" id="charge" value="{$sgrade.charge}" />
+            <label class="field_notice">{$lang.charge}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.need_confirm}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $sgrade.need_confirm}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$sgrade.need_confirm}selected{/if}">{$lang.no}</label>
+            <input name="need_confirm" value="1" type="radio" {if $sgrade.need_confirm}checked{/if}>
+            <input name="need_confirm" value="0" type="radio" {if !$sgrade.need_confirm}checked{/if}>
+            </span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15" valign="top">{$lang.description}:</th>
+          <td class="paddingT15 wordSpacing5"><textarea name="description" id="description">{$sgrade.description}</textarea></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" name="sort_order" type="text" id="sort_order" value="{$sgrade.sort_order}" /></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

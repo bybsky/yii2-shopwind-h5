@@ -1,0 +1,39 @@
+{include file="user.header.html"}
+<div id="main"> 
+  <!--{if $appAvailable neq 'TRUE'}-->
+  <div class="notice-word padding10">
+    <p>{$appAvailable.msg}</p>
+  </div>
+  <!--{else}-->
+  <div class="page-promotool" id="page-promotool">
+    <div class="exclusive">
+      <form method="post" class="fun-form-style">
+        <div class="form">
+          <div class="notice-word padding10"><p class="yellow">{$lang.note_for_create}</p></div>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.exclusive_discount}</span>
+              <input type="text" name="exclusive[discount]" value="{$exclusive.rules.discount}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.exclusive_discount_note}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.exclusive_decrease}</span>
+              <input type="text" name="exclusive[decrease]" value="{$exclusive.rules.decrease}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.exclusive_decrease_note}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <div class="extra">
+            <p >
+              <label class="switch-checkbox-radio block mb20 box-align-center J_SwtcherInput {if $exclusive.status || !$exclusive}checked{/if} w-full" for="switcher"> <em class="block flex1 gray pl5">{$lang.launch}</em> <span class="switcher-style block"></span> </label>
+              <input name="status" class="hidden" id="switcher" value="1" type="checkbox" {if $exclusive.status || !$exclusive}checked="checked"{/if} />
+            </p>
+            <div>
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+          </div>
+          
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--{/if}--> 
+</div>
+{include file="footer.html"} 

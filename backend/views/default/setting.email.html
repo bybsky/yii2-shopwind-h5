@@ -1,0 +1,63 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='setting/index'}">{$lang.base_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/baseinfo'}">{$lang.base_information}</a></li>
+      <li><span>{$lang.email_setting}</span></li>
+      <li><a class="btn1" href="{url route='setting/verifycode'}">{$lang.captcha_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/store'}">{$lang.store_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/api'}">{$lang.api_setting}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.email_host}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_host" type="text" name="mailer[host]" value="{$setting.mailer.host}"/>
+            <label class="field_notice">{$lang.email_host_note}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.email_port}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_port" type="text" name="mailer[port]" value="{$setting.mailer.port}"/>
+            <label class="field_notice">{$lang.email_port_note}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.email_addr}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_addr" type="text" name="mailer[email]" value="{$setting.mailer.email}"/>
+            <label class="field_notice">{$lang.email_addr_note}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.email_id}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_id" type="text" name="mailer[username]" value="{$setting.mailer.username}"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.email_pass}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_pass" type="password" name="mailer[password]" value="{$setting.mailer.password}"/></td>
+        </tr>
+        
+        <tr>
+          <th class="paddingT15"> {$lang.email_amdin}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="email_pass" type="text" name="mailer[admin]" value="{$setting.mailer.admin}"/></td>
+        </tr>
+        
+        <tr>
+          <th class="paddingT15">{$lang.email_mode}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.mailer.async}selected{/if}">{$lang.email_async}</label>
+            <label class="cb-disable {if !$setting.mailer.async}selected{/if}">{$lang.email_disasync}</label>
+            <input name="mailer[async]" value="1" type="radio" {if $setting.mailer.async}checked{/if}>
+            <input name="mailer[async]" value="0" type="radio" {if !$setting.mailer.async}checked{/if}>
+            </span> <span class="grey notice">{$lang.email_async_notice}</span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

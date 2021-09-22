@@ -1,0 +1,21 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-qa">
+    <form method="post" class="fun-form-style">
+      <div class="form">
+      	<div class="pl10 pt10 pr10">{$lang.question_content}{$lang.colon}{$question.question_content|escape|nl2br}</div>
+        <dl class="textarea mt10">
+          <dd class="webkit-box">
+            <textarea class="flex1" name="content" placeholder="{$lang.reply_content}">{$question.reply_content}</textarea>
+          </dd>
+        </dl>
+        <div class="extra mt20">
+          <p class="fixed-gap"></p>
+          <input type="hidden" name="id"  value="{$question.ques_id}" />
+          <input type="submit" class="btn-alipay btn-alipay-fixed J_AjaxSubmit" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

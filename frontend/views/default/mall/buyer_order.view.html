@@ -1,0 +1,109 @@
+{use class='\common\library\Def'}
+{include file="user.header.html"}
+<div id="page-order-view">
+	<div class="order-view">
+    	<div class="status">
+            <div class="wraper statusBg{$order.status} box-align-center">
+                <div class="status-txt">
+                    <p class="l1">{Def::getOrderStatus($order.status)}</p>
+                    <!--{if $order.refund_id}-->
+                    <p class="l2">
+                    	<a href="{url route='refund/view' id=$order.refund_id}" class="fs13 mt5" style="color:#fff">{$order.refund_status_label}<i class="wind-icon-font fs12">&#xe629;</i></a>
+                    </p>
+                    <!--{/if}-->
+                </div>
+            </div>
+        </div>
+        <div class="consignee-info webkit-box">
+        	<div class="icon wind-icon-font box-align-center">&#xe67b;</div>
+            <div class="detail flex1">
+            	<div class="l1 webkit-box">
+                	<p class="name flex1 overflow-ellipsis">{$order.orderExtm.consignee|escape}</p>
+                    <p class="tel">{if $order.orderExtm.phone_mob}{$order.orderExtm.phone_mob}{else}{$order.orderExtm.phone_tel|default:'-'}{/if}</p>
+                </div>
+                <div class="l2">
+                	{$lang.consignee_address}{$lang.colon}{$order.orderExtm.region_name|escape}{$order.orderExtm.address|escape}
+                </div>
+            </div>
+        </div>
+        <div class="order-goods">
+        	<div class="mt">
+            	<a href="{url route='store/index' id=$order.seller_id}" class="webkit-box"><span class="flex1 "><ins class="wind-icon-font">&#xe656;</ins>{$order.store_name|escape}</span><ins class="wind-icon-font">&#xe634;</ins></a>
+            </div>
+            <div class="mc">
+            	<div class="o-g-i">
+                    <!--{foreach from=$order.orderGoods item=goods}-->
+                    <a href="{url route='goods/index' id=$goods.goods_id}" class="block webkit-box order-goods-list">
+                        <div class="pic"><img src="{$goods.goods_image|url_format}"/></div>
+                        <div class="txt flex1"> 
+                            <p class="goods-name line-clamp-2">{$goods.goods_name|escape}</p>
+                            <!--{if $goods.specification}-->
+                            <p class="attr mt5">{$goods.specification|escape}</p>
+                            <!--{/if}-->
+                        </div>
+                        <div class="qua-pri">
+                            <p class="pri">{$goods.price|price_format}</p>
+                            <p class="qua">x {$goods.quantity}</p>
+                        </div>
+                    </a>
+                    <!--{/foreach}-->
+                </div>
+                <div class="order-extra">
+                	<ul>
+                    	<li class="webkit-box">
+                        	<p class="t flex1">{$lang.yunfei}</p>
+                            <p class="c">{$order.orderExtm.shipping_fee|price_format}({$order.orderExtm.shipping_name|escape})</p>
+                        </li>
+                        <li class="webkit-box">
+                        	<p class="t flex1">{$lang.youhui}</p>
+                            <p class="c">{$order.discount|price_format}</p>
+                        </li>
+                        <li class="webkit-box">
+                        	<p class="t flex1">{$lang.real_pay_money}</p>
+                            <p class="c">{$order.order_amount|price_format}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="handler mt10 mb20">
+        	<dl class="webkit-box">
+            	<dt class="flex1">{$lang.order_sn}</dt>
+                <dd>{$order.order_sn}</dd>
+            </dl>
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.payment_name}</dt>
+                <dd>{$order.payment_name|default:'-'}</dd>
+            </dl>
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.add_time}</dt>
+                <dd>{$order.order_add_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'-'}</dd>
+            </dl>
+            <!--{if $order.pay_time}-->
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.pay_time}</dt>
+                <dd>{$order.pay_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'-'}</dd>
+            </dl>
+            <!--{/if}--> 
+            <!--{if $order.ship_time}-->
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.ship_time}</dt>
+                <dd>{$order.ship_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'-'}</dd>
+            </dl>
+            <!--{/if}--> 
+            <!--{if $order.finished_time}-->
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.finished_time}</dt>
+                <dd>{$order.finished_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'-'}</dd>
+            </dl>
+            <!--{/if}--> 
+            <!--{if $order.postscript}-->
+            <dl class="webkit-box">
+            	<dt class="flex1">{$lang.postscript}</dt>
+                <dd>{$order.postscript|escape}</dd>
+            </dl>
+            <!--{/if}--> 
+        </div>
+	</div>
+</div>
+{include file="footer.html"}

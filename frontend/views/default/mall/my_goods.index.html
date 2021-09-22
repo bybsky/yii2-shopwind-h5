@@ -1,0 +1,94 @@
+{include file="user.header.html"}
+<div id="page-my-goods-index">
+	<div class="my-goods-list J_InfiniteList">
+   		<ul class="infinite-result clearfix hidden">
+		</ul>
+		<ul class="infinite-template">
+            <li item_id="[1]" class="item mb10 webkit-box">
+				<div class="lp mr10">
+					<img src="[2]"/>
+				</div>
+				<div class="rp flex1">
+					<p class="goods-name line-clamp-2">[3]</p>
+					<p class="spec f99 mt5">{$lang.sku}:[4]</p>
+					<div class="extra webkit-box">
+						<span class="flex1 price fs14">[5]</span>
+						<em class="stock fs13 f99">{$lang.stock}:[6]</em>
+					</div>
+				</div>
+            </li>
+        </ul>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+    </div>
+    <div class="clearfix">
+        <p class="fixed-gap"></p>
+        <a href="{url route='my_goods/add'}" class="btn-alipay btn-alipay-fixed">{$lang.goods_add}</a>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), goods.goods_id, url_format(goods.default_image), goods.goods_name, goods.sku, price_format(goods.price), goods.stock);
+			});
+			if(html){
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+	
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		o.unbind('click');
+		o.click(function(){
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: [{
+					text: "{$lang.view}",
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){
+							window.location.href = url(['goods/index', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: "{$lang.edit}",
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['my_goods/edit', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: "{$lang.drop}",
+					onClick: function() {
+						layer.open({ content:'确定要删除该商品吗？', btn:[lang.confirm,lang.cancel],
+							yes:function(index){
+								ajaxSubmit('GET', url(['my_goods/delete', { id:item_id}]), null, '', o);
+							},
+							no: function(index) {
+								layer.close(index);
+							}
+						});
+					}
+				}]
+			});
+		})
+	});
+}
+</script> 
+{include file="footer.html"}

@@ -1,0 +1,30 @@
+{include file="header.html"}
+<div id="main" class="w-full"> 
+  <!--<div class="page-actions"><i></i></div>-->
+  <div class="page-apply">
+    <div class="showMessage">
+      <div class="noticeMsg"> 
+      	<span class="icon"><i class="wind-icon-font fff"></i></span>
+        <h2>{$lang.handle_notice}</h2>
+        <p class="msgDesc"> 
+          <!--{if $store.state eq 3}-->
+          {sprintf($lang.verify_notpass, $store.apply_remark)}
+          <!--{else}--> 
+          {$lang.apply_remark} 
+          <!--{/if}--> 
+        </p>
+        <!--{if $store.state eq 3}-->
+        <div class="padding10 mt10">
+        	<a href="{url route='apply/fill' id=$store.store_id}" class="btn-alipay btn-alipay-green">{$lang.enter_edit}</a>
+        </div>
+        <!--{else}-->
+        <div class="padding10 mt10">
+        	<a href="{$siteUrl}" class="btn-alipay btn-alipay-green">{$lang.back_home}</a>
+        	<a href="{url route='user/index'}" class="btn-alipay btn-alipay-gray mt10">{$lang.user_center}</a>
+    	</div>
+        <!--{/if}--> 
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,84 @@
+{include file="user.header.html"}
+<div id="page-message">
+  <div class="page-actions"><i></i></div>
+  <div class="send-message">
+    <form method="post" class="fun-form-style">
+      <div class="form">
+      
+        <div class="record-filter pop-layer-common J_SendMessagePopLayer">
+          <div class="wraper has-title">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.friend_list}({count($friends)})</div>
+            <div class="bd">
+              <ul class="friends-list checkboxUiWraper">
+                <!--{foreach from=$friends item=friend name=fe_friend}-->
+                <li class="webkit-box checkboxUiStyle checkboxUiStyle1 border-bottom {if $smarty.foreach.fe_friend.last}border-b-0{/if}" data-value="{$friend.username}">
+                  <div class="lp flex1 webkit-box"><span class="pl10"><img width="40" height="40" src="{$friend.portrait|url_format}" class="mr10" />{$friend.username|escape}</span></div>
+                  <div class="input rp box-align-center pr10">
+                    <input type="checkbox">
+                  </div>
+                </li>
+                <!--{/foreach}-->
+              </ul>
+            </div>
+            <div class="ft pop-btn popClosed J_SelectOK">{$lang.finished}</div>
+          </div>
+        </div>
+        
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.to_username}</span>
+            <input type="text" name="to_username" class="input flex1 J_SelectUserList" style="margin-right:0;" value="{$to_username}" />
+            <p class="J_PopLayer" data-PopLayer="{ popLayer:'.J_SendMessagePopLayer',top:'35%'}" style="padding-left:35px;width:25px; text-align:right">
+            <i class="wind-icon-font mr10 f99 box-align-center">&#xe629;</i> </p></dd>
+        </dl>
+        <dl>
+          
+          <dd class="webkit-box msg-content" style=" height:auto; line-height:18px;">
+            <textarea name="content" class="flex1" placeholder="{$lang.msg_content}"></textarea>
+            </p>
+          </dd>
+        </dl>
+      </div>
+      <div class="extra padding10 mt10">
+        <input type="hidden" name="redirect" class="J_AjaxFormRetUrl" value="{url route='my_message/index' folder='newpm'}" />
+        <input type="submit" class="J_AjaxSubmit btn-alipay" value="{$lang.submit}" />
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('.J_SelectOK').click(function (){
+		var name = '';
+		var str = $('input[name="to_username"]').val();
+		$('.friends-list').find('li').each(function(index, element) {
+			name = $(this).attr('data-value');
+			if($(this).hasClass('active')){
+            	doFriend(name, 'add');
+        	}else{
+           	 	doFriend(name, 'delete');
+        	}
+        });
+	});
+});
+function doFriend(username, action){
+    var input_name = $("input[name='to_username']").val();
+    var key, i = 0;
+    var exist = false;
+    var arrOld = new Array();
+    var arrNew = new Array();
+    input_name = input_name.replace(/\uff0c/g,',');
+    arrOld     = input_name.split(',');
+    for(key in arrOld){
+        arrOld[key] = $.trim(arrOld[key]);
+        if(arrOld[key].length > 0){
+            arrOld[key] == username &&  action == 'delete' ? null : arrNew[i++] = arrOld[key];
+            arrOld[key] == username ? exist = true : null;
+        }
+    }
+    if(!exist && action == 'add'){
+        arrNew[i] = username;
+    }
+    $("input[name='to_username']").val(arrNew);
+}
+</script>
+{include file="footer.html"}

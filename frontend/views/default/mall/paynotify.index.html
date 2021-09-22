@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="main" class="w-full"> 
+  <div class="page-actions"><i></i></div>
+  <div class="page-apply">
+    <div class="showMessage">
+      <div class="{if $payInfo.payment_code neq 'cod' && in_array($payInfo.status, array('PENDING', 'CLOSED'))}defeated{else}successMsg{/if}"> 
+      	<span class="icon"><i class="wind-icon-font fff"></i></span>
+        <h2>{$payInfo.status_label}</h2>
+        <p class="msgDesc"></p>
+        <div class="padding10 mt10">
+            <!--{foreach from=$payInfo.Links item=item name=fe_item}-->
+            <a href="{$item.link}" class="btn-alipay {if $smarty.foreach.fe_item.first}btn-alipay-green{else}btn-alipay-gray mt10{/if}">{$item.text}</a>
+           	<!--{/foreach}-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--{if $payInfo.payment_code neq 'cod' && in_array($payInfo.status, array('PENDING'))}-->
+<script type="text/javascript">
+$(function(){
+	$.ajaxSettings.async = false;
+	var interval = setInterval(function() {
+    	$.getJSON("{url route='cashier/checkpay'}", { payTradeNo:"{$smarty.get.orderId}"}, function(result) {
+        	if(result != false){
+				clearInterval(interval);
+				self.location = window.location.href;
+			}
+    	});
+	}, 3000);
+});
+</script>
+<!--{/if}-->
+{include file="footer.html"}

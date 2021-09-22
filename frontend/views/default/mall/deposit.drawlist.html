@@ -1,0 +1,48 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="recordlist drawlist">
+      <div class="list">
+        <div class="wraper"> 
+          
+          <!--AJAX DATA-->
+          <div class="clearfix J_InfiniteList">
+            <div class="infinite-result list clearfix hidden"> </div>
+            <div class="infinite-template">
+              <div class="item clearfix">
+                <div class="detail"> <a href="[1]" class="it webkit-box">
+                  <div class="lp flex1 fs13"> [2] <span class="gray block fs12 mt5"> [3]</span> </div>
+                  <div class="rp"> <span>[4][5]</span> <i class="wind-icon-font mr10 f99">&#xe629;</i> </div>
+                  </a> </div>
+              </div>
+            </div>
+            <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+      		<div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+      		<div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+      		<div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+              <p>{$lang.no_records}</p>
+            </div>
+          </div>
+          
+          <div class="clearfix">
+            <p class="fixed-gap"></p>
+            <a href="{url route='deposit/withdraw'}" class="btn-alipay btn-alipay-fixed">{$lang.draw_imm}</a> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 15, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, record) {
+				html += sprintf(template.html(), url(['deposit/record', { tradeNo:record.tradeNo}]), record.title, record.add_time, record.flow == 'income' ? '+' : '-', record.amount);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

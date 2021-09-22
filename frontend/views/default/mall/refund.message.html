@@ -1,0 +1,65 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-refund">
+  	<!--{if !in_array($refund.status, ['SUCCESS', 'CLOSED'])}-->
+    <div class="refund-send"> 
+      <form method="post" enctype="multipart/form-data" class="fun-form-style" action="{url route='refund/message'}">
+        <div class="form">
+          <dl class="textarea" >
+            <dd class="webkit-box" style="height:70px;">
+              <textarea name="content" class="flex1" placeholder="{$lang.input_reason}" ></textarea>
+            </dd>
+          </dl>
+          <div class="bgf padding10">
+            <p class="add-image-btn"> <i class="wind-icon-font">&#xe6ce;</i>
+              <input type="file" name="image" onChange="getTempPath(this);" />
+            </p>
+          </div>
+          <div class="extra">
+            <input type="hidden" name="id" value="{$refund.refund_id}" />
+            <input type="submit" value="{$lang.submit}" class="btn-alipay J_AjaxSubmit" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--{/if}-->
+    
+    <div class="refund-logs mb10"> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <div class="infinite-result clearfix hidden"> </div>
+        <div class="infinite-template">
+          <div class="clearfix">
+            <div class="title webkit-box">
+              <h3 class="flex1">[1]</h3>
+              <span>[2]</span> </div>
+            <div class="content mb10"> [3] 
+              [4] </div>
+          </div>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 4, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, message) {
+				html += sprintf(template.html(), message.sender, message.created, message.content, $.inArray(message.image, [undefined, '', null]) > -1 ? '' : '<p class="mt10"><img src="'+url_format(message.image)+'" style="max-width:100%;" /></p>');
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script>
+{include file="footer.html"}

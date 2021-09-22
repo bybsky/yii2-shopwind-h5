@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.goods_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='goods/index'}">{$lang.all_goods}</a></li>
+      <li><a class="btn1" href="{url route='goods/index' closed=1}">{$lang.closed}</a></li>
+      <li><span>{$lang.goods_edit}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15">{$lang.recommend_to}:</th>
+          <td class="paddingT15 wordSpacing5"><ul class="recommend_to clearfix">
+              <select name="recom_id">
+                <option value="0">{$lang.select_pls}</option>
+                
+            	{html_options options=$recommends selected=$recommend.recom_id}
+            
+              </select>
+            </ul></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input type="hidden" name="id" value="{$smarty.get.id}" />
+            <input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

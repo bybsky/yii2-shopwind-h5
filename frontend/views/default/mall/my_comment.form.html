@@ -1,0 +1,32 @@
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("{$smarty.get.dialog_id}");
+	});
+	$(document.body).find('#gs_submit').unbind('click').on('click', function(){
+		setTimeout(function() {
+			DialogManager.close("{$smarty.get.dialog_id}");
+		}, 1000);
+		ajaxSubmit($('form').attr('method'), "{url route='my_comment/reply'}", $('form'));
+	});
+});
+</script>
+<div class="dialog-form order-confirm">
+  <form method="POST" class="fun-form-style">
+    <div class="form">
+      <div class="dialog-form-bd">
+        <div style="padding:10px 15px">{$lang.comment_content}{$lang.colon}{$my_comment.comment|escape|nl2br}</div>
+        <dl class="textarea">
+          <dt><span>{$lang.reply_comment_form}</span></dt>
+          <dd class="webkit-box">
+            <textarea class="flex1" name="content" placeholder="{$lang.reply_content}">{$my_comment.reply_comment}</textarea>
+          </dd>
+        </dl>
+        <div class="extra">
+       	  <input type="hidden" name="rec_id" value="{$my_comment.rec_id}" />
+          <input type="button" id="gs_submit" class="btn-alipay J_AjaxSubmit" value="{$lang.submit}" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

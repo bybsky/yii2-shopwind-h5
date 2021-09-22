@@ -1,0 +1,29 @@
+{include file="user.header.html"}
+<style>
+.bar-wrap .top-bar .barbtn li a,.bar-wrap .top-bar .barbtn .curlocal-title,.bar-wrap .top-bar .barbtn input{ opacity:1 !important}
+.bar-wrap .top-bar .barbtn input{ background:none;}
+.bar-wrap .top-bar .barbtn form,#footer{ display:none}
+</style>
+<div id="main">
+<div class="showMessage">
+  <div class="{if $notice.done}successMsg{else}defeatedMsg{/if}"> <span class="icon"><i class="wind-icon-font fff"></i></span>
+    <h2>{$lang.operation_notice}</h2>
+    <div class="msgDesc"> {$notice.msg}</div>
+    <!--{if $notice.links}-->
+    <div class="padding10 mt10"> 
+      <!--{foreach from=$notice.links item=item}-->
+      <a href="{$item.url}" class="btn-alipay {if $smarty.foreach.fe_item.first}btn-alipay-green{else}btn-alipay-gray mt10{/if}">{$item.label}</a> 
+      <!--{/foreach}--> 
+    </div>
+    <!--{/if}--> 
+  </div>
+</div>
+</div>
+<!--{if $notice.redirect}-->
+<script type="text/javascript">
+window.setTimeout(function(){
+	location.href = "{$notice.redirect}";
+}, 2000);
+</script>
+<!--{/if}-->
+{include file="footer.html"}

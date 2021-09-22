@@ -1,0 +1,153 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-member">
+    <div class="relative top-info mb10">
+      <div class="right-top-po clearfix"> <a class="set-btn float-left fs14" href="{url route='user/setting'}">{$lang.setting}</a> <a class="float-right mr10 fs16" href="{url route='category/index'}" ><i class="wind-icon-font">&#xe644;</i></a> <a class="float-right mr10 fs16" href="{url route='search/form'}" ><i class="wind-icon-font">&#xe62a;</i></a> </div>
+      <div class="user-info clearfix">
+        <div class="user-photo float-left"><a href="{url route='user/setting'}"><img src="{$visitor.portrait|url_format}" width="50" height="50" /></a></div>
+        <div class="webkit-box">
+          <div class="user-name flex1 overflow-ellipsis">{if $visitor.userid}{$visitor.username|escape}{else} <a href="{url route='user/register'}" style="color:#fff;" >注册</a> / <a href="{url route='user/login'}" style="color:#fff;" >登录</a>{/if}</div>
+          <!--{if $integral_enabled}-->
+          <div class="user-integral">
+          	<!--{if !$visitor.signined}-->
+          	<a class="box-align-center J_SignIntegral" href="javascript:;"><i class="wind-icon-font fs14">&#xe711;</i> 签到领积分 <i class="wind-icon-font fs12">&#xe63d;</i></a>
+          	<!--{else}-->
+          	<a class="box-align-center" href="{url route='my_integral/index'}"><i class="wind-icon-font fs14">&#xe711;</i> 今日已签到 <i class="wind-icon-font fs12">&#xe63d;</i></a>
+          	<!--{/if}-->
+          </div>
+          <!--{/if}-->
+        </div>
+      </div>
+      <div class="top-menu">
+        <ul class="clearfix webkit-box">
+          <li class="flex1"> <a href="{url route='my_favorite/index'}"> <span class="fs14">{$visitor.count_collect_goods|default:0}</span><br />
+            <span>收藏夹</span> </a> </li>
+          <li class="flex1"> <a href="{url route='my_favorite/index' type='store'}"> <span class="fs14">{$visitor.count_collect_store|default:0}</span><br />
+            <span>关注店铺</span> </a> </li>
+          <li class="flex1"> <a href="{url route='my_footmark/index'}" style="border-right:0"> <span class="fs14">{$visitor.count_footmark|default:0}</span><br />
+            <span>我的足迹</span> </a> </li>
+        </ul>
+      </div>
+    </div>
+    <div class="fun-list clearfix"> 
+      <!--{foreach from=$_usermenu.menus item=item name=fe_item key=key}--> 
+      <!--{if $item.name neq 'promotool'}-->
+      <!--{foreach from=$item.submenu item=subitem key=k}--> 
+
+      <div class="fun-row {if in_array($subitem.name, array('my_order', 'seller_order', 'my_capital'))}fun-row-line{/if}"> <a href="{$subitem.url}" class="clearfix block">
+        <p class="title {$subitem.name} clearfix"><i></i><span>{$subitem.text}</span></p>
+        <em class="float-right view mr10 hidden">{$subitem.sub_text}</em> </a> </div>
+      <!--{if $subitem.name eq 'my_order'}-->
+      <div class="fun-row child-row">
+        <ul class="clearfix">
+          <li> <a href="{url route='buyer_order/index' type='pending'}"> <i>&#xe6eb;{if $buyer_stat.pending}<ins>{$buyer_stat.pending}</ins>{/if}</i>
+            <p>待付款</p>
+            </a> </li>
+          <li> <a href="{url route='buyer_order/index' type='accepted'}"> <i>&#xe6f1;{if $buyer_stat.accepted}<ins>{$buyer_stat.accepted}</ins>{/if}</i>
+            <p>待发货</p>
+            </a> </li>
+          <li> <a href="{url route='buyer_order/index' type='shipped'}"> <i>&#xe6f2;{if $buyer_stat.shipped}<ins>{$buyer_stat.shipped}</ins>{/if}</i>
+            <p>待收货</p>
+            </a> </li>
+          <li> <a href="{url route='buyer_order/index' type='finished' evaluation_status=0}"> <i>&#xe6f0;{if $buyer_stat.finished}<ins>{$buyer_stat.finished}</ins>{/if}</i>
+            <p>待评价</p>
+            </a> </li>
+          <li> <a href="{url route='refund/index'}"> <i>&#xe6ef;{if $buyer_stat.refund}<ins>{$buyer_stat.refund}</ins>{/if}</i>
+            <p>退款</p>
+            </a> </li>
+        </ul>
+      </div>
+      <div class="line-background"></div>
+      <!--{elseif $subitem.name eq 'seller_order'}-->
+      <div class="fun-row child-row">
+        <ul class="clearfix">
+          <li> <a href="{url route='seller_order/index' type='pending'}"> <i>&#xe6eb;{if $seller_stat.pending}<ins>{$seller_stat.pending}</ins>{/if}</i>
+            <p>待付款</p>
+            </a> </li>
+          <li> <a href="{url route='seller_order/index' type='accepted'}"> <i>&#xe6f1;{if $seller_stat.accepted}<ins>{$seller_stat.accepted}</ins>{/if}</i>
+            <p>待发货</p>
+            </a> </li>
+          <li> <a href="{url route='seller_order/index' type='shipped'}"> <i>&#xe6f2;{if $seller_stat.shipped}<ins>{$seller_stat.shipped}</ins>{/if}</i>
+            <p>待收货</p>
+            </a> </li>
+          <li> <a href="{url route='seller_order/index' type='finished' evaluation_status=0}"> <i>&#xe6f0;{if $seller_stat.finished}<ins>{$seller_stat.finished}</ins>{/if}</i>
+            <p>待评价</p>
+            </a> </li>
+          <li> <a href="{url route='refund/receive'}"> <i>&#xe6ef;{if $seller_stat.refund}<ins>{$seller_stat.refund}</ins>{/if}</i>
+            <p>退款</p>
+            </a> </li>
+        </ul>
+      </div>
+      <div class="line-background"></div>
+      <!--{/if}--> 
+      
+      
+      
+      <!--{if $subitem.name eq 'my_capital'}-->
+      <div class="fun-row child-row {$subitem.name}">
+        <ul class="clearfix">
+          <li> <a href="{url route='deposit/index'}"> <i>&#xe740;</i>
+            <p>钱包</p>
+            </a> </li>
+          <li> <a href="{url route='my_coupon/index'}"> <i>&#xe722;</i>
+            <p>优惠券</p>
+            </a> </li>
+          <li> <a href="{url route='my_integral/index'}"> <i>&#xe70e;</i>
+            <p>积分</p>
+            </a> </li>
+          <li> <a href="{url route='my_cashcard/index'}"> <i>&#xe719;</i>
+            <p>充值卡</p>
+            </a> </li>
+          <!--
+          <li> <a href="javascript:;"> <i>&#xe7d5;</i>
+            <p>红包</p>
+            </a> </li>-->
+        </ul>
+      </div>
+      <div class="line-background"></div>
+      <!--{/if}--> 
+      <!--{/foreach}-->
+	  <!--{/if}-->
+      <!--{/foreach}--> 
+      
+      <!--{foreach from=$_usermenu.menus item=item name=fe_item key=key}--> 
+      <!--{if $item.name eq 'promotool'}-->
+	  <div class="line-background"></div>
+      <div class="fun-row fun-row-line"> <a href="{$item.url}" class="clearfix block">
+        <p class="title {$subitem.name} clearfix"><i></i><span>{$item.text}</span></p>
+        <em class="float-right view mr10 hidden">{$item.sub_text}</em> </a> </div>
+        <!--{foreach from=$item.submenu item=subitem key=k}--> 
+          <div class="fun-row"> <a href="{$subitem.url}" class="clearfix block">
+        <p class="title {$subitem.name} clearfix"><i></i><span>{$subitem.text}</span></p>
+        </a> </div>
+      <!--{/foreach}-->
+
+      <!--{/if}-->
+      <!--{/foreach}-->
+      
+       <!--{if $_usermenu.menus.overview}-->
+      <div class="fun-row"> <a href="{$_usermenu.menus.overview.url}" class="clearfix block">
+        <p class="title {$_usermenu.menus.overview.name} clearfix"><i></i><span>{$_usermenu.menus.overview.text}</span></p>
+        </a> </div>
+      <!--{/if}--> 
+      <!--{if in_array($smarty.session.userRole, array('buyer')) && $visitor.store_id}-->
+      <div class="fun-row"> <a href="{url route='seller/index'}" class="clearfix block">
+        <p class="title im_seller clearfix"><i></i><span>卖家中心</span></p>
+        </a> </div>
+      <!--{/if}--> 
+      
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_SignIntegral').click(function(){
+		$.getJSON("{url route='my_integral/sign'}",null,function(data){
+			layer.open({ content:data.msg, time: 3, end: function(){
+				window.location.reload();
+			}});
+		});
+	});
+});
+</script>
+{include file="footer.html"}

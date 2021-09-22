@@ -1,0 +1,31 @@
+<div class="dialog-form order-confirm">
+  <form method="POST" class="fun-form-style">
+    <div class="form">
+    <div class="dialog-form-bd">
+      <dl>
+        <dd class="webkit-box"> <span>{$lang.order_sn}</span> <a class="flex1" href="{url route='buyer_order/view' order_id=$order.order_id}">{$order.order_sn}</a><i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+      </dl>
+      <ul>
+        <li>{$lang.confirm_order_confirm}</li>
+        <li class="gray" style="border:0">{$lang.confirm_order_notice}</li>
+      </ul>
+    </div>
+    </li>
+    <div class="extra">
+      <input type="button" id="gs_submit" class="btn-alipay" value="{$lang.confirm_order}" />
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("{$smarty.get.dialog_id}");
+	});
+	$(document.body).find('#gs_submit').unbind('click').on('click', function(){
+		setTimeout(function() {
+			DialogManager.close("{$smarty.get.dialog_id}");
+		}, 1000);
+		ajaxSubmit($('form').attr('method'), "{url route='buyer_order/confirm' order_id=$order.order_id}", $('form'));
+	});
+});
+</script>

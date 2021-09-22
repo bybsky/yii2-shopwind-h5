@@ -1,0 +1,185 @@
+{include file="header.html"} 
+<div id="main">
+  <div id="page-search-store" class="page J_page">
+    <div class="page-body search-store">
+      
+		<div class="listTab mall-menus">
+  			<div class="fixed-gap"></div>
+        	<div class="fixed-bd">
+        		<ul class="items webkit-box">
+          			<li class="flex1"><a class="block center fs14" href="{url route='search/index'}"><span>商品</span></a></li>
+          			<li class="flex1"><a class="block center active fs14" href="javascript:;"><span>店铺</span></a></li>
+          			<li class="flex1"><a class="block center fs14" href="{url route='limitbuy/index'}"><span>促销</span></a></li>
+          			<li class="flex1"><a class="block center fs14" href="{url route='integral/index'}"><span>积分</span></a></li>
+        		</ul>
+        	</div>
+		</div>
+		<!--TAB-->
+      	<div class="listTab">
+      		<div class="fixed-gap">
+        	<div class="fixed-bd clearfix">
+        	<ul class="items clearfix">
+          		<li><a href="javascript:void(0);" class="active J_ActiveSort"><span>综合排序</span><i class="wind-icon-font">&#xe61f;</i></a></li>
+          		<li><a href="javascript:void(0);" class="J_ActiveSortClick" ectype="praise_rate|desc"><span>好评率</span></a></li>
+          		<li><a href="javascript:;" class="goodsFilter J_PopLayer" data-PopLayer="{ popLayer:'.J_StoreFilterPopLayer', fixedBody: true, left:80, direction:'right'}"><span>筛选</span><i class="wind-icon-font">&#xe6cc;</i></a></li>
+        	</ul>
+        </div>
+      </div>
+      
+      <!--综合排序列项-->
+      <div class="sort-eject hidden J_SortEject"> <span><a href="javascript:void(0);" class="active block webkit-box" ectype="sort"><ins class="flex1">综合排序</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="credit_value|desc" class="block webkit-box"><ins class="flex1">信用度</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="add_time|desc" class="block webkit-box"><ins class="flex1">开店时间</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> 
+      <!--<span><a href="javascript:void(0);" ectype="region_name|desc" class="block webkit-box"><ins class="flex1">所在地</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span>--> </div>
+      
+      <!--AJAX DATA-->
+      <div class="shop-list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li>
+            <dl>
+              <dt> <a href="[1]" class="webkit-box"> <img src="[2]" class="lp" />
+                <div class="mp flex1 ml10 mr10"> <span class="block mt5">[3]<img class="ml5" src="[4]" style="vertical-align:middle" /></span>
+                  <p><ins class="fs12 f99 overflow-ellipsis">地址：[5]</ins></p>
+                  <!--<p><span class="flex1 f60">距离[6]</span></p>-->
+                </div>
+                <div class="rp wind-icon-font">&#xe634;</div>
+                </a> </dt>
+              <dd>
+                <div class="goods-list webkit-box"> <a href="[1]" class="block">
+                  <div class="wraper relative"> <img class="lazyload" initial-url="[2]" />
+                    <div class="price">[3]</div>
+                  </div>
+                  </a> </div>
+              </dd>
+            </dl>
+          </li>
+        </div>
+       <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="pop-layer-common pop-wrap-r search-filter J_StoreFilterPopLayer">
+  <div class="wraper">
+    <div class="bd">
+      <div class="attrs">
+        <div class="attr"> 
+          <!--{if $scategories}-->
+          <div class="attrk">{$lang.by_category}</div>
+          <div class="attrv">
+            <ul class="clearfix" ectype="ul_cate">
+              <!--{foreach from=$scategories item=scategory name=fe_scategory}-->
+              <li class="{if $smarty.get.cate_id eq $scategory.id}active{/if} {if $smarty.foreach.fe_scategory.iteration gt 6} hidden{/if}"><a href="javascript:void(0);" id="{$scategory.id}"><span>{$scategory.value}</span></a></li>
+              <!--{/foreach}-->
+            </ul>
+            <!--{if count($scategories) gt 6}-->
+            <div class="options"> <a class="more" href="javascript:void(0);"><span>查看更多</span><i></i></a> </div>
+            <!--{/if}--> 
+          </div>
+          <!--{/if}--> 
+          
+          <!--{if $sgrades}-->
+          <div class="attrk">{$lang.by_sgrade}</div>
+          <div class="attrv">
+            <ul class="clearfix" ectype="ul_sgrade">
+              <!--{foreach from=$sgrades item=item key=key name=fe_item}-->
+              <li class="{if $smarty.get.sgrade eq $key}active{/if} {if $smarty.foreach.fe_item.iteration gt 6} hidden{/if}"><a href="javascript:void(0);" id="{$key}"><span>{$item}</span></a></li>
+              <!--{/foreach}-->
+            </ul>
+            <!--{if count($sgrades) gt 6}-->
+            <div class="options"> <a class="more" href="javascript:void(0);"><span>查看更多</span><i></i></a> </div>
+            <!--{/if}--> 
+          </div>
+          <!--{/if}--> 
+          
+          <!--{if $regions}-->
+          <div class="attrk">{$lang.by_region}</div>
+          <div class="attrv">
+            <ul class="clearfix" ectype="ul_region">
+              <!--{foreach from=$regions item=item key=key name=fe_item}-->
+              <li class="{if $smarty.get.region_id eq $key}active{/if} {if $smarty.foreach.fe_item.iteration gt 6} hidden{/if}"><a href="javascript:void(0);" id="{$key}"><span>{$item}</span></a></li>
+              <!--{/foreach}-->
+            </ul>
+            <!--{if count($regions) gt 6}-->
+            <div class="options"> <a class="more" href="javascript:void(0);"><span>查看更多</span><i></i></a> </div>
+            <!--{/if}--> 
+          </div>
+          <!--{/if}--> 
+        </div>
+      </div>
+    </div>
+    <div class="ft webkit-box clearfix"> <span class="pop-btn flex1"> <a uri="{url route='search/store' keyword=$smarty.get.keyword}" href="javascript:;" class="popReset">{$lang.reset}</a></span> <span class="pop-btn flex1"><i class="popClosed">{$lang.closed}</i></span> </div>
+  </div>
+</div>
+<!--{if $baidukey.browser}-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak={$baidukey.browser}"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+<!--{/if}-->
+<script type="text/javascript">
+$(function(){
+	
+	// 设置排序
+	setFilterOrder('{$smarty.get.orderby}');
+	$(".btn-order a").click(function(){
+		setFilterOrder('{$smarty.get.orderby}', this);
+	});
+});
+</script>
+
+<!--{if $baidukey.browser}-->
+<script type="text/javascript">
+$(function(){
+    if($.getCookie('longitude') && $.getCookie('latitude')) {
+      getStoreList();
+    }
+    else
+    {
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+          $.setCookie('longitude', r.point.lng);
+          $.setCookie('latitude', r.point.lat);
+          getStoreList();
+        }
+        else {
+          layer.open({ content: this.getStatus(), time: 3});
+        }        
+      },{ enableHighAccuracy: true})
+    }
+});
+</script>
+<!--{else}-->
+<script type="text/javascript">
+$(function(){
+	getStoreList();
+});
+</script>
+<!--{/if}-->
+
+<script type="text/javascript">
+function getStoreList(){	
+	$('.J_InfiniteList').infinite({ pageper: 5, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			$.each(data, function(k, v) {
+				var items = '';
+				var template = TEMP.clone(true);
+				$.each(v.goodslist, function(k1, goods) {
+					items += sprintf(template.find('.goods-list').html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image ?  goods.default_image : "{$app->params['default_goods_image']}"), price_format(goods.price));
+				});
+				if(items) {
+					template.find('.goods-list').html(items);
+				} else template.find('.goods-list').parent().remove();
+				html += sprintf(template.html(), url(['store/index', { id:v.store_id}]), url_format(v.store_logo), v.store_name, url_format(v.credit_image), v.address, v.distance);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+}
+</script>
+{include file="footer.html"}

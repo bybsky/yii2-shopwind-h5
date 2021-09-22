@@ -1,0 +1,45 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="deposit-withdraw-confirm">
+      <form  method="post" class="fun-form-style">
+        <div class="form">
+          <div class="confirm-info">
+            <p><img width="80" height="80" src="{$party.portrait|url_format}" /></p>
+            <p class="mt10">{$party.real_name} <em>({$party.account})</em></p>
+          </div>
+          <div class="confirm-form">
+            <dl class="clearfix">
+              <dd class="webkit-box"> <span>{$lang.transfer_money}</span>
+                <p class="price flex1 fs16 mr10" style="color:#222; text-align:right">&yen;{$transfer.money}</p>
+              </dd>
+            </dl>
+            <!--{if $transfer.fee gt 0}-->
+            <dl class="clearfix">
+              <dd class="webkit-box"> <span>{$lang.fuwufei}</span>
+                <p class="flex1 mr10 yahei" style="color:gray; text-align:right;">&yen;{$transfer.fee}</p>
+              </dd>
+            </dl>
+            <!--{/if}-->
+            <dl class="clearfix">
+              <dd class="webkit-box"> <span>{$lang.pay_password}</span>
+                <input type="password" id="password" name="password" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.pay_password}" />
+                <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+            </dl>
+            <dl>
+          		<dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+            	<input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+            	<img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> 
+               </dd>
+        	</dl>
+            <div class="extra">
+              <input type="hidden" name="money" value="{$transfer.money}" />
+              <input type="submit" class="btn-alipay" value="{$lang.confirm_transfer}" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

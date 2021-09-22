@@ -1,0 +1,31 @@
+<div class="article webkit-box">
+  <div class="lp"> <img class="block" width="40" height="30" src="{$widget_data.ad_image_url|url_format}"/> </div>
+  <div class="rp flex1">
+    <div class="webkit-box">
+      <div class="icon wind-icon-font">&#xe6b4;</div>
+      <div  class="list flex1">
+        <ul>
+          <!--{foreach from=$widget_data.articles item=item name=fe_item}-->
+          <li> 
+            <!--{foreach from=$item item=article name=fe_article}--> 
+            <a class="overflow-ellipsis" href="{url route='article/view' id=$article.article_id}">{$article.title|escape}</a> 
+            <!--{/foreach}--> 
+          </li>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function autoScroll(obj){  
+	$(obj).find("ul").animate({  
+		marginTop : "-38px"  
+	},700,function(){  
+	   $(this).css({ marginTop : "0px"}).find("li:first").appendTo(this);  
+	})  
+}  
+$(function(){  
+	setInterval('autoScroll(".list")',3000);		  
+}) 
+</script>

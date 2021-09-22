@@ -1,0 +1,43 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.deposit_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='deposit/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/tradelist'}">{$lang.trade_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/drawlist'}">{$lang.withdraw_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/rechargelist'}">{$lang.recharge_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/setting'}">{$lang.system_setting}</a></li>
+      <li><span>{$lang.recharge}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.account_name}:</th>
+          <td class="paddingT15 wordSpacing5">{$account.real_name} ( {$account.account} {$lang.balance}:{$account.money} )</td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.account_money}:</th>
+          <td class="paddingT15 wordSpacing5"><select name="money_change">
+              <option value="add">{$lang.increase}</option>
+              <option value="reduce">{$lang.reduce}</option>
+            </select>
+            <input class="infoTableInput2" name="money" type="text" id="money" />
+            元
+            <label class="field_notice">增加表示充值，减少表示扣费</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.remark}:</th>
+          <td class="paddingT15 wordSpacing5"><textarea name="remark"></textarea></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

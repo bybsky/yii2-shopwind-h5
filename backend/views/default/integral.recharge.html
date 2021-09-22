@@ -1,0 +1,49 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.integral_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='integral/index'}">{$lang.integral_list}</a></li>
+      <li><a class="btn1" href="{url route='integral/setting'}">{$lang.integral_setting}</a></li>
+      <li><span>{$lang.integral_recharge}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15">用户ID:</th>
+          <td class="paddingT15 wordSpacing5"> {$user.userid} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15">用户名:</th>
+          <td class="paddingT15 wordSpacing5"> {$user.username|escape} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15">可用积分:</th>
+          <td class="paddingT15 wordSpacing5"> {$user.amount|default:0} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15">操作类型</th>
+          <td class="paddingT15 wordSpacing5"><select name="flow">
+              <option value="add">充值</option>
+              <option value="minus">减扣</option>
+            </select></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">积分金额</th>
+          <td class="paddingT15 wordSpacing5"><input type="text" name="amount"  /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">操作备注</th>
+          <td class="paddingT15 wordSpacing5"><textarea name="flag" style="width:250px;height:100px;"></textarea></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

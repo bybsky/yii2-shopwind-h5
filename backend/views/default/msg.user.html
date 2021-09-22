@@ -1,0 +1,52 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.msg_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+      <li><a class="btn1" href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+      <li><span>{$lang.msguser}</span></li>
+      <li><a class="btn1" href="{url route='msg/add'}">{$lang.addmsg}</a></li>
+      <li><a class="btn1" href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+      <li><a class="btn1" href="{url route='msg/send'}">{$lang.sendmsg}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="msg/user" />
+      {$lang.username}
+      <input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+      {$lang.phone_mob}
+      <input class="queryInput" type="text" name="phone_mob" value="{$smarty.get.phone_mob|escape}" />
+      {$lang.state}
+      <select class="querySelect" name="state">
+        <option value="">{$lang.select_pls}</option>
+        	{html_options options=$status_list selected=$smarty.get.state}
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='msg/user'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['msg/user', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 80, sortable : false, align: 'center', className: 'handle'},
+			  { display: '{$lang.username}', name : 'username', width : 120, sortable : true, align: 'center'},
+    		{ display: '{$lang.phone_mob}', name : 'phone_mob', width : 90, sortable : true, align: 'center'},
+			  { display: '{$lang.functions}', name : 'functions', width : 700, sortable : true, align: 'center'},
+    		{ display: '{$lang.num}', name : 'num', width : 80, sortable : true, align: 'center'}, 
+			  { display: '{$lang.state}', name : 'state', width : 50, sortable : true, align: 'center'}	
+    	],
+		  sortname: "id",
+    	sortorder: "desc",
+    	title: '{$lang.msguser_list}'
+    });
+});
+</script> 
+{include file="footer.html"}

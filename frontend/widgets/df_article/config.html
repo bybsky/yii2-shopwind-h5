@@ -1,0 +1,20 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(500);
+_d.setPosition('center');
+</script>
+<div class="field_item">
+    <label>模块名称：</label>
+    <p><input type="text" name="model_name" value="{$options.model_name}" /></p>
+    <label>模块图片(规格54*41)：</label>
+    <p><input type="file" name="ad_image_file" /><input type="hidden" name="ad_image_url" value="{$options.ad_image_url}" /></p>
+    <!-- {if $options.ad_image_url} --><p><img src="{$options.ad_image_url|url_format}"  /></p><!-- {/if} -->
+    <label>文章显示数量：</label>
+    <p><input type="text" name="num" value="{$options.num}" /></p>
+    <label>文章分类:</label>
+    <p><select name="cate_id">
+    	<option value="0">请选择...</option>
+    	{html_options options=$acategories selected=$options.cate_id}
+    </select>
+    </p>
+</div>

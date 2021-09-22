@@ -1,0 +1,106 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-promotool" class="page-promotool">
+    <div class="seller-limitbuy"> 
+      <!--{if $appAvailable neq 'true'}-->
+	  <div class="notice-empty"><i>&#xe715;</i>
+		<p>{$appAvailable.msg}</p>
+      </div>
+      <!--{else}--> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li item_id="[1]" goods_id="[2]" class="item webkit-box">
+            <div class="img mr5"> <img src="[3]" class="block" width="60" height="60" /> </div>
+            <div class="lp flex1 pr10">
+              <p class="title fs13">[4]</p>
+              <dl class="mt5 fs12">
+                <span>{$lang.price}{$lang.colon}</span><span class="price fs12">[5]</span><del class="gray ml5">[6]</del>
+              </dl>
+              <dl class="mt5 fs12 gray">
+                <span>{$lang.time}{$lang.colon}[7] {$lang.to} [8]</span>
+              </dl>
+            </div>
+            <div class="rp [9]">
+              <div class="bg"></div>
+              <p class="status">[10]</p>
+            </div>
+          </li>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      <div class="clearfix">
+        <p class="fixed-gap"></p>
+        <a href="{url route='seller_limitbuy/add'}" class="btn-alipay btn-alipay-fixed">{$lang.limitbuy_add}</a> </div>
+      <!--{/if}--> 
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend', '.weui_actions_mask', function(){
+		$.closeActions();
+	});
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, limitbuy) {
+				html += sprintf(template.html(), limitbuy.id, limitbuy.goods_id, url_format(limitbuy.default_image), limitbuy.goods_name, price_format(limitbuy.pro_price), limitbuy.price, limitbuy.start_time, limitbuy.end_time, limitbuy.status == 'going' ? 'available' : 'unavailable', limitbuy.status_label);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		var goods_id = o.attr('goods_id');
+		o.unbind('click');
+		o.click(function(){
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: [{
+					text: "{$lang.view}",
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['goods/index', { id:goods_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: "{$lang.edit}",
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['seller_limitbuy/edit', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: "{$lang.drop}",
+					onClick: function() {
+						ajaxSubmit('GET', url(['seller_limitbuy/delete', { id:item_id}]), null, '', o);
+					}
+				}]
+			});
+		})
+	});
+}
+</script> 
+{include file="footer.html"}

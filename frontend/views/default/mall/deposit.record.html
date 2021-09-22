@@ -1,0 +1,73 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="record"> 
+      <!--{if !$tradeInfo}-->
+      <div class="notice-empty"><i>&#xe715;</i>
+        <p>{$lang.no_records}</p>
+      </div>
+      <!--{else}-->
+      <div class="content">
+        <div class="status-info clearfix">
+          <div class="partyInfo"> 
+            <!--{if $tradeInfo.partyInfo.portrait}--> 
+            <img src="{$tradeInfo.partyInfo.portrait|url_format}" width="20" height="20" class="portrait" /> 
+            <!--{else}--> 
+            <i class="wind-icon-font f60 fs13">&#xe625;</i>
+            <!--{/if}--> 
+            <span class="fs14">{$tradeInfo.partyInfo.name}</span> </div>
+          <div class="amount"> {if $visitor.userid eq $tradeInfo.buyer_id}{if $tradeInfo.flow eq 'income'}+{else}-{/if}{else}{if $tradeInfo.flow eq 'income'}-{else}+{/if}{/if}{$tradeInfo.amount} </div>
+          	<!--{if $tradeInfo.refundInfo}-->
+            <a class="center gray fs12" href="{url route='refund/view' id=$tradeInfo.refundInfo.refund_id}">{$tradeInfo.status_label}<i class="wind-icon-font mt5 fs11">&#xe629;</i></a>
+            <!--{else}-->
+            <h3 class="center gray fs12">{$tradeInfo.status_label}</h3>
+            <!--{/if}-->
+        </div>
+        <div class="trade-list webkit-box clearfix">
+          <ul class="ul-head pt10 pb10 clearfix">
+            <li class="payment">{$lang.payment_method}</li>
+            <li class="name">{$lang.trade_name}</li>
+            <li class="paytype">{$lang.paytype}</li>
+            <li class="tradeNo">{$lang.jiaoyihao}</li>
+            <li class="bizOrderId">{$lang.bizOrderId}</li>
+          </ul>
+          <ul class="pt10 pb10 pr10 flex1 clearfix">
+            <li class="payment">
+            	<!--{if $tradeInfo.payment_code}-->
+                <!--{if in_array(strtoupper($tradeInfo.payment_code), array('COD'))}-->
+                	<!--{if $tradeInfo.buyer_id eq $visitor.userid}-->
+                	<a href="{url route='buyer_order/view' order_id=$tradeInfo.orderInfo.order_id}">
+                	{$lang.{$tradeInfo.payment_code}}<i class="wind-icon-font">&#xe629;</i></a>
+                	<!--{else}-->
+                	<a href="{url route='seller_order/view' order_id=$tradeInfo.orderInfo.order_id}">
+                	{$lang.{$tradeInfo.payment_code}}<i class="wind-icon-font">&#xe629;</i></a>
+                	<!--{/if}-->
+                <!--{else}-->
+         		<a href="{url route='deposit/recordlist'}">{$lang.{$tradeInfo.payment_code}}<i class="wind-icon-font">&#xe629;</i></a>
+                <!--{/if}-->
+           		<!--{else}-->---<!--{/if}--> 
+            </li>
+            <li class="name">{$tradeInfo.title|truncate:60}</li>
+            <li class="paytype">{$lang.{$tradeInfo.payType}}</li>
+            <li class="tradeNo">{$tradeInfo.tradeNo}</li>
+            <li class="bizOrderId">{$tradeInfo.bizOrderId}</li>
+          </ul>
+        </div>
+        <div class="trade-list clearfix mt10 webkit-box">
+          <ul class="ul-head pt10 pb10 clearfix">
+            <li>{$lang.add_time}</li>
+            <li>{$lang.pay_time}</li>
+            <li>{$lang.end_time}</li>
+          </ul>
+          <ul class="pt10 pb10 pr10 flex1 clearfix">
+            <li>{$tradeInfo.add_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'---'}&nbsp;</li>
+            <li>{$tradeInfo.pay_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'---'}&nbsp;</li>
+            <li>{$tradeInfo.end_time|date_format:"%Y.%m.%d %H:%M:%S"|default:'---'}&nbsp; </li>
+          </ul>
+        </div>
+      </div>
+      <!--{/if}--> 
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

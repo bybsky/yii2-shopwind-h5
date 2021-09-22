@@ -1,0 +1,90 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><span>{$lang.base_setting}</span></li>
+      <li><a class="btn1" href="{url route='setting/baseinfo'}">{$lang.base_information}</a></li>
+      <li><a class="btn1" href="{url route='setting/email'}">{$lang.email_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/verifycode'}">{$lang.captcha_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/store'}">{$lang.store_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/api'}">{$lang.api_setting}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"><label for="time_zone"> {$lang.time_zone}:</label></th>
+          <td class="paddingT15 wordSpacing5"><select id="time_zone" name="time_zone">
+              
+                {html_options options=$time_zone selected=$setting.time_zone}
+          
+            </select>
+            <span class="grey">{$lang.note_for_time_zone}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"><label for="price_format"> {$lang.price_format}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="price_format" type="text" name="price_format" value="{$setting.price_format}"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="default_goods_image">{$lang.default_goods_image}:</label></th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="default_goods_image" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal_default_goods_image" value="default_goods_image" />
+              <label class="field_notice">{$lang.default_goods_image_desc}</label>
+              </span> 
+              
+              <!--{if $setting.default_goods_image}-->
+              
+              <div class="show_img"><img src="{$setting.default_goods_image|url_format}" width="50" height="50" /></div>
+              
+              <!--{/if}--></div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="default_store_logo">{$lang.default_store_logo}:</label></th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="default_store_logo" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal_default_store_logo" value="default_store_logo" />
+              <label class="field_notice">{$lang.default_store_logo_desc}</label>
+              </span> 
+              
+              <!--{if $setting.default_store_logo}-->
+              
+              <div class="show_img"><img src="{$setting.default_store_logo|url_format}" width="50" height="50" /></div>
+              
+              <!--{/if}--></div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="default_user_portrait">{$lang.default_user_portrait}:</label></th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="default_user_portrait" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal_default_user_portrait" value="default_user_portrait" />
+              <label class="field_notice">{$lang.default_user_portrait_desc}</label>
+              </span> 
+              
+              <!--{if $setting.default_user_portrait}-->
+              
+              <div class="show_img"><img src="{$setting.default_user_portrait|url_format}" width="50" height="50" /></div>
+              
+              <!--{/if}--></div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="statistics_code">{$lang.statistics_code}:</label></th>
+          <td class="paddingT15 wordSpacing5"><textarea name="statistics_code" id="statistics_code">{$setting.statistics_code|escape}</textarea></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

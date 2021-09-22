@@ -1,0 +1,7 @@
+<!-- {if $widget_data.ad_image_url} -->
+<div class="global-image-ads" style="{if $widget_data.border}border:{$widget_data.border}px solid #ddd;{/if}{if $widget_data.margin}margin:{$widget_data.margin};{/if}{if $widget_data.background}background:{$widget_data.background};{/if}">
+  <a href="{$widget_data.ad_link_url}" target="_blank" class="block center"><img {if $widget_data.width} width="{$widget_data.width}px"{/if} {if $widget_data.height} height="{$widget_data.height}px"{/if} style="max-width:100%;" class="lazyload block" initial-url="{$widget_data.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a>
+</div>
+<!-- {else} -->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!-- {/if} -->

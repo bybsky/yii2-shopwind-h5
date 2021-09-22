@@ -1,0 +1,61 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='setting/index'}">{$lang.base_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/baseinfo'}">{$lang.base_information}</a></li>
+      <li><a class="btn1" href="{url route='setting/email'}">{$lang.email_setting}</a></li>
+      <li><span>{$lang.captcha_setting}</span></li>
+      <li><a class="btn1" href="{url route='setting/store'}">{$lang.store_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/api'}">{$lang.api_setting}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" >
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15">{$lang.frontend_login}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.captcha_status.login}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.captcha_status.login}selected{/if}">{$lang.close}</label>
+            <input name="captcha_status[login]" value="1" type="radio" {if $setting.captcha_status.login}checked{/if}>
+            <input name="captcha_status[login]" value="0" type="radio" {if !$setting.captcha_status.login}checked{/if}>
+            </span> <span class="grey notice">{$lang.frontend_login}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.frontend_register}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.captcha_status.register}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.captcha_status.register}selected{/if}">{$lang.close}</label>
+            <input name="captcha_status[register]" value="1" type="radio" {if $setting.captcha_status.register}checked{/if}>
+            <input name="captcha_status[register]" value="0" type="radio" {if !$setting.captcha_status.register}checked{/if}>
+            </span> <span class="grey notice">{$lang.frontend_register}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.goods_qa}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.captcha_status.goodsqa}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.captcha_status.goodsqa}selected{/if}">{$lang.close}</label>
+            <input name="captcha_status[goodsqa]" value="1" type="radio" {if $setting.captcha_status.goodsqa}checked{/if}>
+            <input name="captcha_status[goodsqa]" value="0" type="radio" {if !$setting.captcha_status.goodsqa}checked{/if}>
+            </span> <span class="grey notice">{$lang.goods_qa}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.backend_login}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.captcha_status.backend}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.captcha_status.backend}selected{/if}">{$lang.close}</label>
+            <input name="captcha_status[backend]" value="1" type="radio" {if $setting.captcha_status.backend}checked{/if}>
+            <input name="captcha_status[backend]" value="0" type="radio" {if !$setting.captcha_status.backend}checked{/if}>
+            </span> <span class="grey notice">{$lang.backend_login}</span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

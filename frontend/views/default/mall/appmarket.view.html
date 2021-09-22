@@ -1,0 +1,66 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-promotool" class="page-promotool">
+    <div class="promotool-view">
+      <form>
+        <div class="thumbnail center"> <img src="{$appmarket.logo|url_format}" /> </div>
+        <div class="info">
+          <p class="l1"><span>[{$lang.{$appmarket.appid}}]</span> {$appmarket.title}</p>
+          <p class="l2"><em class="price">{$appmarket.config.charge|price_format}</em> <span>{$lang.yuan_per_month}</span></p>
+        </div>
+        <div class="description">
+          <div class="mt center f66"><ins class="vline vleft"></ins>{$lang.app_detail}<ins class="vline vright"></ins></div>
+          <div class="mc pb10 pr10 pl10">{$appmarket.description|escape:editor}</div>
+        </div>
+        <div class="extra">
+          <div class="fixed-gap"></div>
+          <input type="hidden" name="aid" value="{$appmarket.aid}" />
+          <a href="javascript:;"  class="btn-alipay btn-alipay-fixed J_PopLayer" data-PopLayer="{ popLayer:'.J_PeriodPopLayer',top:'35%', fixedBody: true}"> {if !$appmarket.checkIsRenewal}{$lang.buy}{else}{$lang.renewal}{/if} </a> </div>
+        
+        <!--{if $appmarket.config.period}-->
+        <div class="pop-layer-common period-pop-layer J_PeriodPopLayer">
+          <div class="wraper has-title">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.select_buy_period}</div>
+            <div class="bd radioUiWraper"> 
+              <!--{foreach from=$appmarket.config.period item=item name=fe_item}-->
+              <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom {if $smarty.foreach.fe_item.first}active{/if} {if $smarty.foreach.fe_item.last}border-b-0{/if}">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$item.value}</span></div>
+                <div class="input rp box-align-center pr10">
+                  <input type="radio" name="period" value="{$item.key}" {if $smarty.foreach.fe_item.first} checked="checked"{/if} />
+                </div>
+              </li>
+              <!--{/foreach}--> 
+            </div>
+            <div class="ft popClosed pop-btn"><a class="block J_Buy" href="javascript:;">{if !$appmarket.checkIsRenewal}{$lang.buy}{else}{$lang.renewal}{/if}</a></div>
+          </div>
+        </div>
+        <!--{/if}-->
+        
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_Buy').click(function() {
+		layer.open({ content:lang.buy_confirm, btn:[lang.confirm, lang.cancel],
+			yes:function(index){
+				var aid = $.trim($('input[name="aid"]').val());
+				var period = $.trim($('input[name="period"]:checked').val());
+				$.getJSON(url(['appmarket/buy']), { id:aid, period:period}, function(data) {
+					if (data.done) {
+						location.href = url(['appmarket/cashier', { id:data.retval}]);
+					} else {
+						layer.close(index);
+						layer.open({ content: data.msg, className:'layer-popup', time: 3});
+					}
+				});
+			},
+			no: function(index) {
+				layer.close(index);
+			}
+		});
+	});
+});
+</script>
+{include file="footer.html"}

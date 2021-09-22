@@ -1,0 +1,63 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.admin}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="admin/index" />
+      {$lang.username}
+      <input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+      {$lang.real_name}
+      <input class="queryInput" type="text" name="real_name" value="{$smarty.get.real_name|escape}" />
+      {$lang.email}
+      <input class="queryInput" type="text" name="email" value="{$smarty.get.email|escape}" />
+      {$lang.phone_mob}
+      <input class="queryInput" type="text" name="phone_mob" value="{$smarty.get.phone_mob|escape}" />
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='admin/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+		url: url(['admin/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    	{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.username}', name : 'username', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.real_name}', name : 'real_name', width : 100, sortable : true, align: 'center'},
+    	{ display: '{$lang.email}', name : 'email', width : 150, sortable : true, align: 'center'},
+			{ display: '{$lang.phone_mob}', name : 'phone_mob', width : 80, sortable : true, align: 'center'},
+			{ display: '{$lang.create_time}', name : 'create_time', width: 100, sortable : true, align : 'center'},    		
+			{ display: '{$lang.last_login}', name : 'last_login', width: 150, sortable : true, align : 'center'},
+			{ display: '{$lang.last_ip}', name : 'last_ip', width: 100, sortable : true, align : 'center'},  
+			{ display: '{$lang.logins}', name : 'logins', width: 100, sortable : true, align : 'center'}		
+    	],
+        buttons : [
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate }
+        ],
+    	title: '{$lang.admin_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+  var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	    if($('.trSelected',bDiv).length == 0){
+        layer.msg(lang.no_selected_item);
+			  return false;
+	    }
+      fg_delete(itemlist,'admin');
+	}
+}
+</script> 
+{include file="footer.html"} 

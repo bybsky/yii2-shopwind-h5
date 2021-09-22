@@ -1,0 +1,69 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-qa">
+    <div class="my-qa mb10"> 
+      <!--TAB-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd bgf border-bottom">
+          <ul class="items webkit-box">
+            <li class="flex1 center"><a class="{if !$smarty.get.type || $smarty.get.type eq 'all'}active{/if}" href="{url route='my_comment/index' type='all'}">{$lang.all_comment}</a></li>
+            <li class="flex1 center"><a class="{if $smarty.get.type eq 'reply'}active{/if}" href="{url route='my_comment/index' type='reply'}">{$lang.reply_comment}</a></li>
+            <li class="flex1 center"><a class="{if $smarty.get.type eq 'replied'}active{/if}" href="{url route='my_comment/index' type='replied'}">{$lang.replied_comment}</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <div class="infinite-result clearfix hidden"> </div>
+        <div class="infinite-template">
+          <ul class="item">
+            <li class="mt"> <a href="[1]"  class="block webkit-box"> <span class="flex1 overflow-ellipsis">[2]</span> <i class="wind-icon-font">&#xe629;</i> </a> </li>
+            <li class="qa-box mc">
+              <div class="wp">
+                <dl class="webkit-box">
+                  <dt><img src="[3]" /></dt>
+                  <dd class="flex1 ml10">
+                    <p class="l1"><span class="f60">[4]</span> 评价{$lang.colon}[5]</p>
+                    <p class="time l2">[6]</p>
+                  </dd>
+                </dl>
+                <dl class="webkit-box" style="display:[7]">
+                  <dd class="flex1 mr10">
+                    <p class="l1 f99">{$lang.my_reply}{$lang.colon}[8]</p>
+                  </dd>
+                  <dt class="align-right">
+                    <p class="fs12 gray">[9]</p>
+                    <img src="[10]" /></dt>
+                </dl>
+              </div>
+            </li>
+            <li class="handle" style="display:[11]"> <a ectype="dialog" dialog_id="my_comment_reply" dialog_title="{$lang.reply_comment_form}" uri="[12]" class="ml10 fs12" dialog_class="simple-blue" dialog_position="bottom"><i class="wind-icon-font">&#xe618;</i> {$lang.reply}</a> </li>
+          </ul>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 5, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, comment) {
+				html += sprintf(template.html(), url(['goods/index', { id:comment.goods_id}]), comment.goods_name, url_format(comment.buyer_portrait), comment.buyer_name, comment.comment, comment.evaluation_time, comment.reply_comment ? 'block' : 'none', comment.reply_comment, comment.reply_time, url_format(comment.seller_portrait), comment.reply_comment ? 'none' : 'block', url(['my_comment/reply', { rec_id:comment.rec_id}]));
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

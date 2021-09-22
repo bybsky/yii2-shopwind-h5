@@ -1,0 +1,138 @@
+﻿<div class="cartbox mt20">
+  <div class="content" style="background:#f9f9f9;"> 
+    <!--{foreach from=$goods_info.orderList item=order key=store_id}-->
+    <div class="store-each J_Store" store_id="{$store_id}">
+      <div class="store-name clearfix"> <span class="col-desc"> <a href="{url route='store/index' id=$order.store_id}"><i class="wind-icon-font fs16 mr5">&#xe656;</i>{$order.store_name|escape}<i class="wind-icon-font fs12">&#xe629;</i></a> 
+        </span>
+      </div>
+      <div class="order-goods">
+      <!--{foreach from=$order.items item=goods name=fe_goods}-->
+      <dl class="goods-each clearfix J_TouchActive">
+        <dd class="pic"><a class="block" href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.goods_image|url_format}" alt="{$goods.goods_name|escape}" width="78" height="78" /></a></dd>
+        <dd class="desc">
+          <p class="goods-name"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" class="fs13 J_TouchUri line-clamp-2">{$goods.goods_name|escape}</a></p>
+          <p class="f66 fs12">{$goods.specification|escape}</p>
+        </dd>
+	
+        <dd class="price clearfix">{$goods.price|price_format} <span class="quantity">x{$goods.quantity}</span></dd>
+      	<dd class="hidden subtotal fs14 J_Subtotal-{$store_id}" price="{$goods.subtotal}">{$goods.subtotal|price_format}</dd>
+	  </dl>
+      <!-- {/foreach} --> 
+      </div>
+      
+      <div class="order-confirm-extra clearfix">
+        <div class="confirm-extra-info">
+        
+          <!--{if $shipping_methods.$store_id}-->
+          <div class="extra-list ship-method clearfix J_ShippingMethod J_PopLayer" data-PopLayer="{ popLayer:'.J_ShippingMethodPopLayer{$store_id}',top:'35%'}">
+            <div class="subtitle float-left mr10">{$lang.delivery_method}</div>
+            <div class="subcontent float-left hidden"></div>
+            <div class="fee float-right"><em class="J_LogisticFees-{$store_id}"></em><i class="wind-icon-font">&#xe629;</i></div>
+          </div>
+
+    	  <div class="pop-layer-common pop-wrap-b shipping-method-pop-layer J_ShippingMethodPopLayer{$store_id}">
+          	 <div class="wraper has-title">
+          		<div class="hd"><i class="closed popClosed"></i>{$lang.delivery_method}</div>
+       	 		<div class="bd radioUiWraper J_LogisticFeesSelect J_LogisticFeesSelect-{$store_id}">
+ 					  <!--{foreach from=$shipping_methods.$store_id item=logistic key=key name=fe_logistic}-->
+     				<dl class="webkit-box popClosed radioUiStyle radioUiStyle2 {if $smarty.foreach.fe_logistic.first}active{/if}" data-value="{$logistic.type}" data-price="{$logistic.logistic_fees}">
+         				<dt class="flex1">
+                    		{$logistic.name} {if $logistic.logistic_fees eq 0}免邮{else}{$logistic.logistic_fees|price_format}{/if}
+                </dt>
+                <dd class="input"><input type="radio" name="delivery_type[{$store_id}]" value="{$logistic.type}" price="{$logistic.logistic_fees}" {if $smarty.foreach.fe_logistic.first}checked="checked"{/if}/></dd>
+          	</dl>
+    				<!--{/foreach}-->
+            </div>
+       		 	<div class="ft pop-btn popClosed">{$lang.closed}</div>
+          </div>
+		    </div>
+    	  <!--{/if}-->
+          
+          <!--{if $order.coupon_list}-->
+          <div class="extra-list use-coupon clearfix J_UseCoupon J_PopLayer" data-PopLayer="{ popLayer:'.J_UseCouponPopLayer{$store_id}',top:'35%'}">
+            <div class="subtitle float-left mr10">{$lang.use_coupon}</div>
+            <div class="subcontent float-left hidden"></div>
+            <div class="fee float-right"><em class="J_CouponPrice J_CouponPrice-{$store_id}"></em><i class="wind-icon-font">&#xe629;</i></div>
+          </div>
+           
+          <div class="pop-layer-common pop-wrap-b use-coupon-pop-layer J_UseCouponPopLayer{$store_id}">
+          	 <div class="wraper has-title">
+          		<div class="hd"><i class="closed popClosed"></i>{$lang.use_coupon}</div>
+       	 		<div class="bd radioUiWraper J_UseCouponSelect J_UseCouponSelect-{$store_id}">
+ 					<!--{foreach from=$order.coupon_list item=coupon name=fe_coupon}-->
+     				<dl class="webkit-box popClosed radioUiStyle radioUiStyle2 {if $smarty.foreach.fe_coupon.first}active{/if}" data-value="{$coupon.coupon_sn}" data-price="{$coupon.coupon_value}">
+         				<dt class="flex1">省{$coupon.coupon_value}元:{$coupon.coupon_name}</dt>
+                		<dd class="input"><input type="radio" name="coupon_sn[{$store_id}]" value="{$coupon.coupon_sn}" price="{$coupon.coupon_value}" {if $smarty.foreach.fe_coupon.first}checked="checked"{/if}/></dd>
+          			</dl>
+    				<!--{/foreach}-->
+                    <dl class="webkit-box popClosed radioUiStyle radioUiStyle2" data-value="" data-price="0">
+         				<dt class="flex1">不使用优惠券</dt>
+                		<dd class="input"><input type="radio" name="coupon_sn[{$store_id}]" value="" price="0" {if !$order.coupon_list}checked="checked"{/if}/></dd>
+          			</dl>
+            	</div>
+       		 	<div class="ft pop-btn popClosed">{$lang.closed}</div>
+             </div>
+		  </div>
+          <!--{/if}-->
+          
+          <!--{if $order.mealprefer}-->
+          <div class="extra-list use-mealprefer clearfix J_PopLayer" data-PopLayer="{ popLayer:'.J_UseMealPreferPopLayer{$store_id}',top:'35%'}">
+            <div class="subtitle float-left mr10">{$lang.meal}</div>
+            <div class="subcontent float-left"></div>
+            <div class="fee float-right"><em class="J_MealPreferPrice J_MealPreferPrice-{$store_id}" data-price="{$order.mealprefer.price}">{$order.mealprefer.text} -{$order.mealprefer.price|price_format}</em><i class="wind-icon-font">&#xe629;</i></div>
+          </div>
+          
+           <div class="pop-layer-common pop-wrap-b use-mealprefer-pop-layer J_UseMealPreferPopLayer{$store_id}">
+          	 <div class="wraper has-title">
+          		<div class="hd"><i class="closed popClosed"></i>{$lang.meal}</div>
+       	 		<div class="bd">
+ 					<p class="pl10 pr10">{$order.mealprefer.text} -{$order.mealprefer.price|price_format}</p>
+            	</div>
+       		 	<div class="ft pop-btn popClosed">{$lang.closed}</div>
+             </div>
+		 </div>
+          <!--{/if}--> 
+          
+          <!--{if $order.fullprefer}-->
+          <div class="extra-list use-fullprefer clearfix J_PopLayer" data-PopLayer="{ popLayer:'.J_UseFullpreferPopLayer{$store_id}',top:'35%'}">
+            <div class="subtitle float-left mr10">{$lang.fullprefer}</div>
+            <div class="subcontent float-left">&nbsp;</div>
+            <div class="fee float-right"><em class="J_FullPreferPrice J_FullPreferPrice-{$store_id}" data-price="{$order.fullprefer.price}">优惠 -{$order.fullprefer.price|price_format}</em><i class="wind-icon-font">&#xe629;</i></div>
+          </div>
+          
+          <div class="pop-layer-common pop-wrap-b use-fullprefer-pop-layer J_UseFullpreferPopLayer{$store_id}">
+          	 <div class="wraper has-title">
+          		<div class="hd"><i class="closed popClosed"></i>{$lang.fullprefer}</div>
+       	 		<div class="bd">
+ 					<p class="pl10 pr10">{$order.fullprefer.text}</p>
+            	</div>
+       		 	<div class="ft pop-btn popClosed">{$lang.closed}</div>
+             </div>
+		 </div>
+          <!--{/if}-->
+          
+          <div  class="extra-list postscript clearfix webkit-box">
+            <div class="subtitle float-left mr10">{$lang.postscript}</div>
+            <div class="subcontent flex1">
+              <textarea class="f66 J_Postscript" name="postscript[{$store_id}]" placeholder="{$lang.postscript_desc}"></textarea>
+            </div>
+          </div>
+          
+        </div>
+        <div class="confirm-extra-bottom clearfix"> <span class="price fs13 store-amount-fields">{$lang.store_order_amount} <i class="float-right">&yen;<em class="J_OrderAmount-{$store_id}">{$order.amount}</em></i> </span> </div>
+      </div>
+    </div>
+    <!-- {/foreach} --> 
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_UseCouponSelect').on('click', 'dl', function(){
+		if(!$(this).hasClass('disabled')) {
+			$(this).addClass('active').siblings().removeClass('active');
+			$(this).find('input[type="radio"]').prop('checked', true);
+			fill_order_amount();
+		}
+	});
+});	
+</script>

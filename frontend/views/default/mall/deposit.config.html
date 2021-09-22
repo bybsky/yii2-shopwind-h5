@@ -1,0 +1,58 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="deposit-config">
+      <form method="post" id="deposit-config" class="fun-form-style">
+        <div class="form">
+          <dl>
+            <dd class="webkit-box fs14"> <span>{$lang.deposit_account}</span>
+              {$deposit_account.account}
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.real_name}</span>
+              <input type="text" name="real_name" value="{$deposit_account.real_name}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.real_name_desc}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl class="mt20">
+            <dd class="webkit-box"> <span>{$lang.pay_password}</span>
+              <input type="password" name="password" value="" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.pay_password_desc}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.confirm_password}</span>
+              <input type="password" name="confirmPassword" value="" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.confirm_password_desc}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <div class="extra">
+            <p>
+              <label class="switch-checkbox-radio w-full block mb20 box-align-center J_SwtcherInput {if $deposit_account.pay_status eq 'ON' || !$deposit_account}checked{/if}" for="switcher"> <em class="block flex1 gray fs14 ml10">{$lang.pay_status_on}</em> <span class="switcher-style block"></span> </label>
+              <input name="pay_status" {if $deposit_account.pay_status eq 'ON' || !$deposit_account} checked="checked" {/if}value="ON" id="switcher" type="checkbox" class="hidden">
+            </p>
+            <p>
+              <input type="hidden" name="codeType" value="" />
+              <input type="hidden" name="code" value="" />
+              <input type="hidden" name="redirect"  value="{$redirect}" class="J_AjaxFormRetUrl" />
+              <input type="button" class="btn-alipay" value="{$lang.submit}" gs_id="deposit_captcha" gs_name="deposit_captcha" gs_callback="gs_callback" gs_title="{$lang.captcha}" gs_width="300" gs_uri="{url route='gselector/verifycode'}" gs_type="captcha" ectype="gselector" gs_position="bottom" gs_opacity="0.5" id="deposit-captcha" />
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("deposit_captcha");
+	});
+})
+function gs_callback(id, codeType, code)
+{
+	$('input[name="codeType"]').val(codeType);
+	$('input[name="code"]').val(code);
+	DialogManager.close(id);
+	ajaxSubmit($('form').attr('method'), window.location.href, $('form'), '', null);
+}
+</script> 
+{include file="footer.html"}

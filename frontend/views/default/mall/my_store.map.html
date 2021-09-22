@@ -1,0 +1,69 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="my-store-map">
+    <div class="s-map-tip">
+      <p>{$lang.drag_position}</p>
+    </div>
+    <div class="info">
+      <div id="allmap" style="width:100%;height:100%;"></div>
+      <form  method="post">
+        <input type="hidden" name="latitude" value="{$store.latitude}" />
+        <input type="hidden" name="longitude" value="{$store.longitude}" />
+        <input type="hidden" name="zoom" value="{$store.zoom}" />
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var zoom = {$store.zoom} || 15;
+	<!--{if $store.latitude && $store.longitude}-->
+	showMap(map, new BMap.Point({$store.longitude},{$store.latitude}), zoom);
+	<!--{else}-->	
+	var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			showMap(map, new BMap.Point(r.point.longitude, r.point.lat), zoom);
+		}
+		else {
+			//layer.open({ content: this.getStatus(), time: 3});
+			showMap(map, new BMap.Point(108.399747,22.815288), zoom);
+		}        
+	},{ enableHighAccuracy: true, maximumAge:60})	
+	<!--{/if}-->
+	
+	setTimeout(function(){
+		$('.s-map-tip').slideUp();
+	},5000);
+});
+
+function showMap(map, point,zoom)
+{
+	map.centerAndZoom(point, zoom);
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	map.addControl(new BMap.NavigationControl());// 左上角，添加比例尺   
+	var marker = new BMap.Marker(point);// 创建标注
+	map.addOverlay(marker);             // 将标注添加到地图中
+	marker.enableDragging();
+	marker.addEventListener("dragend", function(e){
+		$("input[name='latitude']").val(e.point.lat); 
+		$("input[name='longitude']").val(e.point.lng); 
+		$("input[name='zoom']").val(map.getZoom());   
+		
+		// 保存到数据库
+		ajaxSubmit($('form').attr('method'), window.location.href, $('form'), null);
+		
+		var pt = new BMap.Point(e.point.lng, e.point.lat);
+		var geoc = new BMap.Geocoder();    
+		geoc.getLocation(pt, function(rs){
+			var addComp = rs.addressComponents;
+			var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+			var infoWindow = new BMap.InfoWindow(address);   
+			map.openInfoWindow(infoWindow, pt);
+		});
+	})
+}
+</script>
+{include file="footer.html"}

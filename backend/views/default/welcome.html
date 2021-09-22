@@ -1,0 +1,210 @@
+{include file="header.html"}
+<style>
+#rightCon{ background:#f2f2f2;font-family:'microsoft yahei';}
+</style>
+<div id="rightCon" class="clearfix welcome">
+  <div class="lp">
+    <div class="box-s-1">
+      <div class="box weekly-info J-slide">
+        <div class="mt">
+          <h3>一周概览</h3>
+          <div class="nav hd"><a href="javascript:;" class="active"></a><a href="javascript:;"></a></div>
+        </div>
+        <div class="mc">
+          <div class="container bd">
+            <ul>
+              <li class="user"> <a class="item" uri="{url route='user/index'}" href="javascript:parent.openItem('', 'user_manage', 'user');">
+                <div class="detail"> <span>{$lang.new_user_qty}</span>
+                  <p><cite>{$data_of_week.new_user_qty}</cite></p>
+                </div>
+                </a> </li>
+              <li class="goods"> <a class="item" uri="{url route='goods/index'}" href="javascript:parent.openItem('', 'goods_manage', 'goods');">
+                <div class="detail"> <span>{$lang.new_goods_qty}</span> <cite>{$data_of_week.new_goods_qty}</cite></div>
+                </a> </li>
+              <li class="store"> <a class="item" uri="{url route='store/index'}" href="javascript:parent.openItem('', 'store_manage', 'store');">
+                <div class="detail"> <span>{$lang.new_store_qty}</span><cite>{$data_of_week.new_store_qty}</cite> </div>
+                </a> </li>
+              <li class="order"> <a class="item" uri="{url route='order/index'}" href="javascript:parent.openItem('', 'order_manage', 'trade');">
+                <div class="detail"> <span>{$lang.new_order_qty}</span> <cite>{$data_of_week.new_order_qty}</cite></div>
+                </a> </li>
+            </ul>
+            <ul>
+              <li class="pinglun"> <a class="item" uri="{url route='evaluation/index'}" href="javascript:parent.openItem('', 'evaluation_manage','trade');">
+                <div class="detail"> <span>{$lang.new_pinglun}</span> <cite style="color:#FF5722;">{$data_of_week.new_pinglun}</cite></div>
+                </a> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-s-1">
+      <div class="box weekly-info J-slide">
+        <div class="mt">
+          <h3>{$lang.stats}</h3>
+          <div class="nav hd"><a href="javascript:;" class="active"></a><a href="javascript:;"></a></div>
+        </div>
+        <div class="mc">
+          <div class="container bd">
+            <ul>
+              <li class="user"> <em class="item" >
+                <div class="detail"> <span>{$lang.user_qty}</span>
+                  <p><cite style="color:#FF5722;">{$stats.user_qty}</cite></p>
+                </div>
+                </em> </li>
+              <li class="goods"> <em class="item" >
+                <div class="detail"> <span>{$lang.goods_qty}</span> <cite style="color:#FF5722;">{$stats.goods_qty}</cite></div>
+                </a> </li>
+              <li class="pinglun"> <em class="item" >
+                <div class="detail"> <span>{$lang.order_qty}</span> <cite>{$stats.order_qty}</cite></div>
+                </em> </li>
+              <li class="pinglun"> <em class="item" >
+                <div class="detail"> <span>{$lang.order_amount}</span> <cite>{$stats.order_amount|price_format}</cite></div>
+                </em> </li>
+            </ul>
+            <ul>
+              <li class="store"> <em class="item" >
+                <div class="detail"> <span>{$lang.apply_qty}</span><cite style="color:#FF5722;">{$stats.apply_qty}</cite> </div>
+                </em> </li>
+              <li class="order"> <em class="item" >
+                <div class="detail"> <span>{$lang.store_qty}</span> <cite style="color:#FF5722;">{$stats.store_qty}</cite></div>
+                </em> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-s-2">
+      <div class="box weekly-info J-slide">
+        <div class="mt">
+          <h3>数据概览</h3>
+          <div class="nav hd"><a href="javascript:;" class="active"></a><a href="javascript:;"></a><a href="javascript:;"></a><a href="javascript:;"></a></div>
+        </div>
+        <div class="mc">
+          <div class="container bd">
+            <ul>
+              <p style="text-align:center;font-size:14px;margin-bottom:10px;">订单额概览</p>
+              <div class="J-orderAmountStatic"></div>
+            </ul>
+            <ul class="hidden">
+              <p style="text-align:center;font-size:14px;margin-bottom:10px;">订单量概览</p>
+              <div class="J-orderCountStatic"></div>
+            </ul>
+            <ul class="hidden">
+              <p style="text-align:center;font-size:14px;margin-bottom:10px;">会员概览</p>
+              <div class="J-userStatic"></div>
+            </ul>
+            <ul class="hidden">
+              <p style="text-align:center;font-size:14px;margin-bottom:10px;">店铺概览</p>
+              <div class="J-storeStatic"></div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rp"> 
+    <!--{if $loginLogs}-->
+    <div class="box-s-3">
+      <div class="box weekly-info">
+        <div class="mt">
+          <h3>登陆记录</h3>
+        </div>
+        <div class="mc" style="padding: 15px 15px 7px 15px;">
+          <table>
+            <tr class="th">
+              <td>IP</td>
+              <td>管理员</td>
+              <td>登陆地址</td>
+              <td>时间</td>
+            </tr>
+            <!--{foreach from=$loginLogs item=log}-->
+            <tr>
+              <td>{$log.ip}</td>
+              <td>{$log.username}</td>
+              <td>{if $log.address}{$log.address}{else}<a href="javascript:;" class="J_viewIP" data-id="{$log.id}">{$lang.clickView}</a>{/if}</td>
+              <td>{$log.add_time|date_format:"%Y.%m.%d"}</td>
+            </tr>
+            <!--{/foreach}-->
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--{/if}--> 
+    <!--{if $remind_info}-->
+    <div class="box-s-2">
+      <div class="box weekly-info">
+        <div class="mt">
+          <h3>{$lang.remind_info}</h3>
+        </div>
+        <div class="mc" style="padding: 10px 15px 7px 15px;">
+          <ul>
+            <!--{foreach from=$remind_info item=remind}-->
+            <li style="float:none;width:100%;float:none;width:100%;line-height:20px;padding-bottom:5px;">{$remind}</li>
+            <!--{/foreach}-->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--{/if}-->
+    <div class="box-s-2">
+      <div class="box weekly-info">
+        <div class="mt">
+          <h3>{$lang.sys_info}</h3>
+        </div>
+        <div class="mc">
+          <table>
+            <tr>
+              <th>ShopWind版本</th>
+              <td>{$sys_info.version}</td>
+            </tr>
+            <tr>
+              <th>{$lang.install_date}</th>
+              <td>{$sys_info.install_date}</td>
+            </tr>
+            <tr>
+              <th>{$lang.server_os}</th>
+              <td>{$sys_info.server_os}</td>
+            </tr>
+            <tr>
+              <th>{$lang.web_server}</th>
+              <td>{$sys_info.web_server}</td>
+            </tr>
+            <tr>
+              <th>{$lang.php_version}</th>
+              <td>{$sys_info.php_version}</td>
+            </tr>
+            <tr>
+              <th>{$lang.mysql_version}</th>
+              <td>{$sys_info.mysql_version}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script language="javascript">
+$(function(){
+	$('.J-orderAmountStatic').load(url(['order/trend', { type:'amount'}])).parent().show();
+	$('.J-orderCountStatic').load(url(['order/trend', { type:'quantity'}])).parent().show();
+	$('.J-userStatic').load(url(['user/trend'])).parent().show();
+	$('.J-storeStatic').load(url(['store/trend'])).parent().show();
+	$(".J-slide").slide({ titCell:".hd a", mainCell:".bd", effect:"leftLoop",autoPlay:false, titOnClassName:"active", delayTime:500, interTime: 5000});
+	
+	$('.J_viewIP').click(function(){
+		var index = layer.load(0, { shade: false, time: 10*1000});
+		var id = $(this).attr('data-id');
+		var td = $(this).parent('td');	
+		$.getJSON(url(['default/getipinfo']),{ id:id},function(data){
+			if(data.done){
+				td.html(data.retval);
+				layer.close(index);
+			}else{
+				layer.msg(data.msg);
+				layer.close(index);
+			}
+		});
+	});
+});
+</script> 
+{include file="footer.html"} 

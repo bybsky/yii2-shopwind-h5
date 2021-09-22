@@ -1,0 +1,56 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='cache/index'}">{$lang.cache_file}</a></li>
+      <li><span>{$lang.cache_redis}</span></li>
+      <li><a class="btn1" href="{url route='cache/memcache'}">{$lang.cache_memcache}</a></li>
+    </ul>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+       <h4>{$lang.operation_tip}</h4></div>
+    <ul>
+      <li>1. Redis是基于内存的，作为缓存使用可以有效提高页面访问速度</li>
+      <li>2. 在开启Redis缓存之前，请确保在服务端已经安装了Redis服务否则会造成页面无法访问，请开放6379端口（默认）及设置好白名单</li>
+      <li>3. Redis服务可以为本地安装（使用宝塔可以一键安装），也可以是云端，例如：阿里云的【云数据库Redis】产品，开箱即用</li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> <label for="hostname">{$lang.hostname}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="hostname" type="text" name="hostname" value="{$redis.hostname|default:'localhost'}" class="infoTableInput"/>
+            <label class="field_notice">{$lang.hostname_desc}</label>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="port">{$lang.port}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="port" type="text" name="port" value="{$redis.port|default:'6379'}" class="infoTableInput"/>
+            <label class="field_notice">{$lang.port_desc}</label>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="password">{$lang.password}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="password" type="text" name="password" value="{$redis.password}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.status}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $redis}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$redis}selected{/if}">{$lang.close}</label>
+            <input name="status" value="1" type="radio" {if $redis}checked{/if}>
+            <input name="status" value="0" type="radio" {if !$redis}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

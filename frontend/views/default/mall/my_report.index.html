@@ -1,0 +1,72 @@
+{include file="user.header.html"}
+<div id="page-my-report">
+	<div class="my-report">
+      <div class="clearfix J_InfiniteList">
+        <div class="infinite-result clearfix hidden"> </div>
+        <div class="infinite-template">
+          <div class="item relative" id="[2]">
+			 <div class="l1">
+             	<span>{$lang.report_store}{$lang.colon}[3]</span>
+             </div>
+             <div class="l2 mt5">
+                 <p class="goods-name mt5 overflow-ellipsis">{$lang.report_goods}{$lang.colon}<a href="[4]">[5]</a></p>
+                 <p class="goods-name overflow-ellipsis">{$lang.processing_state}{$lang.colon}[6]</p>
+             </div>
+             <div class="l3 mt5">
+             	<p>{$lang.content}{$lang.colon}[7]</p>
+                <ul class="imageList webkit-box mt5">
+                	<figure class="each">
+                    	<div class="wrap"><img src="[1]" /></div>
+                    	
+                    </figure>
+                </ul>
+                <p class="green" style="display:[8]">{$lang.reply}{$lang.colon}[9]</p>
+                <p class="time mt5">[10]</p>
+             </div>
+          </div>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.load_more}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.reach_the_bottom}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';  
+			$.each(data, function(k, report){	
+				var template = TEMP.clone(true);
+				html += sprintf(template.html(), url_format(report.default_image), report.id, report.store_name,  url(['goods/index', { id: report.goods_id}]), report.goods_name, report.status == 1 ? lang.done : lang.wait_verify, report.content, report.verify ? 'line-block' : 'none', report.verify, report.add_time);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var id = o.attr('id');
+		o.unbind('click');
+		o.click(function(){
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: [{
+					text: "{$lang.drop}",
+					onClick: function() {
+						ajaxSubmit('GET', url(['my_report/delete', { id:id}]));
+					}
+				}]
+			});
+		})
+	});
+}
+</script>
+{include file="footer.html"}

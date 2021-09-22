@@ -1,0 +1,47 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.manage}</p>
+    <ul class="subnav">
+      <li><span>{$lang.cache_file}</span></li>
+      <li><a class="btn1" href="{url route='cache/redis'}">{$lang.cache_redis}</a></li>
+      <li><a class="btn1" href="{url route='cache/memcache'}">{$lang.cache_memcache}</a></li>
+    </ul>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+      <h4>{$lang.operation_tip}</h4>
+  	</div>
+    <ul>
+      <li>1. 默认缓存模式，无需配置服务器即可使用</li>
+      <li>2. 文件缓存模式会在站点生成随机文件名文件，可通过后台-》更新缓存清除，不会一直占用空间</li>
+      <li>3. 如果启用文件缓存模式，Redis缓存配置将被清除，请慎重操作</li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> <label for="cachePath">{$lang.cache_path}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="cachePath" type="text" name="cachePath" value="{$cache.cachePath|default:'@runtime/cache'}" class="infoTableInput"/>
+            <label class="field_notice">{$lang.cache_path_desc}</label>
+          </td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.status}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $cache.cachePath}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$cache.cachePath}selected{/if}">{$lang.close}</label>
+            <input name="status" value="1" type="radio" {if $cache.cachePath}checked{/if}>
+            <input name="status" value="0" type="radio" {if !$cache.cachePath}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

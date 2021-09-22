@@ -1,0 +1,64 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-qa">
+    <div class="my-qa"> 
+      
+      <!--TAB-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd bgf border-bottom">
+          <ul class="items webkit-box">
+            <li class="flex1 center"><a href="{url route='my_question/index'}" class="{if !$smarty.get.type || $smarty.get.type eq 'all'}active{/if}" ><span>{$lang.all_qa}</span></a></li>
+            <li class="flex1 center"><a href="{url route='my_question/index' type='replied'}" class="{if $smarty.get.type eq 'replied'}active{/if}"><span>{$lang.replied_qa}</span></a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <div class="infinite-result clearfix hidden"> </div>
+        <div class="infinite-template">
+          <ul class="item">
+            <li class="mt webkit-box"> <a href="[1]" class="overflow-ellipsis block flex1"> <i class="goods-ico type-ico wind-icon-font mr5 f99" style="display:[2]">&#xe661;</i> [3]</a><i class="wind-icon-font float-right">&#xe63d;</i> </li>
+            <li class="qa-box mc">
+              <dl class="webkit-box">
+                <dt><img src="[4]" /></dt>
+                <dd class="flex1 ml10">
+                  <p class="l1">{$lang.my_question}{$lang.colon}[5]</p>
+                  <p class="time l2">[6]</p>
+                </dd>
+              </dl>
+              <dl class="webkit-box" style="display:[7]">
+                <dd class="flex1 mr10">
+                  <p class="l1">{$lang.shangjia}“[8]”{$lang.reply}{$lang.colon}[9]</p>
+                  <p class="time l2">[10]</p>
+                </dd>
+                <dt><img src="[11]" /></dt>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 6, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, qa) {
+				html += sprintf(template.html(), url(['goods/qa', { id:qa.item_id}]), qa.type == 'goods' ? 'inline-block' : 'none', qa.item_name, url_format(qa.store_logo), qa.question_content, qa.time_post, qa.reply_content ? '' : 'none', qa.store_name, qa.reply_content, qa.time_reply, url_format(qa.portrait));
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

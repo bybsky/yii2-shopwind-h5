@@ -1,0 +1,43 @@
+{include file="user.header.html"} 
+<div id="main">
+  <div id="page-integral" class="my-integral">
+    <div class="recordlist"> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <ul class="infinite-template">
+          <li class="it webkit-box">
+            <div class="lp flex1">
+              <p class="tt">[1]</p>
+              <p class="min-t gray fs12">[2]</p>
+            </div>
+            <div class="rp mr10"> <span>[3][4]</span></div>
+          </li>
+        </ul>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, item) {
+				html += sprintf(template.html(), item.name, item.add_time, parseInt(item.changes) > 0 ? '+' : '', parseInt(item.changes));
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

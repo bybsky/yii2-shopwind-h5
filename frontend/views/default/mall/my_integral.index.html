@@ -1,0 +1,44 @@
+{include file="user.header.html"} 
+<div id="main">
+  <div id="page-integral" class="my-integral">
+  	<div class="fixed-gap"></div>
+    <div class="tp">
+      <p class="eq-money fs12">{$lang.available_integral}</p>
+      <a class="amount block J_IntegralAmount" href="{url route='my_integral/logs'}">{$integral.amount|default:0}</a> 
+      <!--{if $integral.frozen_integral}-->
+      <p class="frozen mb20 fs12"><a href="{url route='my_integral/logs' type='frozen'}">{sprintf($lang.signin_integral_frozen, $integral.frozen_integral|default:0)}<i class="wind-icon-font">&#xe634;</i></a> </p>
+      <!--{/if}--> 
+      <!--{if $integral.signinabled}-->
+      <p class="sign mt10"> 
+        <!--{if !$integral.signined}-->
+        <span class="J_SignIntegral"><i class="wind-icon-font ico">&#xe69d;</i><i>{sprintf($lang.signin_integral_flag, $integral.signIntegral)}</i></span> 
+        <!--{else}--> 
+        <span>{sprintf($lang.today_signin_amount, $integral.signIntegral)}</span>
+        <!--{/if}--> 
+      </p>
+      <!--{/if}--> 
+    </div>
+    <div class="ls">
+      <ul class="clearfix">
+        <li> <a href="{url route='my_integral/logs'}" class="webkit-box"> <i class="wind-icon-font all">&#xe69e;</i> <span class="flex1">{$lang.record_all}</span> <i class="wind-icon-font mr10">&#xe634;</i> </a> </li>
+        <li> <a href="{url route='my_integral/logs' type='income'}" class="webkit-box"> <i class="wind-icon-font income">&#xe69f;</i> <span  class="flex1">{$lang.record_income}</span> <i class="wind-icon-font mr10">&#xe634;</i> </a></li>
+        <li> <a href="{url route='my_integral/logs' type='pay'}" class="webkit-box"> <i class="wind-icon-font outlay">&#xe6a0;</i> <span class="flex1">{$lang.record_pay}</span> <i class="wind-icon-font mr10">&#xe634;</i> </a> </li>
+        <li> <a href="{url route='my_integral/logs' type='frozen'}" class="webkit-box"> <i class="wind-icon-font frozen">&#xe65e;</i> <span class="flex1">{$lang.record_frozen}</span> <i class="wind-icon-font mr10">&#xe634;</i> </a> </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_SignIntegral').click(function(){
+		$.getJSON(url(['my_integral/sign']),null,function(data){
+			if(data.done) {
+				$('.J_IntegralAmount').html(data.retval.amount);
+				$('.J_SignIntegral').html("{$lang.have_get_integral_for_signin}");
+			}
+			layer.open({ content: data.msg, className:'layer-popup', time: 3});
+		});
+	});
+});
+</script>
+{include file="footer.html"} 

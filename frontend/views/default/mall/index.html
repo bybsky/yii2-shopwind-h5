@@ -1,0 +1,16 @@
+{include file="header.html"} 
+<div id="page-index" class="page J_page derect-left">
+	<div id="main">
+		<div class="full-width-area" area="full-width-area" widget_type="area">
+            {widgets page='index' area='full-width-area'}
+        </div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	<!--{if $signPackage} // 微信分享-->
+	wxshare({ signPackage: {$signPackage}, content: { desc:"{$app->params['site_title']}", imgUrl:"{$app->params['site_logo']|url_format}"}});
+	<!--{/if}-->
+});
+</script>
+{include file="footer.html"}

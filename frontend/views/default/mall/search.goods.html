@@ -1,0 +1,186 @@
+{include file="header.html"}
+<div id="main">
+  <div id="page-search-goods" class="page J_page">
+    <div class="page-body search-goods"> 
+    
+    <div class="listTab mall-menus">
+    	<div class="fixed-gap"></div>
+        <div class="fixed-bd">
+        <ul class="items webkit-box">
+          <li class="flex1"><a class="block center active fs14" href="javascript:;"><span>商品</span></a></li>
+          <li class="flex1"><a class="block center fs14" href="{url route='search/store'}"><span>店铺</span></a></li>
+          <li class="flex1"><a class="block center fs14" href="{url route='limitbuy/index'}"><span>促销</span></a></li>
+          <li class="flex1"><a class="block center fs14" href="{url route='integral/index'}"><span>积分</span></a></li>
+        </ul>
+        </div>
+      </div>
+      
+      <!--TAB-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd clearfix">
+          <ul class="items clearfix">
+            <li><a href="javascript:;" class="active J_ActiveSort"><span>综合排序</span><i class="wind-icon-font">&#xe61f;</i></a></li>
+            <li><a href="javascript:;" class="J_ActiveSortClick" ectype="sales|desc"><span>销量优先</span></a></li>
+            <li><a href="javascript:;" class="goodsFilter J_PopLayer" data-PopLayer="{ popLayer:'.J_GoodsFilterPopLayer', fixedBody: true, left:80, direction:'right'}"><span>筛选</span><i class="wind-icon-font">&#xe6cc;</i></a></li>
+          </ul>
+          <div class="list-style display-mode"> <span class="wind-icon-font {$display_mode} clearfix J_ChangeDisplayMode" id="goodsDisplayMode"></span> </div>
+        </div>
+      </div>
+      
+      <!--综合排序列项-->
+      <div class="sort-eject hidden J_SortEject"> <span><a href="javascript:;" class="active block webkit-box" ectype=""><ins class="flex1">综合排序</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:;" ectype="price|desc" class="block webkit-box"><ins class="flex1">价格从高到低</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:;" ectype="price|asc" class="block webkit-box"><ins class="flex1">价格从低到高</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:;" ectype="views|desc" class="block webkit-box"><ins class="flex1">人气排序</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:;" ectype="add_time|desc" class="block webkit-box"><ins class="flex1">上架从新到旧</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span></div>
+      
+      <!--AJAX DATA-->
+      <div class="{$display_mode} goods-list clearfix J_InfiniteList" data-cookie="goodsDisplayMode">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li> <a href="[1]" class="webkit-box block">
+            <div class="pic padding5"><img src="{res file='images/empty.gif'}" class="lazyload" initial-url="[2]"></div>
+            <div class="info flex1">
+              <h2 class="goods-name line-clamp-2">[3]</h2>
+              <p class="store-name">[4]</p>
+              <div class="pri-sales clearfix"> <span class="price float-left">[5]</span> <ins class="sales float-right">已售[6]</ins> </div>
+            </div>
+            </a> </li>
+        </div>
+       <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pop-layer-common pop-wrap-r search-filter J_GoodsFilterPopLayer">
+    <div class="wraper">
+      <div class="bd">
+        <div class="attrs"> 
+          <!--{if $filters}-->
+          <div class="attr attr-extra">
+            <div class="attrk">{$lang.your_selected}{$lang.colon}</div>
+            <div class="filter-list attrv">
+              <ul class="clearfix selected-attr">
+                <!--{foreach from=$filters item=filter}-->
+                <li><a href="javascript:;" id="{$filter.key}" class="each-filter"><span>{$filter.name}{$lang.colon}{$filter.value}</span></a></li>
+                <!--{/foreach}-->
+              </ul>
+            </div>
+          </div>
+          <!--{/if}-->
+          <div class="pri-filter attr">
+            <div class="t attrk">价格区间</div>
+            <div class="c clearfix mt10"> <span class="block-wrap">
+              <input type="text" name="start_price" value="">
+              </span> <span class="line"></span> <span class="block-wrap">
+              <input  type="text"  name="end_price" value="">
+              </span> <span class="wind-icon-font search-btn J_SearchFilterPrice J_CloseFilterPop">&#xe662;</span> </div>
+          </div>
+          <div class="attr"> 
+            <!--{if $by_category}-->
+            <div class="attrk">{$lang.gcategory}</div>
+            <div class="attrv">
+              <ul class="clearfix"  ectype="ul_cate">
+                <!--{foreach from=$by_category item=row name=fe_row}-->
+                <li {if $smarty.foreach.fe_row.iteration gt 6}class="hidden"{/if}><a href="javascript:;" id="{$row.cate_id}"><span>{$row.cate_name}({$row.count|default:0})</span></a></li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if count($by_category) gt 6}-->
+              <div class="options"> <a class="more" href="javascript:;"><span>查看更多</span><i></i></a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{/if}--> 
+            <!--{if $by_brand && !$filters.brand}-->
+            <div class="attrk">{$lang.brand}</div>
+            <div class="attrv">
+              <ul  ectype="ul_brand" class="clearfix">
+                <!--{foreach from=$by_brand item=row name=fe_row}-->
+                <li {if $smarty.foreach.fe_row.iteration gt 6}class="hidden"{/if}><a href="javascript:;" id="{$row.brand|escape}" title="{$row.brand}"><img src="{$row.brand_logo|url_format}" alt="{$row.brand}" /></a></li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if count($by_brand) gt 6}-->
+              <div class="options"> <a class="more" href="javascript:;"><span>查看更多</span><i></i></a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{/if}--> 
+            <!--{foreach from=$by_prop item=prop name=fe_prop}-->
+            <div class="attrk">{$prop.name}</div>
+            <div class="attrv">
+              <ul ectype="ul_prop" class="clearfix" propsed="{$smarty.get.props}">
+                <!--{foreach from=$prop.values item=row name=fe_row}-->
+                <li {if $smarty.foreach.fe_row.iteration gt 6}class="hidden"{/if}> <a href="javascript:;" id="{$row.pid}:{$row.vid}"> <span {if $prop.is_color}class="color"{/if}> 
+                  <!--{if $prop.is_color}--> 
+                  <i {if $row.color}style="background:{$row.color}"{else}class="duocai"{/if} title="{$row.val}">{$row.val|escape}</i> 
+                  <!--{else}--> 
+                  {$row.val|escape}({$row.count|default:0})
+                  <!--{/if}--> 
+                  </span> </a> </li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if count($by_prop) gt 6}-->
+              <div class="options"> <a class="more" href="javascript:;"><span>查看更多</span><i></i></a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{/foreach}--> 
+            
+            <!--{if $by_price && !$filters.price}-->
+            <div class="attrk">{$lang.price}</div>
+            <div class="attrv">
+              <ul class="clearfix" ectype="ul_price">
+                <!--{foreach from=$by_price item=row name=fe_row}-->
+                <li {if $smarty.foreach.fe_row.iteration gt 6}class="hidden"{/if}><a href="javascript:;" id="{$row.value}"><span>{$row.name}({$row.count|default:0})</span></a></li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if count($by_price) gt 6}-->
+              <div class="options"> <a class="more" href="javascript:;"><span>查看更多</span><i></i></a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{/if}--> 
+            <!--{if $by_region && !$filters.region_id}-->
+            <div class="attrk">{$lang.region}</div>
+            <div class="attrv">
+              <ul class="clearfix" ectype="ul_region">
+                
+                <!--{foreach from=$by_region item=row name=fe_row}-->
+                <li {if $smarty.foreach.fe_row.iteration gt 6}class="hidden"{/if}><a href="javascript:;" id="{$row.region_id}"><span>{$row.region_name|escape}({$row.count|default:0})</span></a></li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if count($provinces.list) gt 6}-->
+              <div class="options"> <a class="more" href="javascript:;"><span>查看更多</span><i></i></a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{/if}--> 
+          </div>
+        </div>
+      </div>
+      <div class="ft webkit-box clearfix"> <span class="pop-btn flex1"> <a uri="{url route='search/index' cate_id=$smarty.get.cate_id keyword=$smarty.get.keyword}" href="javascript:;" class="popReset">{$lang.reset}</a></span> <span class="pop-btn flex1"><i class="popClosed">{$lang.closed}</i></span> </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+
+	// 设置排序
+	setFilterOrder('{$smarty.get.orderby}');
+	$(".btn-order a").click(function(){
+		setFilterOrder('{$smarty.get.orderby}', this);
+	});
+	
+	// 设置选中的价格筛选
+	setFilterPrice('{$smarty.get.price}');
+
+	$('.J_InfiniteList').infinite({ pageper: 6, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image), goods.goods_name, goods.store_name, price_format(goods.price), goods.sales > 0 ? goods.sales : 0);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+	
+});
+</script> 
+{include file="footer.html"}

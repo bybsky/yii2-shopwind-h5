@@ -1,0 +1,73 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.prop_list}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='goodsprop/index'}">{$lang.manage}</a></li>
+      <!--{if $app->controller->action->id eq 'edit'}-->
+      <li><a class="btn1" href="{url route='goodsprop/add'}">{$lang.add_prop}</a></li>
+      <li><span>{$lang.edit_prop}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.add_prop}</span></li>
+      <!--{/if}-->
+      <li><a class="btn1" href="{url route='gcategory/index'}">{$lang.distribute_prop}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.prop_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input name="name" value="{$prop.name}" type="text" /></td>
+        </tr>
+        <!--{if $app->controller->action->id eq 'add'}-->
+        <tr>
+          <th class="paddingT15"> {$lang.pvalue}:</th>
+          <td class="paddingT15 wordSpacing5"><input style="width:300px;" type="text" name="pvalue" value="{$prop.pvalue|escape}" />
+            <span class="grey notice">{$lang.pvalue_note}</span></td>
+        </tr>
+        <!--{/if}-->
+        <tr>
+          <th class="paddingT15">{$lang.ptype}:</th>
+          <td class="paddingT15 wordSpacing5"><label>
+              <input type="radio" name="ptype" value="select" {if $prop.ptype eq 'select'} checked="checked"{/if}/>
+              {$lang.selectbox}</label>
+            <label>
+              <input type="radio" name="ptype" value="checkbox" {if $prop.ptype eq 'checkbox'} checked="checked"{/if}/>
+              {$lang.checkbox}</label>
+            <label>
+              <input type="radio" name="ptype" value="radio" {if $prop.ptype eq 'radio'} checked="checked"{/if}/>
+              {$lang.radiobox}</label>
+            <span class="grey notice">{$lang.ptype_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.is_color}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $prop.is_color}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$prop.is_color}selected{/if}">{$lang.no}</label>
+            <input name="is_color" value="1" type="radio" {if $prop.is_color}checked{/if}>
+            <input name="is_color" value="0" type="radio" {if !$prop.is_color}checked{/if}>
+            </span> <span class="grey notice">{$lang.is_color_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" type="text" name="sort_order" value="{$prop.sort_order}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.status}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $prop.status}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$prop.status}selected{/if}">{$lang.no}</label>
+            <input name="status" value="1" type="radio" {if $prop.status}checked{/if}>
+            <input name="status" value="0" type="radio" {if !$prop.status}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

@@ -1,0 +1,84 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.brand_list}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="brand/index" />
+      {$lang.brand_name}
+      <input class="queryInput" type="text" name="brand_name" value="{$smarty.get.brand_name|escape}" />
+      {$lang.tag}
+      <input class="queryInput" type="text" name="tag" value="{$smarty.get.tag|escape}" />
+	  {$lang.letter}
+      <input class="queryInput" type="text" name="letter" value="{$smarty.get.letter|escape}" />
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='brand/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['brand/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.brand_id}', name : 'brand_id', width : 50, sortable : true, align: 'center'},
+    		{ display: '{$lang.brand_name}', name : 'brand_name', width : 200, sortable : true, align: 'center'},
+			{ display: '{$lang.tag}', name : 'tag', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.letter}', name : 'letter', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.belong_category}', name : 'cate_name', width : 100, sortable : true, align: 'left'},
+    		{ display: '{$lang.brand_logo}', name : 'brand_logo', width : 150, sortable : true, align: 'center'},    		
+			{ display: '{$lang.sort_order}', name : 'sort_order', width: 50, sortable : true, align : 'center'},
+			{ display: '{$lang.recommended}', name : 'recommended', width: 50, sortable : true, align : 'center'},  
+			{ display: '{$lang.if_show}', name : 'if_show', width: 50, sortable : true, align : 'center'} 		
+    	],
+        buttons : [
+            { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+    	sortname: "brand_id",
+    	sortorder: "desc",
+    	title: '{$lang.brand_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = url(['brand/add']);
+		return false;
+	}
+	
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'brand');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+			layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'brand');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'brand');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"} 

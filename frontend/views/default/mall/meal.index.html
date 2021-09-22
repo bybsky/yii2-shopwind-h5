@@ -1,0 +1,64 @@
+{include file="header.html"}
+<div id="main">
+  <div id="page-meal" class="w-full">
+    <div class="meal-index clearfix"> 
+      
+      <!--{if $meals}-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd active-line clearfix">
+          <ul class="items webkit-box clearfix" style="display:{if count($all) ge 5}block{/if}">
+            <!--{foreach from=$meals item=meal name=fe_meal}-->
+            <li class="flex1"><a href="{url route='meal/index' id=$meal.meal_id goods_id=$smarty.get.goods_id}" {if $smarty.get.id eq $meal.meal_id || (!$smarty.get.id && $smarty.foreach.fe_meal.first)}class="active"{/if} ><span>{$meal.title}</span></a></li>
+            <!--{/foreach}-->
+          </ul>
+        </div>
+      </div>
+      <!--{/if}-->
+      
+      <div class="mealinfo"> 
+        <div class="content clearfix">
+          <form name="meal_form">
+            <div class="box clearfix"> 
+              <!--{foreach from=$meal.items item=goods name=fe_goods}-->
+              <dl class="goodsbox {if $smarty.foreach.fe_goods.last} goodsbox-last{/if} clearfix">
+                <dt class="pic big_pic float-left"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img width="60" height="60" src="{$goods.goods_image|url_format}" /></a></dt>
+                <dd class="desc float-left" {if $smarty.foreach.fe_goods.last} style="border-bottom:0"{/if}>
+                  <h2><a class="fs12 line-clamp-2" href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><strong>[{$lang.meal_goods}{$smarty.foreach.fe_goods.iteration}]</strong>{$goods.goods_name|escape}</a></h2>
+                  <div class="rate"><span class="fs12">{$lang.price}{$lang.colon}</span><b class="price J_SpecPrice" price="{$goods.price}">{$goods.price|price_format}</b></div>
+                  <div class="handle"> 
+                    <!--{if $goods.spec_qty gt 0}-->
+                    <ul class="clearfix">
+                      <li class="handle_title">{$goods.spec_name_1|escape}{$lang.colon} </li>
+                      <!--{foreach from=$goods.unispecs.spec_1 item=spec key=id}-->
+                      <li onclick="selectSpec(1, this,{$goods.spec_qty},{$goods.goods_id},{$meal.mealPrice})" class="dotted"><a href="javascript:;"> 
+                        <!--{if $spec.image}--> 
+                        <img src="{$spec.image|url_format}" width="14" height="14" style="vertical-align:middle" /> 
+                        <!--{/if}--><span>{$spec.name}</span></a></li>
+                      <!--{/foreach}-->
+                    </ul>
+                    <!--{/if}--> 
+                    <!--{if $goods.spec_qty gt 1}-->
+                    <ul class="clearfix">
+                      <li class="handle_title">{$goods.spec_name_2|escape}{$lang.colon}</li>
+                      <!--{foreach from=$goods.unispecs.spec_2 item=spec key=id}-->
+                      <li onclick="selectSpec(2, this,{$goods.spec_qty},{$goods.goods_id},{$meal.mealPrice})" class="{if $id eq $goods.spec_id}solid{else}dotted{/if}"><a href="javascript:;"><span>{$spec.name}</span></a></li>
+                      <!--{/foreach}-->
+                    </ul>
+                    <!--{/if}--> 
+                  </div>
+                  <input type="hidden" name="specs[]" value="{$goods.spec_id}" />
+                </dd>
+              </dl>
+              <!--{/foreach}-->
+            </div>
+            <div class="extra">
+              <input type="button" class="btn-alipay btn-alipay-fixed J_SubmitMealOrder" value="{$lang.lijibuy} ({$meal.mealPrice|price_format})" meal_id="{$meal.meal_id}" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"} 

@@ -1,0 +1,31 @@
+<div class="dialog-form">
+  <form method="POST" class="fun-form-style">
+    <div class="form">
+      <div class="dialog-form-bd">
+        <dl>
+        	<dt><span>{$lang.extend_to_users}</span></dt>
+        </dl>
+        <div class="webkit-box textarea">
+          	<textarea name="username" class="flex1 fs12" placeholder="{$lang.extend_to_users_desc}" style="height:90px;"></textarea>
+        </div>
+        <div class="extra">
+          <input type="button" id="gs_submit" class="btn-alipay" value="{$lang.confirm}" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("{$smarty.get.dialog_id}");
+	});
+	$(document.body).find('#gs_submit').unbind('click').on('click', function(){
+		setTimeout(function() {
+			DialogManager.close("{$smarty.get.dialog_id}");
+		}, 1000);
+		var id = '{$smarty.get.id}';
+		ajaxSubmit($('form').attr('method'), "{url route='seller_coupon/extend' id=$smarty.get.id}", $('form'));
+	});
+});
+</script>

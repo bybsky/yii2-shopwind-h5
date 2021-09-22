@@ -1,0 +1,62 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-coupon" class="mb10">
+    <div class="my-coupon my-cashcard"> 
+      
+      <!--AJAX DATA-->
+      <div class="clearfix J_InfiniteList">
+        <div class="infinite-result clearfix hidden"> </div>
+        <div class="infinite-template">
+          <div class="item webkit-box [1]" item_id="[2]">
+            <div class="invalid-sign wind-icon-font" style="display:[3]">&#xe6a4;</div>
+            <div class="lp flex1 ml5">
+              <div class="wraper webkit-box">
+                <div class="d-tail flex1">
+                  <div class="store-name overflow-ellipsis">[4]</div>
+                  <span class="vp"> <span>{$lang.cardNo}{$lang.colon}[5]</span> </span> <span class="vp"> <span style="display:[6]">{$lang.effective_time}{$lang.colon}[7]</span> <span style="display:[8]">{$lang.effective_time}{$lang.colon}{$lang.no_limit}</span> </span> </div>
+              </div>
+            </div>
+            <div class="rp relative mr5">
+              <div class="info box-align-center">
+                <div class="wraper">
+                  <p class="cv"><ins>&yen;</ins><br />
+                    [9]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, cashcard) {
+				html += sprintf(template.html(), 
+					$.inArray(cashcard.valid, [undefined, '', 0]) > -1 ? 'invalid-item' : '',
+					cashcard.id, 
+					$.inArray(cashcard.valid, [undefined, '', 0]) > -1 ? 'block' : 'none',
+					cashcard.name, 
+					cashcard.cardNo,
+					cashcard.expire_time ? 'block' : 'none', 
+					cashcard.expire_time, 
+					cashcard.expire_time ? 'none' : 'block',
+					cashcard.money
+				);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

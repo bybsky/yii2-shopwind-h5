@@ -1,0 +1,171 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+  <div class="page-actions"><i></i></div>
+  <div class="page-apply">
+    <div class="apply-submit">
+      <form class="fun-form-style" method="post" enctype="multipart/form-data">
+        <div class="form">
+          <dl class="J_Stype J_PopLayer J_PopLayer__INIT" data-PopLayer="{ popLayer:'.J_StypePopLayer',top:'35%', fixedBody: true}">
+            <dd class="webkit-box"> <span>{$lang.stype}</span>
+              <p class="input flex1"></p>
+              <i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+          </dl>
+          <div class="pop-layer-common stype-pop-layer J_StypePopLayer" data-PopLayerItems="{ callback: stypeItemCallback}">
+            <div class="wraper has-title no-ft">
+              <div class="hd"><i class="closed popClosed"></i>{$lang.stype}</div>
+              <ul class="bd radioUiWraper">
+                <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if $store.stype eq 'personal' || !$store}active{/if} {if $store}disabled{/if}">
+                  <div class="lp flex1 webkit-box"><span class="pl10">{$lang.personal}</span></div>
+                  <div class="input rp box-align-center pr10" style="margin-right:10px;">
+                    <input type="radio" name="stype" value="personal" {if $store.stype eq 'personal' || !$store} checked="checked" {/if}>
+                  </div>
+                </li>
+                <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if $store.stype eq 'company'}active{/if}  {if $store}disabled{/if} border-b-0">
+                  <div class="lp flex1 webkit-box"><span class="pl10">{$lang.company}</span></div>
+                  <div class="input rp box-align-center pr10" style="margin-right:10px;">
+                    <input type="radio" name="stype" value="company" {if $store.stype eq 'company'} checked="checked" {/if}>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <dl class="clearfix">
+            <dd class="webkit-box"> <span>{$lang.owner_name}</span>
+              <input type="text" name="owner_name" value="{$store.owner_name|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.note_for_owner_name}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl class="clearfix J_IdentityCard">
+            <dd class="webkit-box"> <span>{$lang.identity_card}</span>
+              <input type="text" name="identity_card" value="{$store.identity_card|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.identity_card}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dd class="webkit-box"> <span>{$lang.tel}</span>
+              <input type="text" name="tel" value="{$store.tel|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.tel}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+
+        <dl class="mt10 clearfix">
+          <dd class="webkit-box"> <span>{$lang.store_name}</span>
+            <input type="text" name="store_name" value="{$store.store_name|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.store_name}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl class="J_Category J_PopLayer J_PopLayer__INIT" data-PopLayer="{ popLayer:'.J_CategoryPopLayer',top:'35%', fixedBody: true}">
+          <dd class="webkit-box"> <span>{$lang.store_category}</span>
+            <p class="flex1"></p>
+            <i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+        </dl>
+        <div class="pop-layer-common category-pop-layer J_CategoryPopLayer">
+          <div class="wraper has-title no-ft">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.store_category}</div>
+            <ul class="bd radioUiWraper">
+              <!--{foreach from=$scategories item=category key=key name=fe_category}-->
+              <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if $smarty.foreach.fe_category.first}active{/if} {if $smarty.foreach.fe_category.last}border-b-0{/if}">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$category}</span></div>
+                <div class="input rp box-align-center pr10" style="margin-right:10px;">
+                  <input type="radio" name="cate_id" value="{$key}" {if $smarty.foreach.fe_category.first} checked="checked" {/if}>
+                </div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+          </div>
+        </div>
+        <dl class="J_Sgrade J_PopLayer J_PopLayer__INIT" data-PopLayer="{ popLayer:'.J_SgradePopLayer',top:'35%', fixedBody: true}">
+          <dd class="webkit-box"> <span>{$lang.store_grade}</span>
+            <p class="input flex1"></p>
+            <i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+        </dl>
+        <div class="pop-layer-common sgrade-pop-layer J_SgradePopLayer">
+          <div class="wraper has-title no-ft">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.store_grade}</div>
+            <ul class="bd radioUiWraper">
+              <!--{foreach from=$sgrades item=sgrade name=fe_sgrade}-->
+              <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if $store.sgrade eq $sgrade.grade_id || (!$store && $smarty.foreach.fe_sgrade.first)}active{/if} {if $smarty.foreach.fe_sgrade.last}border-b-0{/if}">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$sgrade.grade_name}</span></div>
+                <div class="input rp box-align-center pr10" style="margin-right:10px;">
+                  <input type="radio" name="sgrade" value="{$sgrade.grade_id}" {if $store.sgrade eq $sgrade.grade_id || (!$store && $smarty.foreach.fe_sgrade.first)} checked="checked" {/if}>
+                </div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+          </div>
+        </div>
+
+        <dl class="mt10 edit-region J_Region">
+          <dd class="webkit-box"> <span>{$lang.region}</span>
+            <input type="hidden" name="region_id" value="{$store.region_id}" class="mls_id" />
+            <input type="hidden" name="region_name" value="{$store.region_name|escape}" class="mls_names" />
+            <p class="flex1 mls_names box-align-center gray">{$store.region_name|escape}</p>
+            <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+        </dl>
+        <dl class="clearfix">
+          <dd class="webkit-box"> <span>{$lang.address}</span>
+            <input type="text" name="address" value="{$store.address|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.address}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl class="clearfix">
+          <dd class="webkit-box"> <span>{$lang.zipcode}</span>
+            <input type="text" name="zipcode" value="{$store.zipcode|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.zipcode}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl>
+          <dt><span>{$lang.upload_image}</span></dt>
+          <dd class="webkit-box add-image">
+            <div class="mr10">
+              <div class="add-image-btn"> <i class="wind-icon-font">&#xe6e5;</i> 
+                <!--{if $store.identity_front}--><img src="{$store.identity_front|url_format}" /><!--{/if}-->
+                <input type="file" name="identity_front" onChange="getTempPath(this);" />
+              </div>
+            </div>
+            <p class="flex1 mr10">{$lang.note_for_identity}</p>
+            <div class="mr10">
+              <div class="add-image-btn"> <i class="wind-icon-font">&#xe6e5;</i> 
+                <!--{if $store.identity_back}--><img src="{$store.identity_back|url_format}" /><!--{/if}-->
+                <input type="file" name="identity_back" onChange="getTempPath(this);" />
+              </div>
+            </div>
+            <p class="flex1">{$lang.note_for_identity}</p>
+          </dd>
+        </dl>
+        
+        <dl class="J_BusinessLicense">
+          <dt><span>{$lang.upload_permit}</span></dt>
+          <dd class="webkit-box add-image">
+            <div class="mr10">
+              <div class="add-image-btn"> <i class="wind-icon-font">&#xe6e5;</i> 
+                <!--{if $store.business_license}--><img src="{$store.business_license|url_format}" /><!--{/if}-->
+                <input type="file" name="business_license" onChange="getTempPath(this);" />
+              </div>
+            </div>
+            <p class="flex1 mr10">{$lang.note_for_permit}</p>
+          </dd>
+        </dl>
+        <div class="extra">
+          <input class="btn-alipay J_AjaxSubmit" type="submit" value="{$lang.verify_open}" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+$(function(){	
+	$('.J_Region').ajaxSwitcher({
+		model: '.switcher-region',
+		url: url(['mlselection/index', { type:'region'}]),
+		title:lang.select_region,
+		//startId: 2
+	});
+  stypeItemCallback($(this).find('input[name="stype"]:checked'));
+});
+function stypeItemCallback(obj) {
+  if(obj.val() == 'company') {
+    $('.J_IdentityCard').hide();
+    $('.J_BusinessLicense').show();
+  } else {
+    $('.J_IdentityCard').show();
+    $('.J_BusinessLicense').hide();
+  }
+}
+</script>
+{include file="footer.html"}

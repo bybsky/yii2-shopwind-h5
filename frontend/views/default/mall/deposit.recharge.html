@@ -1,0 +1,82 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="deposit-withdraw deposit-recharge">
+      <form method="post" id="deposit-recharge" class="fun-form-style">
+      	<div class="title">
+        <a class="fs14  webkit-box" href="{url route='deposit/rechargelist'}"><span class="flex1">{$lang.deposit_rechargelist}</span><i class="wind-icon-font fs12">&#xe629;</i></a>
+      </div>
+      <div class="title border-top">
+        <a class="fs14  webkit-box" href="{url route='deposit/cardrecharge'}"><span class="flex1">{$lang.rechargecard}</span><i class="wind-icon-font fs12">&#xe629;</i></a>
+      </div>
+        <div class="form">
+          <dl class="mt10 J_PopLayer" data-PopLayer="{ popLayer:'.J_PaymentPopLayer',top:'35%', fixedBody: false}">
+            <dd class="webkit-box"> <span>{$lang.payment_channel}</span>
+              <p class="flex1 pr5 J_GetSelectPayment"></p>
+              <i class="wind-icon-font mr10 f99 box-align-center">&#xe629;</i>
+          </dl>
+          <div class="pop-layer-common pop-wrap-b payment-pop-layer J_PaymentPopLayer">
+            <div class="wraper has-title no-ft">
+              <div class="hd"><i class="closed popClosed"></i>{$lang.select_recharge_method}</div>
+              <div class="bd">
+                <ul class="ui-list-icons clearfix radioUiWraper">
+                  <!--{foreach from=$payments item=payment name=fe_payment}-->
+                  <li class="pt5 pl10 webkit-box popClosed radioUiStyle radioUiStyle1 border-bottom {if $smarty.foreach.fe_payment.first}active{/if}" {if $smarty.foreach.fe_payment.last} style="border-bottom:0"{/if}>
+                    <div class="lp flex1 webkit-box"> <span class="icon-payment icon-payment-{$payment.code}"></span> <span class="block flex1 ml10 mr10 {if $payment.desc}two-col{/if}">
+                      <p class="name fs13">{$payment.name}</p>
+                      <p class="fs12 desc hidden">{$payment.desc}</p>
+                      </span> </div>
+                    <div class="input rp box-align-center">
+                      <input type="radio" name="payment_code" id="payment_{$payment.code}" value="{$payment.code}" {if $smarty.foreach.fe_payment.first} checked="checked"{/if} />
+                    </div>
+                  </li>
+                  <!--{/foreach}-->
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.money}</span>
+              <input type="text" name="money" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_recharge_money}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.remark}</span>
+              <input type="text" name="remark" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_recharge_remark}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+        </div>
+        <div class="extra padding10 mt10">
+          <input class="btn-alipay btn-alipay-gray" type="submit" value="{$lang.next_step}" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('#deposit-recharge').submit(function(){
+		if($('input[type="submit"]').hasClass('btn-alipay-gray')) {
+			return false;
+		}
+		else {
+			var money = $.trim($(this).find('input[name="money"]').val());
+			if(money == '' || money <= 0 || isNaN(money)) {
+				layer.open({ content:lang.input_recharge_money, time: 5});
+				return false;
+			}
+		}
+	});
+	$('input[name="money"]').keyup(function(){
+		if($.trim($(this).val()) != '') {
+			$('input[type="submit"]').removeClass('btn-alipay-gray');
+		} else $('input[type="submit"]').addClass('btn-alipay-gray');
+	});
+	$('.J_GetSelectPayment').html($('.J_PaymentPopLayer li:first').find('.lp .name').html());
+	$('.J_PaymentPopLayer li').click(function(){
+		$('.J_GetSelectPayment').html($(this).find('.lp .name').html());
+	});
+})
+</script> 
+{include file="footer.html"}

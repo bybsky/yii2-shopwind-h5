@@ -1,0 +1,27 @@
+{include file="user.header.html"}
+<div id="page-my-address" class="mb10">
+<div class="page-body my-address pb20">
+  <!-- {foreach from=$addressList item=address} -->
+  <div class="addr-item mb10">
+    <div class="l1"> <a href="{url route='my_address/edit' addr_id=$address.addr_id}">
+      <div class="wraper">
+        <div class="tp webkit-box">
+          <p class="consignee flex1 overflow-ellipsis mr20">{$address.consignee|escape}</p>
+          <p class="phone fs12">{if $address.phone_mob}{$address.phone_mob}{else}{$address.phone_tel}{/if}</p>
+        </div>
+        <div class="addr bp mt5 f99 fs12">{$address.region_name|escape}{$address.address|escape}</div>
+      </div>
+      </a> </div>
+    <div class="l2 webkit-box">
+      <p class="fs12 block ml10 addr-type {if $address.defaddr}default{else}J_AjaxRequest{/if}" {if !$address.defaddr}uri="{url route='my_address/setindex' addr_id=$address.addr_id}"{/if}><i class="wind-icon-font fs12"></i> 默认地址</p> 
+      <p class="flex1 align-right"> <a href="{url route='my_address/edit' addr_id=$address.addr_id}" class="edit fs12 mr10">{$lang.edit}</a> <a uri="{url route='my_address/delete' addr_id=$address.addr_id}" class="J_AjaxRequest drop fs12">{$lang.drop}</a> </p>
+    </div>
+  </div>
+  <!-- {foreachelse} -->
+  <div class="notice-empty"><i>&#xe715;</i><p class="mb20">{$lang.no_records}</p><a href="{url route='my_address/add' redirect=$smarty.get.redirect}" class="btn-add">立即添加</a></div>
+  <!--{/foreach}--> 
+  <!--{if $addressList}-->
+  <div class="fixed-add-address"><a href="{url route='my_address/add'}">添加新地址</a></div>
+  <!--{/if}--> 
+</div>
+{include file="footer.html"}

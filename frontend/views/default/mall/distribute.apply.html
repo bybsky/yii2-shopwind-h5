@@ -1,0 +1,49 @@
+{include file="user.header.html"}
+<div class="dcenter">
+  <div class="jointo">
+    <div class="banner"> <img  src="{res file='images/member/banner_bg.jpg'}"></div>
+    <div class="join-form">
+      <form class="fun-form-style" method="POST" id="form">
+        <div class="form">
+          <dl>
+            <dd class="webkit-box"> <span>分销店名</span>
+              <input type="text" id="name" name="name" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_user_name}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>联系手机</span>
+              <input type="text" id="phone_mob" name="phone_mob" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_phone}" value="{$visitor.phone_mob}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <div class="extra">
+            <input type="submit" class="btn-alipay J_AjaxSubmit" value="提交申请" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="join-desc">
+      <div class="tit fs14">分销商特权</div>
+      <div class="wrap1">
+        <div class="item webkit-box"> <i class="wind-icon-font" style="color:#33cd32;">&#xe6ec;</i>
+          <div class="info flex1">
+            <p class="fs14 mb5">独立微店</p>
+            <p class="fs12 gray">拥有自己的分销店及推广二维码</p>
+          </div>
+        </div>
+        <div class="item webkit-box"> <i class="wind-icon-font" style="color:#fece00;">&#xe794;</i>
+          <div class="info flex1">
+            <p class="fs14 mb5">销售拿佣金</p>
+            <p class="fs12 gray">分销商卖出商品，可以获得佣金</p>
+          </div>
+        </div>
+        <div class="item webkit-box"> <i class="wind-icon-font" style="color:#36F">&#xe64a;</i>
+          <div class="info flex1">
+            <p class="fs14 mb5">统一发货</p>
+            <p class="fs12 gray">分销商的商品销售统一由供货商直接发货，并提供产品的售后服务</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

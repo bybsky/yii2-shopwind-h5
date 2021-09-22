@@ -1,0 +1,83 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div id="page-member-bind" class="w-full page-auth mt20 mb20">
+    <div class="wrap">
+      <div class="form clearfix w J_TabForm">
+        <form id="member_bind_form" method="post" class="fun-form-style">
+        <div class="form">
+          <div class="each">
+            <dl>
+              <dd class="webkit-box"> <span>{$lang.phone_mob}</span>
+                <input type="text" name="phone_mob" id="phone_mob" class="input flex1 w-full"  placeholder="{$lang.phone_mob}" />
+              </dd>
+            </dl>
+            <dl class="J_PhoneCaptcha captcha">
+              <dd class="captchaCode webkit-box clearfix"> <span>{$lang.yanzhengma}</span>
+                <input type="text" name="code" id="code" class="input flex1 w-full" placeholder="{$lang.phone_captcha}" />
+                <s class="line"></s>
+                <input type="button" id="send_phonecode" class="btn-captcha" value="{$lang.get_captcha}" />
+              </dd>
+            </dl>
+          </div>
+          <div class="extra mt10">
+            <input type="submit" value="{$lang.submit}" class="btn-alipay J_Submit" title="{$lang.submit}" />
+            <input type="hidden" name="redirect" value="{$redirect}" />
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function checkForm(codeType)
+{
+	if(!checkPhone($('#phone_mob'))) {
+		layer.open({ content: lang.phone_mob_invalid});
+		return false;
+	}
+
+	if($.trim($('#code').val()) == ''){
+		layer.open({ content: lang.phone_captcha_empty});
+		return false;
+	}
+	
+	return true;
+}
+
+function checkPhone(o)
+{
+	var phone_mob = $.trim(o.val());
+		
+	if(!is_phone(phone_mob)){
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+$(function(){
+	
+	$('#phone_mob').change(function(){
+		return checkPhone($(this));
+	});
+
+	$('.J_Submit').click(function(){
+		if(checkForm('phone') == true){
+			return true;
+		}
+		return false;
+	});
+	
+	$('#send_phonecode').click(function(){
+		var phone_mob = $.trim($("input[name='phone_mob']").val());
+		if(!is_phone(phone_mob)){
+			layer.open({ content: lang.phone_mob_invalid});
+			return false;
+		}
+		$(this).attr("disabled", true);
+		send_phonecode($(this), { from: "bind", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+	});
+});
+</script> 
+{include file="footer.html"}

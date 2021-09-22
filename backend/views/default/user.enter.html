@@ -1,0 +1,33 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.user}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='user/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='user/add'}">{$lang.add}</a></li>
+      <li><span>登录记录</span></li>
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['user/enter', { id:"{$smarty.get.id}"}]),
+    	colModel : [
+			  { display: '登陆名', name : 'username', width : 100, sortable : false, align: 'center'},
+			  { display: 'ip地址', name : 'ip', width : 100, sortable : true, align: 'center'},
+    	  { display: '所在地区', name : 'region_name', width : 150, sortable :true, align: 'center'},
+			  { display: '登录时间', name : 'add_time', width : 200, sortable : true, align: 'center'}	
+    	],
+		  buttons : [
+			  { display: '<i class="fa fa-step-backward"></i>返回上页', name : 'go_back', bclass : 'go_back', title : '返回上页', onpress : go_back}
+      ],
+      title: '登陆记录'
+   });
+});
+function go_back() {
+	history.go(-1);
+}
+</script> 
+{include file="footer.html"}

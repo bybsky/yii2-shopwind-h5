@@ -1,0 +1,31 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.integral_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='integral/index'}">{$lang.integral_list}</a></li>
+      <li><a class="btn1" href="{url route='integral/setting'}">{$lang.integral_setting}</a></li>
+      <li><span>{$lang.record}</span></li>
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['integral/logs', { id:'{$user.userid}'}]),
+    	colModel : [
+			{ display: '{$lang.type}', name : 'type', width : 200, sortable : true, align: 'center'},
+			{ display: '{$lang.changes}', name : 'changes', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.balance}', name : 'balance', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.state}', name : 'state', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.add_time}', name : 'add_time', width : 200, sortable : true, align: 'center'},
+			{ display: '{$lang.flag}', name : 'flag', width : 300, sortable : true, align: 'center'}		
+    	],
+    	sortname: "add_time",
+    	sortorder: "desc",
+    	title: '{$lang.username} : <em class="red" style="font-size:14px">{$user.username}</em>'+' {$lang.integral_list}'
+    });
+});
+</script> 
+{include file="footer.html"} 

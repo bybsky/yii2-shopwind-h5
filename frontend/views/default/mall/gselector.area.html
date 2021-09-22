@@ -1,0 +1,48 @@
+<form method="post">
+  <div class="dialog-form">
+    <div class="dialog_content_scroll">
+      <div class="dialog-form-bd"> 
+        <ul class="select_area_form">
+                <!--{foreach from=$area item=province name=fe_province}-->
+                <div class="regionGroup">
+                    <li class="webkit-box pl10 pr10 border-bottom">
+                        <div class="flex1">
+                            <div class="webkit-box checkboxUiStyle checkboxUiStyle1 J_Province">
+                                <span class="input box-align-center mr5"><input type="checkbox" name="province[{$province.region_id}]" id="province[{$province.region_id}]" fileds="province" value="{$province.region_id}" title="{$province.region_name}"></span><span class="overflow-ellipsis fs13 flex1" >{$province.region_name}<i class="J-count"></i></span>
+                            </div>
+                        </div>
+                        <span class="J_ExpandCity expand box-align-center pl20"></span>
+                    </li>
+                    <!--{if $province.cities}-->
+                    <ul class="cityList hidden" province_id="{$province.region_id}">
+                        <!--{foreach from=$province.cities item=city}-->
+                        <li class="webkit-box J-city checkboxUiStyle checkboxUiStyle1 pl20 pr10 border-bottom">
+                            <span class="input box-align-center mr5"><input type="checkbox" name="city[{$province.region_id}][]" fileds="city" id="city{$city.region_id}" value="{$city.region_id}" title="{$city.region_name}"></span><span class="overflow-ellipsis fs13 flex1" >{$city.region_name}</span>
+                        </li>
+                        <!--{/foreach}-->
+                    </ul>
+                    <!--{/if}-->
+                </div>
+                <!--{/foreach}-->
+            </ul>
+      </div>
+    </div>
+    <div class="clearfix">
+      <p class="fixed-gap"></p>
+      <input type="button" value="{$lang.submit}" id="gs_submit" class="btn-alipay" />
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+$(function(){
+	bind('{$smarty.get.id}');
+	$('#gs_submit').click(function(){
+		gs_callback('{$smarty.get.id}');
+	});
+	
+	$('#cancel_button').click(function(){
+        DialogManager.close('{$smarty.get.id}');
+    });
+	
+});
+</script>

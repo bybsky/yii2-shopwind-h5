@@ -1,0 +1,20 @@
+<!--{if !$widget_data.ad1_image_url && !$widget_data.ad2_image_url && !$widget_data.ad3_image_url && !$widget_data.model_name}-->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!--{else}-->
+<div class="floor floor3">
+	{if $widget_data.model_name}<div class="mt" style="color:{$widget_data.model_color};"><em style="border-color:{$widget_data.model_color};" class="vline vleft"></em><span class="fs14">{$widget_data.model_name|escape}</span><em  style="border-color:{$widget_data.model_color};" class="vline vright"></em></div>{/if}
+	<div class="mc">
+    	<div class="webkit-box">
+            <div class="lp">
+                <a href="{$widget_data.images.0.ad_link_url}"><img class="lazyload" initial-url="{$widget_data.images.0.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a>
+            </div>
+            <div class="rp">
+            	<ul>
+                	<li><a href="{$widget_data.images.1.ad_link_url}"><img class="lazyload" initial-url="{$widget_data.images.1.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a></li>
+                	<li><a href="{$widget_data.images.2.ad_link_url}"><img class="lazyload" initial-url="{$widget_data.images.2.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a></li>
+                </ul>
+            </div>
+        </div>
+	</div>
+</div>
+<!--{/if}-->

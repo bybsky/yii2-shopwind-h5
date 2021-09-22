@@ -1,0 +1,95 @@
+{use class="common\library\Def"}
+{include file="user.header.html"} 
+<div id="main">
+  <div class="my-store">
+    <form method="post" id="my-store" class="fun-form-style" enctype="multipart/form-data">
+      <div class="form">
+        <div class="store-slides bgf"> 
+          <!--{foreach from=$store.store_slides item=item name=fe_item key=key}-->
+          <div class="item">
+            <p class="webkit-box"> <img src="{$item.url|url_format}" class="flex1" />
+              <input type="hidden" name="store_slides_url[]" value="{$item.url}" />
+            </p>
+            <div class="webkit-box border-bottom">
+              <span class="mt fs14 ml10 gray">{$lang.link_url}</span>
+              <input type="text" class="input flex1" name="store_slides_link[]" value="{$item.link}" placeholder="http://" />
+              <!--<i class="wind-icon-font fs14 btn mr10 gray mt">&#xe667;</i>
+              <i class="wind-icon-font fs14 btn mr10 gray mt">&#xe666;</i>-->
+              <i class="wind-icon-font fs14 btn mr10 gray mt J_Del">&#xe670;</i>
+              <div class="gray fs13 mr5 relative modify mt">
+                <div class="filePicker" id="filePicker{$key}"></div>
+                <i class="wind-icon-font fs14 gray">&#xe6f6;</i>
+              </div>
+            </div>
+          </div>
+          <!--{/foreach}--> 
+        </div>
+        <div ectype="template" class="hidden">
+          <div class="item">
+            <p class="webkit-box"> <img src="[1]" class="flex1" />
+              <input type="hidden" ecname="store_slides_url[]" value="[2]" />
+            </p>
+            <div class="webkit-box border-bottom">
+              <span class="mt fs14 ml10 gray">{$lang.link_url}</span>
+              <input type="text" class="input flex1" name="store_slides_link[]" value="" placeholder="http://" />
+              <!--<i class="wind-icon-font fs14 btn mr10 gray mt">&#xe667;</i>
+              <i class="wind-icon-font fs14 btn mr10 gray mt">&#xe666;</i>-->
+              <i class="wind-icon-font fs14 btn mr10 gray mt J_Del">&#xe670;</i>
+              <div class="gray fs13 mr5 relative modify mt">
+                <div class="filePicker"></div>
+                <i class="wind-icon-font fs14 gray">&#xe6f6;</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="webkit-box relative bgf pt10 pb10">
+          <div class="filePicker multiple" id="filePicker"></div>
+          <div class="flex1 title ml10">
+            <h3>{$lang.store_slides}</h3>
+            <span class="gray mt5 mr10 block">{$lang.change_store_slides_desc}</span> </div>
+          <i class="wind-icon-font mr10 gray fs14">&#xe629;</i> </div>
+        <div class="extra">
+          <p class="fixed-gap"></p>
+          <input type="submit" class="btn-alipay J_AjaxSubmit btn-alipay-fixed" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	$('.filePicker').compressUpload({
+		server: url(['upload/index']),
+		pick: '.filePicker',
+		fileVal: 'store_slides_url',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_STORE_SLIDES}",
+		},
+		compressWidth: 640,
+		compressHeight:250,
+		callback: function(file, response, pick, target) {
+			if(target != null && target.parent().hasClass('modify')) {
+				target.parents('.item').find('img').attr('src', url_format(response.retval));
+				target.parents('.item').find('input[name="store_slides_url[]"]').val(response.retval);
+				ajaxSubmit($('form').attr('method'), url(['my_store/slides', { from:'modify'}]), $('form'), null);
+			}
+			else 
+			{
+				var template = $('[ectype="template"]').clone(true);
+				template.find('.filePicker').attr('id', 'filePicker'+Math.random()).parent().addClass('modify');
+				$('.store-slides').append(sprintf(replace_all(template.html(), 'ecname', 'name'), url_format(response.retval), response.retval));
+				ajaxSubmit($('form').attr('method'), url(['my_store/slides', { from:'upload'}]), $('form'), null);
+			}
+		}
+	});
+	
+	$('body').on('click', '.J_Del', function(){
+		var index = $(".store-slides .J_Del").index(this);
+		ajaxSubmit($('form').attr('method'), url(['my_store/deleteslides', { id: index}]), null, null);
+		$(this).parents('.item').remove();
+	});
+});
+</script> 
+{include file="footer.html"}

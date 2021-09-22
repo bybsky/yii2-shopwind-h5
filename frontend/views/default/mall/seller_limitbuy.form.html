@@ -1,0 +1,164 @@
+{use class="common\library\Def"}
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-promotool" class="page-promotool">
+    <div class="seller-limitbuy">
+      <div class="promotool-form limitbuy-form">
+        <form method="post" class="fun-form-style">
+          <div class="form">
+            <dl>
+              <dt><span>{$lang.limitbuy_name}</span></dt>
+              <dd class="webkit-box">
+                <input type="text" id="title" name="title" value="{$limitbuy.title}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.limitbuy_name}" style="padding-left:15px;" />
+                <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+            </dl>
+            <dl>
+              <dt><span>{$lang.start_end_time}</span></dt>
+            </dl>
+            <dl class="time_limit">
+              <dd class="webkit-box"> <span>{$lang.start_time}</span>
+                <input type="text" class="input center" name="start_time" value='{$limitbuy.start_time|default:$now|date_format:"%Y-%m-%d %H:%M"}' id="add_time_from" readonly style="text-align:left" />
+              </dd>
+            </dl>
+            <dl>
+              <dd class="webkit-box"><span>{$lang.end_time}</span>
+                <input type="text" class="input center" name="end_time" value='{$limitbuy.end_time|default:$now|date_format:"%Y-%m-%d %H:%M"}' id="add_time_to" readonly style="text-align:left" />
+              </dd>
+            </dl>
+            <dl>
+              <dt><span>{$lang.pro_image}</span></dt>
+            </dl>
+            <div class="bgf padding10 webkit-box relative" >
+              <div class="add-image-btn">
+                <div class="filePicker"></div>
+                <i class="wind-icon-font">&#xe6e8;</i>
+                <!--{if $limitbuy.image}--> 
+                <img src="{$limitbuy.image|url_format}" width="50" height="50" /> 
+                <!--{/if}-->
+                <input type="hidden" name="image" value="{$limitbuy.image}" />
+              </div>
+              <p class="fs12 gray flex1 ml10">{$lang.pro_image_note}<br />
+                <!--{if $limitbuy.image}--><span class="mt10 inline-block J_AjaxRequest" uri="{url route='seller_limitbuy/deleteimage' id=$limitbuy.id}" confirm="{$lang.drop_pro_image_confirm}"><i class="wind-icon-font">&#xe671;</i>{$lang.drop_pro_image}</span><!--{/if}--> 
+              </p>
+            </div>
+            <dl>
+              <dt> <a href="javascript:;" gs_id="seller_limitbuy" gs_name="goods_name" gs_callback="gs_callback" gs_title="{$lang.gselector}" gs_type="goods" gs_store_id="{$visitor.store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" gs_class="simple-blue scroll" gs_position="bottom" class="webkit-box"><span class="flex1">{$lang.gselector}</span><i class="wind-icon-font mr10 fs12">&#xe629;</i></a></dt>
+            </dl>
+            <div class="goods-list bgf">
+              <div class="selectedGoods hidden" ectype="selected">
+                <div class="item">
+                  <div class="webkit-box pl10 pr10 pt5 pb5">
+                  	<img src="">
+                    <p class="name flex1 goods-name mt10"></p>
+                    <input type="hidden" name="goods_id" value="">
+                  </div>                  
+                  <div ectype="spec_list" class="proSpec">
+                    <ul ectype="spec_hd" class="webkit-box">
+                      <li class="flex1 pl5">{$lang.goods_spec}</li>
+                      <li class="flex1">{$lang.stock}</li>
+                      <li class="flex1">{$lang.price}</li>
+                      <li class="flex1">{$lang.discount}</li>
+                      <li class="flex1">{$lang.type}</li>
+                    </ul>
+                  </div>
+                  <div ectype="template" class="hidden">
+                    <ul ectype="spec_item" class="webkit-box">
+                      <li class="flex1 pl5">
+                        <input ecname="spec_id[]" value="[1]" type="hidden">
+                        [2]</li>
+                      <li class="flex1">[3]</li>
+                      <li class="flex1">
+                        <input ecname="price[[4]]" type="hidden" value="[5]" />
+                        [6]</li>
+                      <li class="flex1">
+                        <input ecname="pro_price[[7]]" type="text" value="[8]" />
+                      </li>
+                      <li class="flex1">
+                        <select ecname="pro_type[[9]]">
+                          <option value="price" selected="[10]">{$lang.yuan}</option>
+                          <option value="discount" selected="[11]">{$lang.zhe}</option>
+                        </select>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="padding10 fs12 gray center J_NoSelected">{$lang.no_select_goods}</div>
+            </div>
+            <div class="extra" style="margin-top:50px;">
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("seller_limitbuy");
+	});
+	
+	$("#add_time_from").datetimePicker({
+        title: '{$lang.start_time}'
+		//,times: function () { return false;}
+     });
+	 $("#add_time_to").datetimePicker({
+        title: '{$lang.end_time}'
+		//,times: function () { return false;}
+     });
+	 
+	 $('.filePicker').compressUpload({
+		server: url(['upload/index']),
+		pick: '.filePicker',
+		fileVal: 'image',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_LIMITBUY}"
+		},
+		crop: false,
+		callback: function(file, response, pick, target) {
+			$(pick).parent().find('img').remove();
+			$(pick).parent().append('<img src="'+url_format(response.retval)+"?"+Math.random()+'" width="50" height="50" />');
+			$('input[name="image"]').val(response.retval);
+		}
+	});
+
+	gs_query_info({$limitbuy.goods_id|default:0}, {$limitbuy.id|default:0});
+})
+
+function gs_callback(id, allId)
+{
+	DialogManager.close(id);
+	gs_query_info(allId, 0);
+}
+
+function gs_query_info(id, toolId)
+{
+	$.getJSON(url(['seller_limitbuy/query']),{ id:id, toolId: toolId}, function(data) {
+		if(data.done){
+			if(data.retval) {
+				var goods = data.retval;
+				$('*[ectype="selected"]').show().find('img').attr('src', url_format(goods.default_image)).next('.goods-name').html(goods.goods_name).next('input[name="goods_id"]').val(goods.goods_id);
+			
+				$('*[ectype="spec_list"]').find('[ectype="spec_item"]').remove();
+				$('.J_NoSelected').hide();
+				
+				var html = '';
+				var template = $('*[ectype="template"]').clone(true);
+				$.each(goods.goodsSpec,function(i,item){
+					html += sprintf(replace_all(template.html(), 'ecname', 'name'), item.spec_id, item.spec, item.stock, item.spec_id, item.price, item.price, item.spec_id, item.pro_price ? item.pro_price : '', item.spec_id, (item.pro_type == 'price') ? 'selected' : '', (item.pro_type != 'price') ? 'selected' : '');				
+				});
+				html = replace_all(html, 'selected=""', '');
+				$('*[ectype="spec_list"]').append(html);
+			}
+			if($('*[ectype="spec_list"]').html() == '') {
+				$('.J_NoSelected').show();
+			}
+		}
+	});
+}
+</script> 
+{include file="footer.html"}

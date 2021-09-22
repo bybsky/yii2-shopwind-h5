@@ -1,0 +1,64 @@
+{include file="header.html"}
+<div id="main">
+  <div class="search-article article-list"> 
+    <!--TAB-->
+    <div class="listTab">
+      <div class="fixed-gap"></div>
+      <div class="fixed-bd scroll active-line clearfix">
+        <ul class="items clearfix">
+          <li><a href="{url route='article/index'}" class="{if !$smarty.get.cate_id}active{/if}"><span>{$lang.new_article}</span></a></li>
+          <!--{foreach from=$acategories item=item name=fe_item}--> 
+          <!--{if $smarty.foreach.fe_item.iteration le 3}-->
+          <li> <a href="{url route='article/index' cate_id=$item.cate_id}" class="{if $smarty.get.cate_id eq $item.cate_id}active{/if}"> <span>{$item.cate_name|escape}</span> </a> </li>
+          <!--{/if}--> 
+          <!--{/foreach}-->
+        </ul>
+      </div>
+    </div>
+    <div class="form">
+      <form method="get" class="relative" action="{url route='article/index'}">
+        <!--{if !$app->urlManager->enablePrettyUrl}-->
+        <input name="r" value="article/index" type="hidden" />
+        <!--{/if}-->
+        <input name="cate_id" value="{$smarty.get.cate_id}" type="hidden" />
+        <input name="keyword" type="text" value="{$smarty.get.keyword}" class="input" />
+        <input type="submit" value="{$lang.search}" class="submit" />
+      </form>
+    </div>
+    <div class="article-list">
+      <div class="content" style="padding:0;"> 
+        
+        <!--AJAX DATA-->
+        <div class="squares clearfix J_InfiniteList">
+          <ul class="infinite-result list clearfix hidden">
+          </ul>
+          <div class="infinite-template">
+            <li> <a class="webkit-box" href="[1]">
+              <p class="flex1 overflow-ellipsis">[2]<span class="gray block">[3]</span></p>
+              <i class="wind-icon-font">&#xe629;</i> </a> </li>
+          </div>
+          <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+      		<div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+      		<div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+      		<div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+            <p>{$lang.no_records}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, article) {
+				html += sprintf(template.html(), url(['article/view', { id:article.article_id}]), article.title, article.add_time);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

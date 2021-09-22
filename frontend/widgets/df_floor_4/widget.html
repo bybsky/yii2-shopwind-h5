@@ -1,0 +1,23 @@
+<!--{if !$widget_data.ad1_image_url && !$widget_data.ad2_image_url && !$widget_data.ad3_image_url && !$widget_data.model_name}-->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!--{else}-->
+<div class="floor floor4">
+	{if $widget_data.model_name}<div class="mt" style="color:{$widget_data.model_color};"><em style="border-color:{$widget_data.model_color};" class="vline vleft"></em><span class="fs14">{$widget_data.model_name|escape}</span><em  style="border-color:{$widget_data.model_color};" class="vline vright"></em></div>{/if}
+	<div class="mc">
+    	<ul class="webkit-box top-images">
+            <!--{foreach from=$widget_data.top_images item=image}-->
+            <li class="flex1">
+                <a href="{$image.ad_link_url}"><img class="lazyload" initial-url="{$image.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+        <ul class="webkit-box bottom-images">
+            <!--{foreach from=$widget_data.bottom_images item=image}-->
+            <li class="flex1">
+                <a href="{$image.ad_link_url}"><img class="lazyload" initial-url="{$image.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+	</div>
+</div>
+<!--{/if}-->

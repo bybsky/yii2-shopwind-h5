@@ -1,0 +1,68 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.msg_manage}</p>
+    <ul class="subnav">
+	  <li><a class="btn1" href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+      <li><a class="btn1" href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+      <li><a class="btn1" href="{url route='msg/user'}">{$lang.msguser}</a></li>
+      <li><a class="btn1" href="{url route='msg/add'}">{$lang.addmsg}</a></li>
+      <li><span>{$lang.msgtemplate}</span></li>
+      <li><a class="btn1" href="{url route='msg/send'}">{$lang.sendmsg}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="msg/template" />
+      {$lang.template_id}
+      <input class="ml10" type="text" name="templateId" value="{$smarty.get.templateId|escape}" />
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='msg/template'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['msg/template', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 100, sortable : false, align: 'center', className: 'handle'},
+        { display: '{$lang.smsplat}', name : 'code', width : 100, sortable : false, align: 'center'},
+        { display: '{$lang.sms_type}', name : 'scene', width : 100, sortable : false, align: 'center'},
+        { display: '{$lang.sign_name}', name : 'signName', width : 100, sortable : false, align: 'center'},
+        { display: '{$lang.template_id}', name : 'templateId', width : 100, sortable : false, align: 'center'},
+			  { display: '{$lang.content}', name : 'content', width: 470, sortable : false, align : 'center'},
+        { display: '{$lang.add_time}', name : 'add_time', width : 150, sortable : false, align: 'center'}		
+    	],
+      buttons : [
+        { display: '<i class="fa fa-plus"></i>{$lang.add_template}', name : 'add', bclass : 'add', title : '{$lang.add_template}', onpress : fg_operate },
+        { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+      ],
+		  sortname: "id",
+    	sortorder: "desc",
+    	title: '{$lang.msgtemplate_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+  if(name == 'add'){
+		window.location.href = "{url route='msg/addtemplate'}";
+		return false;
+	}
+
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function() {
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	    if($('.trSelected',bDiv).length == 0) {
+        layer.msg(lang.no_selected_item);
+			  return false;
+	    }
+      fg_delete(itemlist,'msg', 'deletetemplate');
+	}
+}
+</script> 
+{include file="footer.html"}

@@ -1,0 +1,134 @@
+{include file="header.html"}
+<div id="main">
+  <div class="page-store page J_page">
+    <div class="store-info">
+      <div class="store-banner"> 
+        <!--{if $store.store_banner}--> 
+        <img src="{$store.store_banner|url_format}" height="150" />
+        <!--{/if}--> 
+      </div>
+      <div class="d-info clearfix">
+        <h3 class="float-left ml5"><a class="block" href="{url route='store/index' id=$store.store_id}"><img src="{$store.store_logo|url_format}" /></a></h3>
+        <div class="name-and-credit float-left">
+          <p class="name" style="margin-top:8px;"><a href="{url route='store/index' id=$store.store_id}">{$store.store_name}</a></p>
+          <p><!--{if $store.credit_value ge 0}--><img src="{$store.credit_image|url_format}" /><!--{/if}--></p>
+        </div>
+        <div class="collect clearfix"> 
+          <!--{if $store.collected}-->
+          <div class="collect-btn collected">已收藏</div>
+          <!--{else}-->
+          <div class="collect-btn J_AjaxRequest" uri="{url route='my_favorite/add' item_id=$store.store_id type='store'}">收藏</div>
+          <!--{/if}-->
+          <div class="collect-cn">
+            <p class="num">{$store.collects|default:0}</p>
+            <p class="txt">粉丝</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="store-menus">
+      <ul class="webkit-box">
+        <li class="flex1"><a class="block center active fs14" href="{url route='store/index' id=$store.store_id}"><span>首页</span></a></li>
+        <li class="flex1"><a class="block center fs14" href="{url route='store/search' id=$store.store_id}"><span>全部商品</span></a></li>
+        <li class="flex1"><a class="block center fs14" href="{url route='store/search' id=$store.store_id new=1}"><span>上新</span></a></li>
+        <li class="flex1"><a class="block center fs14" href="{url route='store/limitbuy' id=$store.store_id}"><span>促销</span></a></li>
+      </ul>
+    </div>
+    
+    <!--{if $store.store_slides}-->
+    <div class="store-index-slide">
+      <div id="slides" class="scroller J_Slides">
+        <ul class="bd clearfix">
+          <!--{foreach from=$store.store_slides item=slide name=fe_slide}--> 
+          <!--{if $slide.url && $slide.link}-->
+          <li {if !$smarty.foreach.fe_slide.first} class="hidden"{/if}><a href="{$slide.link}"><img src="{$slide.url|url_format}" /></a></li>
+          <!--{/if}--> 
+          <!--{/foreach}-->
+        </ul>
+        <ul class="hd">
+        </ul>
+      </div>
+    </div>
+    <!--{/if}--> 
+    
+    <!--{if $store.recommendedGoods}-->
+    <div class="rec-goods goods-model-si mt5"> 
+      <!--<h3 class="mt5"><span><em>推荐</em></span></h3>-->
+      <ul class="clearfix">
+        <!--{foreach from=$store.recommendedGoods item=goods name=fe_goods}-->
+        <li class="item"> <a href="{url route='goods/index' id=$goods.goods_id}">
+          <div class="pic"><img src="{$goods.default_image|url_format}" /></div>
+          <p class="goods-name line-clamp-2">{$goods.goods_name|escape}</p>
+          <div class="webkit-box pb5">
+            <p class="price flex1">{$goods.price|price_format}</p>
+            <p class="sales fs10 gray">已售{$goods.sales|default:0}</p>
+          </div>
+          </a> </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--{/if}--> 
+    <!--{if $store.newGoods}-->
+    <div class="new-goods goods-model-si">
+      <h3><span><em>新品</em></span></h3>
+      <ul class="clearfix">
+        <!--{foreach from=$store.newGoods item=goods name=fe_goods}-->
+        <li class="item"> <a href="{url route='goods/index' id=$goods.goods_id}">
+          <div class="pic"><img src="{$goods.default_image|url_format}" /></div>
+          <p class="goods-name line-clamp-2">{$goods.goods_name|escape}</p>
+          <div class="webkit-box pb5">
+            <p class="price flex1">{$goods.price|price_format}</p>
+            <p class="sales fs10 gray">已售{$goods.sales|default:0}</p>
+          </div>
+          </a> </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--{/if}--> 
+    <!--{if $store.saleGoods}-->
+    <div class="hot-goods goods-model-si">
+      <h3><span><em>热卖</em></span></h3>
+      <ul class="clearfix">
+        <!--{foreach from=$store.saleGoods item=goods name=fe_goods}-->
+        <li class="item"> <a href="{url route='goods/index' id=$goods.goods_id}">
+          <div class="pic"><img src="{$goods.default_image|url_format}" /></div>
+          <p class="goods-name line-clamp-2">{$goods.goods_name|escape}</p>
+          <div class="webkit-box pb5">
+            <p class="price flex1">{$goods.price|price_format}</p>
+            <p class="sales fs10 gray">已售{$goods.sales|default:0}</p>
+          </div>
+          </a> </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--{/if}--> 
+    <!--{if $store.hotGoods}-->
+    <div class="new-goods goods-model-si">
+      <h3><span><em>人气</em></span></h3>
+      <ul class="clearfix">
+        <!--{foreach from=$store.hotGoods item=goods name=fe_goods}-->
+        <li class="item"> <a href="{url route='goods/index' id=$goods.goods_id}">
+          <div class="pic"><img src="{$goods.default_image|url_format}" /></div>
+          <p class="goods-name line-clamp-2">{$goods.goods_name|escape}</p>
+          <div class="webkit-box pb5">
+            <p class="price flex1">{$goods.price|price_format}</p>
+            <p class="sales fs10 gray">已售{$goods.sales|default:0}</p>
+          </div>
+          </a> </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--{/if}-->
+    <div class="view-all"> <a href="{url route='store/search' id=$store.store_id}">查看全部商品<i class="wind-icon-font fs13">&#xe629;</i></a> </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	TouchSlide({ slideCell:"#slides",titCell:".hd",mainCell:".bd",effect:"leftLoop", autoPlay:true,autoPage:true, titOnClassName:"active", delayTime:1000, interTime: 5000});
+	
+	<!--{if $signPackage} // 微信分享-->
+	wxshare({ signPackage: {$signPackage}, content: { desc: '{$page.title}', imgUrl:'{$store.store_logo|url_format}'}});
+	<!--{/if}-->
+});
+</script>
+{include file="footer.html"} 

@@ -1,0 +1,103 @@
+{include file="user.header.html"}
+<div class="deposit">
+	<div class="bank">
+		<div class="bank-add">
+			<form method="post" class="fun-form-style">
+				<div class="form">
+                	
+                    <dl class="J_Bank J_PopLayer" data-PopLayer="{ popLayer:'.J_BankPopLayer',top:'35%', fixedBody: true}">
+          				<dd class="webkit-box"> <span>{$lang.bank}</span>
+            			<p class="input flex1" style="color:#222;"></p>
+            			<i class="wind-icon-font mr10 f99 box-align-center">&#xe629;</i> </dd>
+       				</dl>
+                    <!--{if $bankList}-->
+					<div class="pop-layer-common bank-pop-layer J_BankPopLayer">
+    					<div class="wraper has-title no-ft">
+    						<div class="hd"><i class="closed popClosed"></i>{$lang.select_bank}</div>
+      						<div class="bd radioUiWraper">              
+    							<!--{foreach from=$bankList item=bank key=key name=fe_bank}-->
+    							<li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if ($app->controller->action->id eq 'add' && $smarty.foreach.fe_bank.first) || ($card.short_name eq $key)}active{/if} {if $smarty.foreach.fe_bank.last}border-b-0{/if}">
+                        			<div class="lp flex1 webkit-box"><span class="pl10">{$bank}</span></div>
+                        			<div class="input rp box-align-center pr10">
+                                    	<input type="radio" name="short_name" value="{$key}" {if ($app->controller->action->id eq 'add' && $smarty.foreach.fe_bank.first) || ($card.short_name eq $key)}checked="checked"{/if}>
+                                    </div>
+                    			</li>
+                    			<!--{/foreach}-->
+                    		</div>
+                    	</div>
+                    </div>
+                    <!--{/if}-->					
+ 
+                    <dl>
+          				<dd class="webkit-box"> <span>{$lang.card_num}</span>
+            			<input type="text" name="num" value="{$card.num}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.card_num}" />
+            			<i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+       				</dl>
+                    
+                    <dl>
+          				<dd class="webkit-box"> <span>{$lang.account_name}</span>
+            			<input type="text" name="account_name" value="{$card.account_name}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.account_name}" />
+            			<i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+       				</dl>
+                    
+                    <dl class="mt20">
+          				<dd class="webkit-box"> <span>{$lang.open_bank}</span>
+            			<input type="text" name="open_bank" value="{$card.open_bank}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.open_bank}" />
+            			<i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+       				</dl>
+                    
+                    <dl class="J_CardType J_PopLayer" data-PopLayer="{ popLayer:'.J_CardTypePopLayer',top:'35%', fixedBody: true}">
+          				<dd class="webkit-box"> <span>{$lang.card_type}</span>
+            			<p class="input flex1" style="color:#222; "></p>
+            			<i class="wind-icon-font mr10 f99 box-align-center">&#xe629;</i> </dd>
+       				</dl>
+                    
+                    <div class="pop-layer-common cardtype-pop-layer J_CardTypePopLayer">
+    					<div class="wraper has-title">
+    						<div class="hd"><i class="closed popClosed"></i>{$lang.select_card_type}</div>
+      						<div class="bd radioUiWraper">
+                            	<li class="webkit-box radioUiStyle radioUiStyle1 border-bottom  popClosed {if $app->controller->action->id eq 'add' || $card.type eq 'debit'}active{/if}">
+                        			<div class="lp flex1 webkit-box"><span class="pl10">{$lang.debit}</span></div>
+                        			<div class="input rp box-align-center pr10">
+                                    	<input type="radio" name="type" value="debit" {if $app->controller->action->id eq 'add' || $card.type eq 'debit'}checked="checked" {/if}>
+                                    </div>
+                    			</li>
+                                <li class="webkit-box radioUiStyle radioUiStyle1 popClosed {if $card.type eq 'credit'}active{/if}">
+                        			<div class="lp flex1 webkit-box"><span class="pl10">{$lang.credit}</span></div>
+                        			<div class="input rp box-align-center pr10">
+                                    	<input type="radio" name="type" value="credit" {if $card.type eq 'credit'}checked="checked"{/if}>
+                                    </div>
+                    			</li>
+                    		</div>
+                    		<div class="ft"><span class="pop-btn popClosed block">{$lang.closed}</span></div>
+                    	</div>
+                    </div>					
+                    <dl>
+          				<dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+            				<input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+            				<img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> 
+                        </dd>
+        			</dl>
+                    <div class="extra mt10">
+						<input type="submit" class="J_AjaxSubmit btn-alipay" value="{$lang.submit}" /></dd>
+					</dl>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_Bank p').html($('.J_BankPopLayer').find('li.active:last').find('.lp span').html());
+	$('.J_CardType p').html($('.J_CardTypePopLayer').find('li.active:last').find('.lp span').html());
+	
+	$('.J_BankPopLayer li').click(function(){
+		$('.J_Bank p').html($(this).find('.lp span').html());
+	});
+	$('.J_CardTypePopLayer li').click(function(){
+		$('.J_CardType p').html($(this).find('.lp span').html());
+	});
+});
+</script> 
+{include file="footer.html"} 

@@ -1,0 +1,16 @@
+{include file="header.html"}
+<style>
+#footer{ display:none}
+</style>
+<div id="main">
+<div class="pageSearchBox">
+    <div class="true-search-box">
+        <div class="hot-search mt20 ml10 mr10 clearfix">
+            <!--{foreach from=$formSearchBoxKeyword item=searchKeyword}-->
+            <a href="{$searchKeyword.url}" class="mb10 fs12 inline-block"><span>{$searchKeyword.text|escape}</span></a>
+            <!--{/foreach}-->
+        </div>
+    </div>
+</div>
+</div>
+{include file="footer.html"} 

@@ -1,0 +1,19 @@
+{include file="user.header.html"}
+<div id="page-seller-order">
+  <div class="adjust-fee-body">
+    <form method="post" class="fun-form-style">
+      <div class="form">
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.order_amount}</span>
+            <input type="text" id="order_amount" name="order_amount" class="input clearInput flex1" value="{$order.order_amount}" oninput="javascript:clearInput(this)" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <div class="extra">
+          <p class="gray fs12">{$lang.adjust_fee_notice}</p>
+          <input type="submit" class="J_AjaxSubmit btn-alipay mt20" value="{$lang.confirm}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

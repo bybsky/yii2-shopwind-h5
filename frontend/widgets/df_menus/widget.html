@@ -1,0 +1,14 @@
+<!--{if !$widget_data.images}-->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!--{else}-->
+<div class="memnus-list">
+  <ul class="clearfix">
+    <!-- {foreach from=$widget_data.images item=image name=fe_image} -->
+    <li> <a href="{$image.ad_link_url}">
+      <p><img class="lazyload" initial-url="{$image.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></p>
+      <p class="tt"><span>{$image.ad_title_name}</span></p>
+      </a> </li>
+    <!--{/foreach}-->
+  </ul>
+</div>
+<!--{/if}-->

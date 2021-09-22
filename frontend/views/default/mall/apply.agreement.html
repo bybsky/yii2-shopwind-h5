@@ -1,0 +1,29 @@
+{include file="header.html"} 
+<div id="main" class="w-full">
+  <div class="page-actions"><i>&nbsp;</i></div>
+  <div class="page-apply">
+    <div class="content clearfix">
+      <div class="apply-agreement" style="margin-bottom:70px">
+        <div class="agreement-content">{$article.description}</div>
+        <div class="agreement-btn">
+          <label class="switch-checkbox-radio block J_SwtcherInput webkit-box" for="switcher"> <em class="block flex1">{$lang.i_agree}</em> <span class="switcher-style block"></span> </label>
+          <input name="agreement" class="J_Agreement hidden" id="switcher" value="1" type="checkbox">
+        </div>
+        <div class="extra">
+        	<div class="fixed-gap"></div>
+            <a href="javascript:;" uri="{url route='apply/fill'}" class="btn-alipay  btn-alipay-fixed J_Confrim">{$lang.enter_fill}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".J_Confrim").click(function(){
+		if(!$('input[name="agreement"]').prop('checked')) {
+			layer.open({ content:lang.agree_notice, time: 3});
+		} else window.location.href = $(this).attr('uri');
+	});
+});
+</script>
+{include file="footer.html"}

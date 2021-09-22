@@ -1,0 +1,120 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-coupon" class="mb10">
+    <div class="my-coupon coupon"> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <div class="item webkit-box [1]" item_id="[2]" style="height:95px;">
+            <div class="invalid-sign wind-icon-font [3]">&#xe6a4;</div>
+            <div class="lp flex1 ml5">
+              <div class="wraper webkit-box">
+                <div class="d-tail flex1">
+                  <div class="store-name fs14 overflow-ellipsis">[4]</div>
+                  <span class="vp"> <em class="[5]">有效期：[6]</em> <em class="[7]">{$lang.no_limit}</em> <br />
+                  <em class="[8]">剩余[9]张</em> <em class="[10]">{$lang.no_limit}</em> </span> </div>
+              </div>
+            </div>
+            <div class="rp relative mr5">
+              <div class="info box-align-center fs12">
+                <div class="wraper">
+                  <p class="cv"><ins>&yen;</ins><span>[11]</span></p>
+                  <p class="ma"> <em class="[12]">满[13]可用</em> <em class="[14]">{$lang.no_limit}</em> </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+      <div class="w-full btn-fixed">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd webkit-box"> <a href="{url route='seller_coupon/add'}" class="btn-alipay flex1">{$lang.coupon_add}</a> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('body').on('touchend', '.weui_actions_mask', function(){
+		$.closeActions();
+	});
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, coupon) {
+				html += sprintf(template.html(), 
+					coupon.available != 1 ? 'invalid-item' : '', 
+					coupon.coupon_id, 
+					coupon.valid != 1 ? '' : 'hidden', 
+					coupon.coupon_name, 
+					parseInt(coupon.end_time) > 0 ? '' : 'hidden', 
+					coupon.end_time, 
+					parseInt(coupon.end_time) > 0 ? 'hidden' : '', 
+					coupon.total > 0 ? '' : 'hidden', 
+					coupon.surplus, 
+					coupon.total > 0 > 0 ? 'hidden' : '', 
+					coupon.coupon_value, 
+					coupon.min_amount > 0 ? '' : 'hidden',
+					coupon.min_amount, 
+					coupon.min_amount > 0 ? 'hidden' : ''
+				);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+  
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		o.unbind('click');
+		o.click(function(){
+			if(o.hasClass('invalid-item') == true){
+				var action = [
+					{
+						text: "{$lang.drop}",
+						onClick: function() {
+							ajaxSubmit('GET', url(['seller_coupon/delete', { id:item_id}]), null, '', o);
+						}
+					}];
+			}
+			else
+			{
+					var action = [
+						{
+							text: "{$lang.extend}",
+							onClick: function() {
+								ajax_form('extend', lang.coupon_extend, url(['seller_coupon/extend', { title:lang.coupon_extend,id:item_id}]), '300', 'simple-blue', '0.5', 'bottom');
+								return false;
+							}
+						}
+					]; 
+				
+			}
+			 
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: action
+			});
+		
+		});
+	});
+}
+</script> 
+{include file="footer.html"}

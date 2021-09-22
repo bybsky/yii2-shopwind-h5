@@ -1,0 +1,46 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.template_setting}</p>
+    <p><a class="red" href="javascript:clear_file();">{$lang.clear_file}</a></p>
+    <ul class="subnav">
+      <li><span>手机版编辑</span></li>
+    </ul>
+  </div>
+  <ul id="rightCon" class="page-template clearfix">
+    <!--{foreach from=$pages item=page key=key}-->
+    <li>
+      <div class="page_item">
+        <h3>{$page.title}</h3>
+        <div>
+          <form action="{url route='template/edit'}" target="_blank">
+            <input type="hidden" name="r" value="template/edit" />
+            <input type="hidden" name="page" value="{$key}" />
+            <input type="submit" class="submit" value="{$lang.visual}" />
+            <input type="button" class="preview" url="{$page.url}" value="{$lang.preview}" />
+            <!--{foreach from=$page.action item=action}-->
+            <input type="button" class="{$action}" id="{$key}" value="{$lang.$action}" />
+            <!--{/foreach}-->
+          </form>
+        </div>
+      </div>
+    </li>
+    <!--{/foreach}--> 
+  </ul>
+</div>
+<script>
+$(function(){
+	$('input.preview').click(function(){
+		window.open($(this).attr('url'));
+	});
+	$('input.edit').click(function(){
+		window.location.href = url(['channel/edit', { id:$(this).attr('id')}]);
+	});
+	$('input.drop').click(function(){
+		if(confirm('{$lang.drop_confirm}')){
+			window.location.href = url(['channel/delete', { id:$(this).attr('id')}]);
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

@@ -1,0 +1,19 @@
+<!--{if !$widget_data.images}-->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!--{else}-->
+<script type="text/javascript">
+$(function(){
+	TouchSlide({ slideCell:"#slide{$widget_data.model_id}",titCell:".hd",mainCell:".bd",effect:"leftLoop", autoPlay:true,autoPage:true, titOnClassName:"active", delayTime:1000, interTime: 5000});
+})
+</script>
+<div class="slides">
+    <div id="slide{$widget_data.model_id}" class="scroller" >
+        <ul class="bd">
+           <!--{foreach from=$widget_data.images item=slide name=fe_slide}-->
+           <li {if !$smarty.foreach.fe_slide.first}hidden{/if}><a href='{$slide.ad_link_url}'><img class="lazyload" initial-url="{$slide.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a> </li>
+           <!--{/foreach}--> 
+       </ul>
+       <ul class="hd"></ul>
+   </div>
+</div>
+<!--{/if}-->

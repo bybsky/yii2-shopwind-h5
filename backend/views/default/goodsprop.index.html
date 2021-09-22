@@ -1,0 +1,58 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.prop_list}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+      <li><a class="btn1" href="{url route='goodsprop/add'}">{$lang.add_prop}</a></li>
+      <li><a class="btn1" href="{url route='gcategory/index'}">{$lang.distribute_prop}</a></li>
+    </ul>
+  </div>
+  <div class="info2 flexigrid">
+    <table  class="distinction">
+      <!--{if $goodsprop}-->
+      <thead>
+        <tr class="tatr1">
+          <th class="w30"><input id="checkall_1" type="checkbox" class="checkall" /></th>
+          <th width="50%"><span class="all_checkbox">
+            <label for="checkall_1">{$lang.checkall}</label>
+            </span>{$lang.name} </th>
+          <th>{$lang.sort_order}</th>
+          <th>{$lang.status}</th>
+          <th class="handler">{$lang.handler}</th>
+        </tr>
+      </thead>
+      <!--{/if}--> 
+      <!-- {if $goodsprop} -->
+      <tbody id="treet1">
+        <!-- {/if} --> 
+        <!--{foreach from=$goodsprop item=prop}-->
+        <tr>
+          <td class="align_center w30"><input type="checkbox" class="checkitem" value="{$prop.pid}" /></td>
+          <td class="node" width="50%"><!--{if $prop.switchs}--><i class="tv-expandable" ectype="flex" status="open" fieldid="{$prop.pid}" controller="goodsprop"></i><!--{else}--><i class="tv-item"></i><!--{/if}--><span class="node_name" fieldname="name" fieldid="{$prop.pid}" required="1" title="{$lang.editable}" controller="goodsprop">{$prop.name|escape}</span></td>
+          <td class="align_center"><span class="editable" ectype="inline_edit" fieldname="prop_sort_order" fieldid="{$prop.pid}" datatype="number" title="{$lang.editable}" controller="goodsprop" >{$prop.sort_order}</span></td>
+          <td class="align_center"><!--{if $prop.status}--><i class="positive_enabled" ectype='inline_edit' fieldname="prop_status" fieldid="{$prop.pid}" fieldvalue="1" title="{$lang.editable}" controller='goodsprop' /><!--{else}--><i class="positive_disabled" ectype='inline_edit' fieldname="prop_status" fieldid="{$prop.pid}" fieldvalue="0" title="{$lang.editable}" controller="goodsprop"></i><!--{/if}--></td>
+          <td class="handler bDiv" style=" background:none; width:230px; text-align:left;"><a href="{url route='goodsprop/edit' id=$prop.pid}" class="btn blue"><i class="fa fa-pencil-square-o"></i>{$lang.edit}</a> <a uri="{url route='goodsprop/delete' id=$prop.pid}" confirm="{$lang.drop_confirm}" class="btn red J_AjaxRequest"><i class="fa fa-trash-o"></i>{$lang.drop}</a> <a href="{url route='goodsprop/addvalue' id=$prop.pid}" class="btn green"><i class="fa fa-plus"></i>{$lang.add_pvalue}</a></td>
+        </tr>
+        <!--{foreachelse}-->
+        <tr class="no_data">
+          <td colspan="5">{$lang.no_data}</td>
+        </tr>
+        <!--{/foreach}--> 
+        <!-- {if $goodsprop} -->
+      </tbody>
+      <!-- {/if} -->
+      <tfoot>
+        <tr class="tr_pt10"> 
+          <!-- {if $prop} -->
+          <td class="align_center"><input id="checkall_2" type="checkbox" class="checkall"></td>
+          <td colspan="4" id="batchAction" class="clearfix"><span class="all_checkbox mt5">
+            <label for="checkall_2">{$lang.checkall}</label>
+            </span> {include file="page.bottom.html"} </td>
+          <!--{/if}--> 
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,128 @@
+{include file="header.html"}
+<div id="main">
+  <div class="page-store page J_page">
+    <div class="page-body search-goods relative">
+      <div class="store-info">
+        <div class="store-banner"> 
+          <!--{if $store.store_banner}--> 
+          <img src="{$store.store_banner|url_format}" height="150" /> 
+          <!--{/if}--> 
+        </div>
+        <div class="d-info clearfix">
+          <h3 class="float-left ml5"><a class="block" href="{url route='store/index' id=$store.store_id}"><img src="{$store.store_logo|url_format}" /></a></h3>
+          <div class="name-and-credit float-left">
+            <p class="name" style="margin-top:8px;"><a href="{url route='store/index' id=$store.store_id}">{$store.store_name}</a></p>
+            <p><!--{if $store.credit_value ge 0}--><img src="{$store.credit_image|url_format}" /><!--{/if}--></p>
+          </div>
+          <div class="collect clearfix"> 
+            <!--{if $store.collected}-->
+            <div class="collect-btn collected">已收藏</div>
+            <!--{else}-->
+            <div class="collect-btn J_AjaxRequest" uri="{url route='my_favorite/add' item_id=$store.store_id type='store'}">收藏</div>
+            <!--{/if}-->
+            <div class="collect-cn">
+              <p class="num">{$store.collects|default:0}</p>
+              <p class="txt">粉丝</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="store-menus">
+        <ul class="webkit-box">
+			<li class="flex1"><a class="block center fs14" href="{url route='store/index' id=$store.store_id}"><span>{$lang.home}</span></a></li>
+			<li class="flex1"><a class="block center {if !$smarty.get.new}active{/if} fs14" href="{url route='store/search' id=$store.store_id}"><span>全部商品</span></a></li>
+        	<li class="flex1"><a class="block center  {if $smarty.get.new}active{/if} fs14" href="{url route='store/search' id=$store.store_id new=1}"><span>上新</span></a></li>
+        	<li class="flex1"><a class="block center fs14" href="{url route='store/limitbuy' id=$store.store_id}"><span>促销</span></a></li>
+        </ul>
+      </div>
+      
+      <!--TAB-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd clearfix">
+          <ul class="items clearfix">
+            <li><a href="javascript:void(0);" class="active J_ActiveSort"><span>综合排序</span><i class="wind-icon-font">&#xe61f;</i></a></li>
+            <li><a href="javascript:void(0);" class="J_ActiveSortClick" ectype="sales|desc"><span>销量优先</span></a></li>
+            <li><a href="javascript:;" class="goodsFilter J_PopLayer" data-PopLayer="{ popLayer:'.J_GoodsFilterPopLayer', fixedBody: true, left:80, direction:'right'}">筛选<i class="wind-icon-font">&#xe6cc;</i></a></li>
+          </ul>
+          <div class="list-style display-mode"> <span class="wind-icon-font {$display_mode} clearfix J_ChangeDisplayMode" id="storeGoodsDisplayMode"></span> </div>
+        </div>
+      </div>
+      
+      <!--综合排序列项-->
+      <div class="sort-eject hidden J_SortEject move"> <span><a href="javascript:void(0);" class="active block webkit-box" ectype=""><ins class="flex1">综合排序</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="price|desc" class="block webkit-box"><ins class="flex1">价格从高到低</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="price|asc" class="block webkit-box"><ins class="flex1">价格从低到高</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="views|desc" class="block webkit-box"><ins class="flex1">人气排序</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span> <span><a href="javascript:void(0);" ectype="add_time|desc" class="block webkit-box"><ins class="flex1">上架从新到旧</ins><i class="wind-icon-font hidden">&#xe694;</i></a></span></div>
+      
+      <!--AJAX DATA-->
+      <div class="{$display_mode} goods-list clearfix J_InfiniteList" data-cookie="storeGoodsDisplayMode">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li> <a href="[1]" class="webkit-box block">
+            <div class="pic ml10 pt10"><img src="{res file='images/empty.gif'}"  class="lazyload" initial-url="[2]"></div>
+            <div class="info flex1">
+              <h2 class="goods-name line-clamp-2">[3]</h2>
+              <p class="store-name">[4]条评价</p>
+              <div class="pri-sales clearfix"> <span class="price float-left">[5]</span> <ins class="sales float-right">已售[6]</ins> </div>
+            </div>
+            </a> </li>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="pop-layer-common pop-wrap-r search-filter J_GoodsFilterPopLayer">
+  <div class="wraper">
+    <div class="bd">
+      <div class="attrs">
+        <div class="attr"> 
+          <!--{if $store.gcategories}-->
+          <!--{foreach from=$store.gcategories item=gcategory name=fe_gcategory}-->
+          <div class="attrk">{$gcategory.value}</div>
+          <div class="attrv">
+            <ul class="clearfix" ectype="ul_cate">
+              <!--{foreach from=$gcategory.children item=item name=fe_item}-->
+              <li class="{if $smarty.foreach.fe_item.iteration gt 6}hidden{/if} {if $smarty.get.cate_id eq $item.id}active{/if}"><a href="javascript:void(0);" id="{$item.id}"><span>{$item.value}</span></a></li>
+              <!--{/foreach}-->
+            </ul>
+            <div class="options"> <a class="more" href="javascript:void(0);"><span>查看更多</span><i></i></a> </div>
+          </div>
+          <!--{/foreach}-->
+          <!--{/if}-->
+        </div>
+      </div>
+    </div>
+    <div class="ft webkit-box clearfix"> <span class="pop-btn flex1"> <a uri="{url route='store/search' id=$store.store_id keyword=$smarty.get.keyword}" href="javascript:;" class="popReset">{$lang.reset}</a></span> <span class="pop-btn flex1"><i class="popClosed">{$lang.closed}</i></span> </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	
+	// 设置排序
+	setFilterOrder('{$smarty.get.orderby}');
+	$(".btn-order a").click(function(){
+		setFilterOrder('{$smarty.get.orderby}', this);
+	});
+	
+	// 设置选中的价格筛选
+	//setFilterPrice('{$smarty.get.price}');
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image), goods.goods_name, goods.comments, price_format(goods.price), goods.sales);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

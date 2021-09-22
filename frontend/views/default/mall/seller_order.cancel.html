@@ -1,0 +1,84 @@
+{use class='\common\library\Def'}
+{include file="user.header.html"}
+<div id="page-seller-order">
+  <div class="order-cancel-body">
+    <form method="post" class="fun-form-style">
+      <div class="form">
+        <dl class="J_Order J_PopLayer" data-PopLayer="{ popLayer:'.J_OrderPopLayer',top:'35%', fixedBody: true}">
+          <dd class="webkit-box"> <span>{$lang.order_sn}</span>
+            <p class="flex1 pr10" style="text-align:right"></p>
+            <i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+        </dl>
+        <div class="pop-layer-common order-pop-layer J_OrderPopLayer">
+          <div class="wraper has-title">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.reason_list}</div>
+            <ul class="bd">
+              <!--{foreach from=$orders item=order name=fe_order}-->
+              <li class="webkit-box border-bottom {if $smarty.foreach.fe_order.last}border-b-0{/if} pt10 pb10 active">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$order.order_sn}</span></div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+            <div class="ft popClosed btn-alipay">{$lang.confirm}</div>
+          </div>
+        </div>
+        <dl>
+          <dt><span>{$lang.cancel_reason}</span></dt>
+        </dl>
+        <ul class="bd radioUiWraper bgf">
+          <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom active pl5">
+            <div class="lp flex1 webkit-box"><span class="pl10">{$lang.cancel_reason1}</span></div>
+            <div class="input rp box-align-center pr10" style="margin-right:10px;">
+              <input type="radio" name="cancel_reason" value="{$lang.cancel_reason1}" checked="checked">
+            </div>
+          </li>
+          <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom pl5">
+            <div class="lp flex1 webkit-box"><span class="pl10">{$lang.cancel_reason2}</span></div>
+            <div class="input rp box-align-center pr10" style="margin-right:10px;">
+              <input type="radio" name="cancel_reason" value="{$lang.cancel_reason2}">
+            </div>
+          </li>
+          <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom pl5">
+            <div class="lp flex1 webkit-box"><span class="pl10">{$lang.cancel_reason3}</span></div>
+            <div class="input rp box-align-center pr10" style="margin-right:10px;">
+              <input type="radio" name="cancel_reason" value="{$lang.cancel_reason3}">
+            </div>
+          </li>
+          <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom pl5">
+            <div class="lp flex1 webkit-box"><span class="pl10">{$lang.other_reason}</span></div>
+            <div class="input rp box-align-center pr10" style="margin-right:10px;">
+              <input type="radio" name="cancel_reason" flag="other_reason" value="{$lang.other_reason}">
+            </div>
+          </li>
+        </ul>
+        <dl class="textarea hidden" id="other_reason">
+          <dd class="webkit-box" style="height:63px;">
+            <textarea class="flex1" name="remark" placeholder="{$lang.input_reason}"></textarea>
+          </dd>
+        </dl>
+        <div class="extra mt10">
+          <input type="hidden" class="J_AjaxFormRetUrl" name="redirect" value="{$redirect}" />
+          <input type="submit" class="J_AjaxSubmit btn-alipay" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".radioUiStyle").click(function(){
+		if ($(this).find('input').attr('flag') == 'other_reason') {
+			$('#other_reason').show();
+		} else {
+			$('#other_reason').hide();
+		}
+	});
+	
+	var No = $('.J_OrderPopLayer').find('li:first').find('.lp span').html();
+	if($('.J_OrderPopLayer .bd').find('li').length > 1) {
+		No += '...';
+	}
+	$('.J_Order p').html(No);
+});
+</script>
+{include file="footer.html"}

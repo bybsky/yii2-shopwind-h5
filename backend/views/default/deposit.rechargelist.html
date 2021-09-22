@@ -1,0 +1,98 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.deposit_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='deposit/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/tradelist'}">{$lang.trade_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/drawlist'}">{$lang.withdraw_manage}</a></li>
+      <li><span>{$lang.recharge_manage}</span></li>
+      <li><a class="btn1" href="{url route='deposit/setting'}">{$lang.system_setting}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="deposit/rechargelist" />
+      <select class="querySelect" name="field">
+        
+        	{html_options options=$search_options selected=$smarty.get.field}
+      	
+      </select>
+      <input class="queryInput" type="text" name="search_name" value="{$smarty.get.search_name}" />
+      <select class="querySelect" name="status">
+        <option value="">{$lang.trade_status}</option>
+        
+          	{html_options options=$status_list selected=$smarty.get.status}
+      	
+      </select>
+      {$lang.add_time_from}
+      <input class="queryInput" type="text" value="{$smarty.get.add_time_from}" id="add_time_from" name="add_time_from" class="pick_date" />
+      {$lang.to}
+      <input class="queryInput" type="text" value="{$smarty.get.add_time_to}" id="add_time_to" name="add_time_to" class="pick_date" />
+      {$lang.amount_from}
+      <input class="queryInput2" type="text" value="{$smarty.get.amount_from}" name="amount_from" />
+      {$lang.to}
+      <input class="queryInput2" type="text" style="width:60px;" value="{$smarty.get.amount_to}" name="amount_to" class="pick_date" />
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='deposit/rechargelist'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+		url: url(['deposit/rechargelist', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 100, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.add_time}', name : 'add_time', width : 120, sortable : true, align: 'center'},
+			{ display: '{$lang.tradeNo}', name : 'tradeNo', width : 150, sortable : true, align: 'center'},
+			{ display: '{$lang.orderId}', name : 'orderId', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.username}', name : 'username', width : 50, sortable : true, align: 'center'},
+			{ display: '{$lang.name}', name : 'name', width : 50, sortable : false, align: 'center'},
+			{ display: '{$lang.amount}', name : 'amount', width : 100, sortable : true, align: 'center'}, 
+			{ display: '{$lang.remark}', name : 'remark', width : 60, sortable : true, align: 'center'},		 	
+			{ display: '{$lang.status}', name : 'status', width: 100, sortable : true, align : 'center'}, 
+			{ display: '{$lang.examine}', name : 'examine', width : 60, sortable : true, align: 'center'}	
+    	],
+        buttons : [
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+    	// sortname: "add_time",
+    	// sortorder: "desc",
+    	title: '{$lang.deposit_rechargelist}'
+    });
+	
+	$('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+function fg_operate(name, bDiv) {
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'deposit','rechargedelete');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+		   layer.confirm('{$lang.download_all_data}',{ icon: 3, title:'{$lang.notice}'},function(index){
+				fg_csv(itemlist, 'deposit', 'export', 'recharge');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'deposit', 'export', 'recharge');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"} 

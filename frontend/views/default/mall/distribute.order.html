@@ -1,0 +1,74 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-buyer-order" class="buyer-order-body"> 
+
+    <!--AJAX DATA-->
+    <div class="clearfix J_InfiniteList">
+      <div class="infinite-result clearfix hidden"> </div>
+      <div class="infinite-template">
+        <div class="order-form mb10">
+          <h2 class="webkit-box">
+            <p class="name pl10 flex1"><a href="[1]"><i class="wind-icon-font fs16">&#xe656;</i> [2]<i class="wind-icon-font fs12">&#xe629;</i></a></p>
+            <p class="status ml10 mr10"> <em>[3]</em> </p>
+          </h2>
+          <div class="goods-list"> 
+            <!--ORDER GOODS FIELDS -->
+            <div class="order-goods-list clearfix"> <a href="[1]" class="block webkit-box">
+              <div class="pic"><img src="[2]"/></div>
+              <div class="txt flex1">
+                <p class="goods-name line-clamp-2">[3]</p>
+                <p class="attr mt5">[4] x [5]</p>
+                <p class="fs12 mt5 green"></p>
+              </div>
+              <div class="qua-pri">
+                <p class="pri">{$lang.profit}{$lang.colon}[6]</p>
+                <p class="qua mt5" style="color:green">{$lang.ratio}{$lang.colon}[7]</p>
+              </div>
+              </a> </div>
+            <!--END--> 
+          </div>
+          
+          <p class="align-right static"><em>{$lang.distribute_profit}{$lang.colon}<span class="ml5 mr5">[4]</span></em> </p>
+          <div class="operate-btn pt10"> 
+            <a class="btn2 mr5" href="[5]">{$lang.view_profit}</a> 
+		  </div>
+        </div>
+      </div>
+      <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+      <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+      <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+      <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+        <p>{$lang.no_records}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 5, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			$.each(data, function(k, order) {
+				var template = TEMP.clone(true);
+				
+				var items = '';
+				$.each(order.items, function(k1, goods) {
+					items += sprintf(template.find('.goods-list').html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.goods_image), goods.goods_name, price_format(goods.price), goods.quantity, price_format(goods.money), goods.ratio);
+				});
+				if(items) {
+					template.find('.goods-list').html(items);
+				} else template.find('.goods-list').remove();
+				
+				html += sprintf(template.html(), 
+					url(['store/index', { id:order.seller_id}]), // [1]
+					order.seller_name, // [2]
+					lang.TRADE_SUCCESS, // [3]
+					price_format(order.amount), // [4]
+					url(['distribute/trade', { tradeNo:order.tradeNo}])
+				);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

@@ -1,0 +1,42 @@
+{include file="user.header.html"}
+<div id="page-message">
+  <div class="page-actions"><i></i></div>
+  <div class="pm-list pm-view">
+    <ul>
+      <li class="webkit-box">
+        <div class="send-user-logo  padding10"> <img width="60" height="60"  src="{$message.portrait|url_format}" /> </div>
+        <div class="detail flex1 pt10 pb10 pr10" {if !$replies}style="border:0px;"{/if}>
+          <p class="t webkit-box"><span class="flex1 block">{$message.username}</span><em>{$message.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</em></p>
+          <p class="d mt5">{$message.content}</p>
+        </div>
+      </li>
+      <!--{foreach from=$message.replies item=reply}-->
+      <li class="webkit-box">
+        <div class="detail flex1 pt10 pb10 pl10" {if $smarty.foreach.fe_re.last}style="border:0px;"{/if}>
+          <p class="t webkit-box"><span class="flex1 block">{$reply.username}</span><em>{$reply.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</em></p>
+          <p class="d mt5"></span>{$reply.content}</p>
+        </div>
+        <div class="send-user-logo  padding10"> <img width="60" height="60"  src="{$reply.portrait|url_format}" /> </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+  <!--{if $message.privatepm}-->
+  <div class="reply-form  reply mt10">
+    <form method="post">
+      <p class="textarea">
+        <textarea placeholder="{$lang.reply_content}" name="content">{$my_qa_data.reply_content}</textarea>
+      </p>
+      <input type="hidden" class="J_AjaxFormRetUrl" name="redirect" value="{$redirect}" />
+      <div class="btn clearfix pb10 pt10">
+        <input class="float-right mr10 J_AjaxSubmit" type="submit"  value="{$lang.submit}" />
+      </div>
+    </form>
+  </div>
+  <!--{/if}--> 
+    <div class="extra">
+      <div class="fixed-gap"></div>
+      <a href="{url route='my_message/delete' msg_id=$message.msg_id}" class="btn-alipay btn-alipay-fixed">{$lang.drop_message}</a> </div>
+  </div>
+</div>
+{include file="footer.html"} 

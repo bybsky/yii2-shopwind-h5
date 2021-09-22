@@ -1,0 +1,53 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+	<div class="voucher_center">
+        <div class="list w">
+        
+           <!--AJAX DATA-->
+           <div class="J_InfiniteList">
+            	<ul class="infinite-result clearfix hidden">
+            	</ul>
+            	<div class="infinite-template">
+                  <li class="webkit-box">
+                    <div class="lp flex1 webkit-box">
+                        <a href="[1]"><img src="[2]" /></a>
+                        <div class="info flex1">
+                            <div class="value"><i>&yen;</i><span>[3]</span></div>
+                            <div class="mini-amount">满[4]元即可使用</div>
+                            <div class="period">[5]</div>
+                        </div>
+                        <div class="triangle-border-left"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    </div>    
+                    <div class="rp">
+                        <a href="javascript:;" class="box-align-center"  onclick="couponReceive([6], $(this));">
+                            <em class="text">立即领取</em>
+                        </a>
+                        <div class="triangle-border-right"><em class="circular0"></em><em class="circular1"></em><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    </div>
+                </li>
+          	 </div>
+             <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+			<div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+			<div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+			<div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+			  <p>{$lang.no_records}</p>
+			</div>
+           </div>
+           
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, coupon) {
+				html += sprintf(template.html(), coupon.store_id, url_format(coupon.store_logo), coupon.coupon_value, coupon.min_amount, coupon.start_time+' - '+coupon.end_time, coupon.coupon_id);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script>
+{include file="footer.html"}

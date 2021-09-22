@@ -1,0 +1,67 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-coupon">
+    <div class="my-coupon">
+      <form method="post" class="fun-form-style">
+        <div class="form">
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.coupon_name}</span>
+              <input type="text" id="coupon_name" name="coupon_name" value="{$coupon.coupon_name|escape}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.coupon_name}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.coupon_value}</span>
+              <input type="text" id="coupon_value" name="coupon_value" value="{$coupon.coupon_value}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.coupon_value}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.coupon_total}</span>
+              <input type="text" id="coupon_value" name="total" value="{$coupon.total}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.coupon_total}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.min_amount}</span>
+              <input type="text" class="input clearInput flex1"  name="min_amount" value="{$coupon.min_amount}" id="min_amount" oninput="javascript:clearInput(this)" placeholder="{$lang.min_amount_desc_start}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dt><span>{$lang.time_limit}</span></dt>
+          </dl>
+          <dl class="time_limit">
+            <dd class="webkit-box"> <span>{$lang.start_time}</span>
+              <input type="text" class="input center" name="start_time" value="{$coupon.start_time|default:$now|date_format:'%Y-%m-%d'} " id="add_time_from" readonly style="text-align:left" />
+            </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"><span>{$lang.end_time}</span>
+              <input type="text" class="input center" name="end_time" value="{$coupon.end_time|date_format:'%Y-%m-%d'} " id="add_time_to" readonly style="text-align:left" />
+            </dd>
+          </dl>
+          <div class="extra">
+            <p>
+              <label class="w-full switch-checkbox-radio block box-align-center J_SwtcherInput {if $coupon.clickreceive}checked{/if}" for="switcher1"> <em class="block flex1 gray fs14">{$lang.clickreceive}</em> <span class="switcher-style block"></span> </label>
+              <input name="clickreceive" class="hidden" id="switcher1" value="1" type="checkbox" {if $coupon.clickreceive}checked="checked"{/if}>
+            </p>
+          </div>
+          <div class="extra">
+            <p class="fixed-gap"></p>
+            <input type="submit" class="J_AjaxSubmit btn-alipay mt10 btn-alipay-fixed" value="{$lang.submit}" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$("#add_time_from").datetimePicker({
+        title: '{$lang.start_time}',
+		times: function () { return false;}
+     });
+	 $("#add_time_to").datetimePicker({
+        title: '{$lang.end_time}',
+		times: function () { return false;}
+     });
+})
+</script>
+{include file="footer.html"}

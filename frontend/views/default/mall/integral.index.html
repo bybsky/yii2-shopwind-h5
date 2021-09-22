@@ -1,0 +1,59 @@
+{include file="header.html"}
+<div id="main">
+  <div id="page-search-goods">
+    <div class="page-body search-goods search-integral"> 
+      <!--TAB-->
+      <div class="listTab">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd active-line clearfix">
+          <ul class="items clearfix">
+            <li><a href="javascript:void(0);" class="active J_ActiveSortClick" ectype=""><span>综合排序</span></a></li>
+            <li><a href="javascript:void(0);" class="J_ActiveSortClick" ectype="add_time|desc"><span>最新</span></a></li>
+            <li><a href="javascript:void(0);" class="J_ActiveSortClick" ectype="sales|desc"><span>销量</span></a></li>
+            <li><a href="javascript:void(0);" class="J_ActiveSortClick" ectype="price|desc"><span>价格</span></a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!--AJAX DATA-->
+      <div class="squares goods-list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li> <a href="[1]" class="webkit-box block">
+            <div class="pic ml10 pt10"><img src="{res file='images/empty.gif'}"  class="lazyload" initial-url="[2]"></div>
+            <div class="info flex1">
+              <h2 class="goods-name line-clamp-2">[3]</h2>
+              <p class="store-name">[4]<ins class="sales float-right">已售[5]</ins></p>
+              <div class="pri-sales"> <span class="price">[6] <em class="fs10 f60">+[7]积分</em></span> </div>
+            </div>
+            </a> </li>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	// 设置排序
+	setFilterOrder('{$smarty.get.orderby}');
+	
+	$('.J_InfiniteList').infinite({ pageper: 6, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image), goods.goods_name, goods.store_name, goods.sales, price_format(goods.exchange_price), goods.exchange_integral);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

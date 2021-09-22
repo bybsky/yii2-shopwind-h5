@@ -1,0 +1,151 @@
+{include file="user.header.html"}
+<div id="page-my-goods">
+	<div class="fun-form-style">
+    	<form method="post" id="delivery_template">
+            <section class="form">
+                <dl>
+				  <dd class="webkit-box">
+					<input type="text" name="name" value="{$delivery.name}" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_name}" style="padding-left:15px;" />
+					<i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+				</dl>
+                <!--{foreach from=$delivery.area_fee item=item key=type}-->
+                <div class="express-item" id="{$type}">
+                	<div class="mt webkit-box" style="line-height:44px;margin:0 15px;">
+                    	<span class="flex1">
+                            <label for="input_{$type}" style="font-size: 14px;">{$lang.{$type}}</label>
+                            <input type="hidden" name="types[]"  value="{$type}" id="input_{$type}" checked="checked"/>  
+                        </span>
+                        <em class="add_area" type="{$type}" style="color:#999;">为指定地区城市设置运费 <ins class="wind-icon-font">&#xe6ce;</ins></em>
+                    </div>
+                	<ul class="mc">
+                    	<li class="default_fee">
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>默认运费</span>
+                                    <input type="hidden" name="{$type}_dests[]" value="0" />
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="{$item.default_fee.start_standards|default:1}" name="{$type}_start[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件内，</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"class="input" value="{$item.default_fee.start_fees|default:10}" name="{$type}_postage[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>每增加</span>
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="{$item.default_fee.add_standards|default:1}" name="{$type}_plus[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件，增加运费</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"  class="input" value="{$item.default_fee.add_fees|default:0}" name="{$type}_postageplus[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                        </li>
+                        <!--{foreach from=$item.other_fee item=fee name=fe_fee}-->
+                        <li class="default_fee">
+                        	<dl>
+                                <dd class="cell-area box-align-center" style="height:auto;"> 
+                                    <span class="selected_area J_SelectedAreaName flex1">{$fee.dests}</span> 
+                                    <input type="hidden" group="dests" name="{$type}_dests[]" value="{$fee.dest_ids}" />
+                                    <a href="javascript:;" gs_id="gselector-delivery-{$type}{$smarty.foreach.fe_fee.iteration}" gs_name="gselector-delivery" gs_callback="gs_callback" gs_title="{$lang.edit_template}" gs_type="delivery" gs_store_id="" gs_uri="{url route='gselector/delivery'}" ectype="gselector" gs_class="simple-blue scroll" gs_position="bottom" class="btn-add-product">{$lang.edit}</a><a href="javascript:;" class="del_area" type="{$type}">{$lang.drop}</a> 
+                                </dd>
+                            </dl>
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>首</span>
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="{$fee.start_standards}" name="{$type}_start[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件内，</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"  class="input" value="{$fee.start_fees}" name="{$type}_postage[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>每增加</span>
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="{$fee.add_standards}" name="{$type}_plus[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件，增加运费</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"  class="input" value="{$fee.add_fees}" name="{$type}_postageplus[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                        </li>
+                        <!--{/foreach}-->
+                    </ul>
+                </div>
+                <!--{/foreach}-->
+                <!--{foreach from=$delivery.plus_type item=type}-->
+                <div class="express-item" id="{$type}">
+                	<div class="mt webkit-box" style="line-height:44px;margin:0 15px;">
+                    	<span class="flex1">
+                            <label for="input_{$type}" style="font-size: 14px;">{$lang.{$type}}</label>
+                            <input type="hidden" name="types[]"  value="{$type}" id="input_{$type}" checked="checked"/>  
+                        </span>
+                        <em class="add_area" type="{$type}" style="color:#999;">为指定地区城市设置运费 <ins class="wind-icon-font">&#xe6ce;</ins></em>
+                    </div>
+                	<ul class="mc">
+                    	<li class="default_fee">
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>默认运费</span>
+                                    <input type="hidden" name="{$type}_dests[]" value="0" />
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="1" name="{$type}_start[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件内，</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"class="input" value="10" name="{$type}_postage[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                            <dl>
+                            	<dd class="webkit-box">
+                                	<span>每增加</span>
+                                	<ins class="relative pl20 flex1">
+                                    	<input type="text" class="input" value="1" name="{$type}_plus[]" oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="text-width1">件，增加运费</em>
+                                    <ins class="relative pl20 flex1">
+                                    	<input type="text"  class="input" value="0" name="{$type}_postageplus[]"  oninput="javascript:clearInput(this)"/>
+                                        <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+                                    </ins>
+                                    <em class="pr10 mr5">元</em>
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+                <!--{/foreach}-->
+            </section>
+            <div class="extra" style="margin-top:50px;">
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+        </form>
+    </div>
+</div>
+{include file="footer.html"}

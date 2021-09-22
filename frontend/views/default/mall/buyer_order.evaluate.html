@@ -1,0 +1,79 @@
+{include file="user.header.html"}
+<div id="page-buyer-order">
+  <div class="page-body mb20">
+    <form method="POST" class="order-evaluation">
+      <!--{foreach from=$goods_list item=goods name=fe_goods}-->
+      <div class="order-goods">
+        <div class="list"><a href="{url route='goods/index' id=$goods.goods_id}" class="block webkit-box">
+            <div class="pic"><img class="block" src="{$goods.goods_image|url_format}" width="60" height="60" /></div>
+            <div class="text flex1 ml10 mr20 mr20">
+              <h3 class="line-clamp-2">{$goods.goods_name|escape}</h3>
+              <span class="mt5 spec">{$goods.specification|escape}</span>
+            </div>
+            <div class="pri">
+              <p class="p">{$goods.price|price_format}</p>
+              <p class="q align-right mt5"> x {$goods.quantity} </p>
+            </div>
+          </a> </div>
+        <div class="comment-box">
+          <div class="webkit-box comprehensive border-bottom fill_in">
+            <ul class="clearfix webkit-box center flex1 pt10 gray raty">
+              <li class="mb10 w-full clearfix ratyItem" scoreName="evaluations[goods][{$goods.spec_id}][value]"> <span
+                  class="float-left mr10 t">{$lang.goods_evaluation}{$lang.colon}</span> <span
+                  id="gIcon{$smarty.foreach.fe_goods.iteration}" class="float-left mr10 ratyIcon"></span> <span
+                  id="gTarget{$smarty.foreach.fe_goods.iteration}" class="float-left ratyTarget hint"></span> </li>
+            </ul>
+          </div>
+          <div class="textarea pt10 pb10">
+            <textarea name="evaluations[goods][{$goods.spec_id}][comment]"
+              placeholder="{$lang.evaluate_comment}"></textarea>
+          </div>
+        </div>
+      </div>
+      <!--{/foreach}-->
+      <div class="fill_in mt10 pb10">
+        <h4 class="ml10 mb10">{$lang.dynamic_evaluation} {$lang.colon}<a
+            href="{url route='store/index' id=$order.seller_id}" class="red">{$order.seller_name|escape}</a></h4>
+        <ul class="raty ml10 mb10 pb10 mt10 pt10">
+
+          <li class="mb10 w-full clearfix ratyItem" scoreName="evaluations[store][service]"> <span
+              class="float-left mr10 t">{$lang.service_evaluation}{$lang.colon}</span> <span
+              id="svIcon-service_evaluation" class="float-left mr10 ratyIcon"></span> <span
+              id="svTarget-service_evaluation" class="float-left ratyTarget  hint"></span> </li>
+          <li class="w-full clearfix ratyItem" scoreName="evaluations[store][shipped]"> <span
+              class="float-left mr10 t">{$lang.shipped_evaluation}{$lang.colon}</span> <span
+              id="shIcon-shipped_evaluation" class="float-left mr10 ratyIcon"></span> <span
+              id="shTarget-shipped_evaluation" class="float-left ratyTarget  hint"></span> </li>
+        </ul>
+      </div>
+      <div class="w-full btn-fixed">
+        <div class="fixed-gap"></div>
+        <div class="fixed-bd webkit-box"> <a href="{url route='buyer_order/index'}"
+            class="btn-alipay btn-alipay-gray flex1">{$lang.evaluate_later}</a>
+          <input type="submit" class="btn-alipay flex1" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.ratyItem').each(function () {
+
+      var iconId = $(this).find('.ratyIcon').attr('id');
+      var targetId = $(this).find('.ratyTarget').attr('id');
+      var scoreName = $(this).attr('scoreName');
+
+      $('#' + iconId).raty({
+        score: 5,
+        target: '#' + targetId,
+        cancel: false,
+        targetType: 'hint',
+        targetKeep: true,
+        scoreName: scoreName,
+        starType: 'i'
+      });
+    })
+  })
+</script>
+{include file="footer.html"}

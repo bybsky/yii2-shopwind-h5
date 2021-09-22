@@ -1,0 +1,64 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-refund">
+    <div class="refund-index">
+      <div class="buyer-order-body"> 
+        
+        <!--AJAX DATA-->
+        <div class="list clearfix J_InfiniteList">
+          <div class="infinite-result clearfix hidden"> </div>
+          <div class="infinite-template">
+            <div class="order-form mb10">
+              <h2 class="webkit-box">
+                <p class="name pl10 flex1"><a href="[1]" class="block"> <i class="wind-icon-font">&#xe635;</i>[2]<i class="wind-icon-font fs12">&#xe629;</i></a></p>
+              </h2>
+              <div class="goods-list order-goods-list clearfix"> <a href="[1]" class="block webkit-box">
+                <div class="pic"><img src="[2]"/></div>
+                <div class="txt flex1">
+                  <p class="goods-name line-clamp-2">[3]</p>
+                  <p class="attr mt5">[4]</p>
+                </div>
+                <div class="qua-pri">
+                  <p class="pri">[5]</p>
+                  <p class="qua">x [6]</p>
+                </div>
+                </a> </div>
+              <p class="static [3] fs13"> [4] </p>
+              <div class="operate-btn clearfix"> <a class="float-left ml10 btn1" style="display:[5]">{$lang.intervene}</a> <a href="[6]" class="btn1 mr10 float-right">{$lang.view}</a></div>
+            </div>
+          </div>
+          <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+            <p>{$lang.no_records}</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 4, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			$.each(data, function(k, refund) {
+				var template = TEMP.clone(true);
+				
+				var items = '';
+				$.each(refund.goodslist, function(k1, goods) {
+					items += sprintf(template.find('.goods-list').html(), url(['seller_order/view', { order_id:refund.order_id}]), url_format(goods.goods_image), goods.goods_name, goods.specification, price_format(goods.price), goods.quantity);
+				});
+				if(items) {
+					template.find('.goods-list').html(items);
+				} else template.find('.goods-list').remove();
+				
+				html += sprintf(template.html(), url(['my_message/send', { to_id:refund.buyer_id}]), refund.buyer_name, $.inArray(refund.status, ['SUCCESS']) > -1 ? 'green' : $.inArray(refund.status, ['WAIT_SELLER_AGREE','SELLER_REFUSE_BUYER','WAIT_SELLER_CONFIRM']) > -1 ? 'f60' : '', refund.status_label, ($.inArray(refund.status, ['SUCCESS','CLOSED']) < 0) && (refund.intervene > 0) ? 'block' : 'none', url(['refund/view', { id:refund.refund_id}]));
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

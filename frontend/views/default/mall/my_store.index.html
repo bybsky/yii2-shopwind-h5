@@ -1,0 +1,93 @@
+{use class="common\library\Def"}
+{include file="user.header.html"} 
+<div id="main">
+  <div class="my-store">
+    <form method="post" id="my-store" class="fun-form-style" enctype="multipart/form-data">
+      <div class="form">
+        <div class="webkit-box store-logo relative bgf border-bottom pt10 pb10">
+        	<img src="{$store.store_logo|url_format}" width="60" height="60" />
+          	<input type="hidden" name="store_logo" value="" />
+            <div class="filePicker"></div>
+          	<div class="flex1 title ml10" style="margin-left:80px;">
+            	<h3 class="mt10">{$lang.store_logo}</h3>
+            	<span class="gray mt5 block">{$lang.change_store_logo_desc}</span>
+            </div>
+          	<i class="wind-icon-font mr10 gray  box-align-center">&#xe629;</i> 
+        </div>
+        <dl>
+          <dd class="webkit-box"><span>{$lang.store_name}</span>
+            <input type="text"  name="store_name" class="input clearInput flex1" value="{$store.store_name|escape}" oninput="javascript:clearInput(this)" placeholder="{$lang.store_name}"/>
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl class="mt10">
+          <dd class="webkit-box"> <span>{$lang.store_banner}</span>
+            <a href="{url route='my_store/banner'}" class="flex1 box-align-center gray align-right"></a>
+            <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.store_slides}</span>
+            <a href="{url route='my_store/slides'}" class="flex1 box-align-center gray align-right"></a>
+            <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+        </dl>
+        <dl class="mt10 edit-region J_Region">
+          <dd class="webkit-box"> <span>{$lang.region}</span>
+            <input type="hidden" name="region_id" value="{$store.region_id}" class="mls_id" />
+            <input type="hidden" name="region_name" value="{$store.region_name|escape}" class="mls_names" />
+            <p class="flex1 mls_names box-align-center gray">{$store.region_name|escape}</p>
+            <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.address}</span>
+            <input type="text" class="input clearInput flex1" id="address" name="address" value="{$store.address|escape}" oninput="javascript:clearInput(this)" placeholder="{$lang.address_info}"/><i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i>
+          </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"><span>{$lang.tel}</span>
+            <input type="text"  name="tel" class="input clearInput flex1" value="{$store.tel|escape}" oninput="javascript:clearInput(this)" placeholder="{$lang.tel}"/>
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"><span>{$lang.im_qq}</span>
+            <input type="text"  name="im_qq" class="input clearInput flex1" value="{$store.im_qq|escape}" oninput="javascript:clearInput(this)" placeholder="{$lang.im_qq}"/>
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"><span>{$lang.im_ww}</span>
+            <input type="text"  name="im_ww" class="input clearInput flex1" value="{$store.im_ww|escape}" oninput="javascript:clearInput(this)" placeholder="{$lang.im_ww}"/>
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <div class="extra">
+          <p class="fixed-gap"></p>
+          <input type="submit" class="btn-alipay J_AjaxSubmit btn-alipay-fixed" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('.J_Region').ajaxSwitcher({
+		model: '.switcher-region',
+		url: url(['mlselection/index', { type:'region'}]),
+		title:lang.select_region,
+		//startId: 2
+	});
+	
+	$('.filePicker').compressUpload({
+		server: url(['upload/index']),
+		pick: '.filePicker',
+		fileVal: 'store_logo',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_STORE}",
+			filename: "store_logo"
+		},
+		crop: true,
+		callback: function(file, response, pick, target) {
+			$(pick).parent().find('img').attr( 'src', url_format(response.retval)+"?"+Math.random());
+			$('input[name="store_logo"]').val(response.retval);
+		}
+	});
+});
+</script>
+{include file="footer.html"}

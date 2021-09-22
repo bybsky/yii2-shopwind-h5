@@ -1,0 +1,41 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.gcategory}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='gcategory/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='gcategory/add'}">{$lang.add}</a></li>
+      <!--<li><a class="btn1" href="{url route='gcategory/export'}">{$lang.export}</a></li>
+      <li><a class="btn1" href="{url route='gcategory/import'}">{$lang.import}</a></li>-->
+      <li><span>{$lang.gcategory_ad}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.cate_name}:</th>
+          <td class="paddingT15 wordSpacing5">{$gcategory.cate_name|escape}</td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.gcategory_ad}:</th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" name="textfield" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="ad" type="file" size="30" hidefocus="true" value="{$gcategory.ad}">
+              <input type="hidden" name="fileVal" value="ad" />
+              </span> 
+              
+              <!--{if $gcategory.ad}-->
+              <div class="show_img"><img src="{$gcategory.ad|url_format}" alt="" width="50" height="50" /></div>
+              <!--{/if}--> </div></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

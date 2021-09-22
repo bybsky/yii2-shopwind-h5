@@ -1,0 +1,71 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.recommend}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+      <li><a class="btn1" href="{url route='recommend/add'}">{$lang.add}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="recommend/index" />
+      {$lang.recom_name}
+      <input class="queryInput" type="text" name="recom_name" value="{$smarty.get.recom_name|escape}" />
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='recommend/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['recommend/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 250, sortable : false, align: 'center', className: 'handle'},
+			{ display: 'ID', name : 'recom_id', width : 50, sortable : true, align: 'center'},
+    		{ display: '{$lang.recom_name}', name : 'recom_name', width : 200, sortable : true, align: 'center'},
+			{ display: '{$lang.goods_count}', name : 'goods_count', width : 100, sortable : false, align: 'center'},	
+    	],
+        buttons : [
+            { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+    	title: '{$lang.recommend_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = "{url route='recommend/add'}";
+		return false;
+	}
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if(name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+		   	layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist, 'recommend');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+			layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'recommend');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'recommend');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"} 

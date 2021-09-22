@@ -1,0 +1,37 @@
+@import url('global.css');
+
+/* header */
+.fixed-layer{position:fixed;right:10px;bottom:100px;z-index:990;background:url(../images/menuifxed.png) no-repeat;background-position: -42px -185px;background-size: 86px 276px;width:45px;}
+.active-fixed-layer{background-position:2px 0px;}
+.fixed-layer .menu-fixed-list{height:180px;display:none;}
+.fixed-layer .menu-fixed-list a{display: block;font-size: 0;margin-bottom: 5px;height: 42px;}
+.fixed-layer .menu-fixed-list .fore03 a {height: 41px;}
+.fixed-layer .menu-fixed-list .fore04 a {height: 40px;}
+.fixed-layer .menu-mini {height: 40px;margin-bottom:4px;}
+.fixed-layer .backtop {height: 41px;}
+.active-fixed-layer .menu-mini {margin-top:5px;}
+
+.bar-wrap{position:relative; height:48px; z-index:990}
+.bar-wrap .top-bar{ width:100%; background:#f7f7f7; position:fixed; top:0; left:0; height:48px;  border-bottom:1px #f7f7f7 solid; z-index:990}
+.bar-wrap .top-bar .barbg{ background:#fff; opacity:0; width:100%; height:48px;}
+.bar-wrap .top-bar .barbtn{ position:absolute; width:100%; top:0;left:0; overflow:hidden;}
+.bar-wrap .top-bar .barbtn span,.bar-wrap .top-bar .barbtn input{display:inline-block; text-align:left; line-height:38px; border:0; opacity:1;}
+.bar-wrap .top-bar .barbtn span{font-size:16px; color:#222;margin-left:38px;}
+.bar-wrap .top-bar .barbtn input{border-radius:4px; height:28px; line-height:28px; color:#222}
+.bar-wrap .top-bar .barbtn li{margin:5px 5px; text-align:center}
+.bar-wrap .top-bar .barbtn li a{ display:inline-block; border-radius:25px;width:38px; height:38px; line-height:38px;top:0px; background:#f7f7f7; font-family: "wind-icon-font"; text-align:center; color:#000; font-size:18px; opacity:1;}
+
+.bar-wrap .top-bar .barbtn .input-wraper{padding-left:38px; margin-top:4px; height:28px; line-height:28px;border-radius:20px;background:rgba(0, 0, 0, 0.05); position:relative;}
+.bar-wrap .top-bar .barbtn .input-wraper i{ position:absolute; left:17px; top:0px; font-size:11px; color:#999;}
+.bar-wrap .top-bar .barbtn .input-wraper input{border:0;display:block;width:100%;height:28px;line-height:28px;margin:0;padding:0; opacity:1; border-radius:20px; background:none}
+
+.page-menu-box{margin-right:-10px}
+.page-menu-box .arrow { display: block; float: right; width: 0; height: 0; margin-right: 11px; font-size: 0; line-height: 0; border-width: 8px; border-color: transparent transparent rgba(255,255,255,0.9) transparent; border-style: dashed dashed solid dashed; }
+.page-menu-box ul { display: block; clear: both;background: rgba(255,255,255,0.9); border-radius: 3px; }
+.page-menu-box li { margin:0 5px; position: relative; z-index: 1; border-bottom:0.5px #ccc solid; text-align:left }
+.page-menu-box li:last-child { border-bottom: none 0; }
+.page-menu-box li a { display: block; height: 20px; padding: 10px; font-size: 14px; line-height: 20px; color: #666;}
+
+.page-actions{ position:fixed; top:0; right:0; min-width:85px; background:#f7f7f7; height:38px; margin:5px; z-index:990; line-height:38px; text-align:right}
+.page-actions a,.page-actions i{ display:inline-block; width:38px; height:38px; text-align:center; font-size:14px; color:#222;}
+.page-actions .wind-icon-font{ font-size:18px}

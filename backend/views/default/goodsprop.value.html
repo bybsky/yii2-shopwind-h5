@@ -1,0 +1,55 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.prop_list}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='goodsprop/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='goodsprop/add'}">{$lang.add_prop}</a></li>
+      <li><a class="btn1" href="{url route='gcategory/index'}">{$lang.distribute_prop}</a></li>
+      <!--{if $app->controller->action->id eq 'editvalue'}-->
+      <li><span>{$lang.edit_pvalue}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.add_pvalue}</span></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.prop_name}:</th>
+          <td class="paddingT15 wordSpacing5">{$prop.name}</td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.pvalue}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" type="text" name="pvalue" value="{$propvalue.pvalue|escape}" /></td>
+        </tr>
+        <tr style="{if $prop.is_color}display:table-row{else}display:none{/if}">
+          <th class="paddingT15"> {$lang.color_value}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" type="text" name="color" value="{$propvalue.color|escape}" />
+            <label class="gray">{$lang.color_value_note}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" id="sort_order" type="text" name="sort_order" value="{$propvalue.sort_order}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.status}:</th>
+          <td class="paddingT15 wordSpacing5"><p>
+              <label>
+                <input type="radio" name="status" value="1" {if $propvalue.status}checked="checked"{/if}/>
+                {$lang.yes}</label>
+              <label>
+                <input type="radio" name="status" value="0" {if !$propvalue.status}checked="checked"{/if}/>
+                {$lang.no}</label>
+            </p></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

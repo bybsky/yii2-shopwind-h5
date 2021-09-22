@@ -1,0 +1,331 @@
+<div class="goods-detail">
+  <div class="col-img relative" style="max-width:640px; margin:0 auto;">
+    <div class="scroll-wrapper">
+      <div id="slides" class="scroller">
+        <ul class="bd clearfix">
+          <!--{if $goods.goodsImage}--> 
+          <!--{foreach from=$goods.goodsImage item=item name=fe_item}-->
+          <li {if !$smarty.foreach.fe_item.first}class="hidden"{/if}><img src="{$item.thumbnail|default:$app->params['default_goods_image']|url_format}" /></li>
+          <!--{/foreach}--> 
+          <!--{else}-->
+          <li><img src="{$goods.default_image|default:$app->params['default_goods_image']|url_format}" /></li>
+          <!--{/if}-->
+        </ul>
+        <ul class="hd">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="J_IsPro is-pro hidden">
+    <div class="wraper">
+      <div class="lp clearfix">
+        <div class="pro-price" ectype="goods_pro_price"></div>
+        <div class="extra-info"> <em><del ectype="goods_price">{$goods.price|price_format}</del></em> <span><ins>{$goods.sales|default:0}</ins>件已售</span> </div>
+      </div>
+      <!--{if $goods.promotion.lefttime}-->
+      <div class="rp">
+        <p class="t">距结束仅剩</p>
+        <p class="J_CountDown countdown webkit-box"><span class="tm NumDays flex1">{$goods.promotion.lefttime.d}</span><em>:</em> <span class="tm NumHours flex1">{$goods.promotion.lefttime.h}</span><em>:</em><span class="tm NumMins flex1">{$goods.promotion.lefttime.m}</span><em>:</em><span class="tm NumSeconds flex1">{$goods.promotion.lefttime.s}</span></p>
+      </div>
+      <!--{/if}-->
+      <!--{if !$goods.promotion.lefttime}-->
+      <div class="rp J_ProType-exclusive protype-exclusive hidden">手机下<Br />单立享</div>
+      <!--{/if}-->
+      
+    </div>
+  </div>
+  <div class="col-title">
+    <div class="title"> <span class="fs13">{$goods.goods_name|escape}</span> <font class="gray"><!--{foreach from=$goods.tags item=tag}-->{$tag}&nbsp;&nbsp;&nbsp;<!--{/foreach}--></font> </div>
+  </div>
+  <div class="col-price clearfix">
+    <div class="J_IsNotPro is-no-pro"  style="padding:0px 10px 0 10px;">
+      <div class="yahei normal-price" ectype="goods_price">{$goods.price|price_format}</div>
+    </div>
+    <p class="padding10 extra clearfix col-title"> <span class="postage-info">{$lang.loading}</span> <span class="center">销量{$lang.colon}{$goods.sales|default:0} 件</span> <span class="float-right" style="text-align:right">{$store.city|default:$store.province}</span></p>
+  </div>
+  
+  <!--{if $store.couponReceive}-->
+  <div class="line-background"></div>
+  <div class="col-title col-coupon">
+    <div class="title clearfix webkit-box">
+      <p class="lp">优惠券</p>
+      <em class="flex1 fs12 ml10">领取优惠券</em> <a class="btn2 btn-getcoupon" href="javascript:;" ectype="dialog" dialog_id="coupon" dialog_width="400" dialog_title="领取优惠券" uri="{url route='coupon/search' store_id=$goods.store_id}" id="coupon" dialog_class="simple-blue" dialog_opacity="0.5" dialog_position="bottom">领取</a></div>
+  </div>
+  <!--{/if}--> 
+  
+  <!--{if $goods.exchange_price || $promotool.storeFullfreeInfo || $promotool.storeFullPreferInfo}-->
+  <div class="col-title col-promotool webkit-box J_PopLayer" {if $buyIntegral.price}style="border-bottom:1px #eee solid"{/if} data-PopLayer="{ popLayer:'.J_PromotoolPopLayer',top:'35%'}">
+    <div class="title padding10 flex1 clearfix"> 
+      <!--{if $goods.exchange_price}--> 
+      <span><i class="wind-icon-font f60 mr5">&#xe614;</i>积分抵扣</span> 
+      <!--{/if}--> 
+      <!--{if $promotool.storeFullfreeInfo}--> 
+      <span><i class="wind-icon-font f60 mr5">&#xe614;</i>满包邮</span> 
+      <!--{/if}--> 
+      <!--{if $promotool.storeFullPreferInfo}--> 
+      <span><i class="wind-icon-font f60 mr5">&#xe614;</i>满折满减</span> 
+      <!--{/if}-->
+    </div>
+    <div class="dotted box-align-center mr10"><i class="wind-icon-font f99">&#xe634;</i></div>
+  </div>
+  <!--{/if}--> 
+  <!--{if $buyIntegral.price}-->
+  <div class="col-title col-promotool webkit-box J_PopLayer" data-PopLayer="{ popLayer:'.J_GetIntegralPopLayer',top:'35%'}">
+    <div class="title padding10 flex1 clearfix getintegral"> <span><s class="f60 mr5">积分</s>购买可得 <i class="J_BuyIntegralNum f60" data-value="{$buyIntegral.radio}"></i> 积分</span> </div>
+    <div class="dotted box-align-center mr10"><i class="wind-icon-font f99">&#xe634;</i></div>
+  </div>
+  <!--{/if}--> 
+  
+  <!--{if $goods.spec_name_1 || $goods.spec_name_2}-->
+  <div class="line-background"></div>
+  <div class="col-title webkit-box J_GoBuy"  ectype="buy">
+    <p class="padding10 flex1 fs13">请您选择{$lang.colon}{$goods.spec_name_1|escape} {$goods.spec_name_2|escape}</p>
+    <div class="dotted box-align-center mr10"> <i class="wind-icon-font f99">&#xe634;</i> </div>
+  </div>
+  <!--{/if}-->
+  <!--{if $goods.props}-->
+  <div class="col-title webkit-box border-top J_PopLayer" data-PopLayer="{ popLayer:'.J_GoodsPropsPopLayer',top:'20%'}">
+    <p class="padding10 flex1 fs13">产品参数</p>
+    <div class="dotted box-align-center mr10"><i class="wind-icon-font f99">&#xe634;</i> </div>
+  </div>
+  <!--{/if}-->
+  <!--{if $goods.meals}-->
+  <div class="col-title webkit-box border-top">
+    <p class="padding10 flex1 fs13"><a style="display:block" href="{url route='meal/index' goods_id=$goods.goods_id}">搭配购买</a></p>
+    <div class="dotted box-align-center mr10"><i class="wind-icon-font f99">&#xe634;</i> </div>
+  </div>
+  <!--{/if}-->
+  <!--{if $gqas.list}-->
+  <div class="floor qas">
+    <div class="mt"> <em class="vline vleft"></em> <span class="fs12"><i class="wind-icon-font mr5 fs14">&#xe6e0;</i>问答</span> <em class="vline vright"></em> </div>
+    <div class="mc pt10 pr10 pl10"> 
+      <!--{foreach from=$gqas.list item=qa name=fe_qa}-->
+      <div class="item mb20">
+        <div class="us-name clearfix">
+          <p><ins class="green">问</ins>{$qa.question_content}</p>
+        </div>
+        <div class="us-content mt10">
+          <ins class="f60">答</ins><span class="mt10 mb10">{$qa.reply_content}</span>
+          <p class="gray mt10 ml10 pl10">{$qa.time_reply|date_format:"%Y.%m.%d"}</p>
+        </div>
+      </div>
+      <!--{/foreach} --> 
+    </div>
+    <div class="mb center pb20"><a href="{url route='goods/qa' id=$goods.goods_id}">查看全部问答({$gqas.count})</a></div>
+  </div>
+  <!--{/if}-->
+  
+  <!--{if $gcomments.list}-->
+  <div class="floor comments">
+    <div class="mt"> <em class="vline vleft"></em> <span class="fs12"><i class="wind-icon-font mr5 fs14">&#xe6e0;</i>评价</span> <em class="vline vright"></em> </div>
+    <div class="mc pt10 pr10 pl10">
+      <p class="tips webkit-box flex-wrap pb5">
+      	 <a class="gray"><span>{$lang.total}({$gcomments.statistics.total|default:0})</span></a>
+         <a class="gray"  href="{url route='goods/comment' id=$goods.goods_id level=3}"><span>{$lang.good_eval}({$gcomments.statistics.good.count|default:0})</span></a>
+         <a class="gray"  href="{url route='goods/comment' id=$goods.goods_id level=2}"><span>{$lang.normal_eval}({$gcomments.statistics.middle.count|default:0})</span></a>
+         <a  class="gray" href="{url route='goods/comment' id=$goods.goods_id level=1}"><span>{$lang.bad_eval}({$gcomments.statistics.bad.count|default:0})</span></a>
+      </p>
+      <div class="list"> 
+          <!-- {foreach from=$gcomments.list item=comment name=fe_comment} -->
+          <div class="item mb20" {if $smarty.foreach.fe_comment.last}style="border-bottom:0;"{/if}>
+          	<div class="tp">
+                <div class="us-name clearfix">
+                  <p><img src="{$comment.portrait|url_format}" width="25" height="25" align="absmiddle" /></p>
+                  <ul class="gray ml10" style="height:25px; line-height:25px">
+              <li class="mb10 w-full clearfix ratyItem" score="{$comment.evaluation|default:0}"> <span
+                  class="float-left mr10 t">{$lang.goods_evaluation}</span><span
+                  id="gIcon{$smarty.foreach.fe_comment.iteration}" class="float-left mr10 ratyIcon"></span> <span
+                  id="gTarget{$smarty.foreach.fe_comment.iteration}" class="float-left ratyTarget hint"></span> </li>
+            </ul>
+                </div>
+                <div class="us-content"> <span class="mt10 mb10 block line-clamp-2">{$comment.comment}</span> </div>
+            </div>
+            <div class="bp">
+                <div class="col-size webkit-box pt10">
+                    <p class="flex1">{$comment.specification}</p>
+                    <p>{$comment.evaluation_time|date_format:"%Y.%m.%d"}</p>
+                 </div>
+             </div>
+          </div>
+          <!--{/foreach} --> 
+      </div>
+    </div>
+    <div class="mb center pb20"><a href="{url route='goods/comment' id=$goods.goods_id}">查看全部评价({$gcomments.count|default:0})</a></div>
+  </div>
+  <!--{/if}-->
+  <div class="line-background"></div>
+  <div class="store-info margin10">
+    	<div class="store-to clearfix">
+        	<a href="{url route='store/index' id=$store.store_id}"><img width="50" height="50" src="{$store.store_logo|url_format}" /></a>
+            <div class="col-size">
+            	<p class="fs14"><a href="{url route='store/index' id=$store.store_id}">{$store.store_name}</a></p>
+            	<p><!--{if $store.credit_value ge 0}--><img src="{$store.credit_image|url_format}" alt="" /><!--{/if}--></p>
+            </div>
+        </div>
+        
+        <div class="store_bo">
+        	<ul class="webkit-box">
+            	<li>
+                	<p>{$store.goods_count|default:0}</p>
+                    <span class="padd-top">全部宝贝</span>
+                </li>
+                <li>
+                	<p>{$store.collects|default:0}</p>
+                    <span class="padd-top">关注人数</span>
+                </li>
+                <li>
+                    <div class="service">{$lang.goods_evaluation}<span class="{$store.dynamicEvaluation.goods.compare.name}">{$store.dynamicEvaluation.goods.value}<i>{$lang.{$store.dynamicEvaluation.goods.compare.name}}</i></span></div>
+                    <div class="service">{$lang.service_evaluation}<span class="{$store.dynamicEvaluation.service.compare.name}">{$store.dynamicEvaluation.service.value}<i>{$lang.{$store.dynamicEvaluation.service.compare.name}}</i></span></div>
+                    <div class="service">{$lang.shipped_evaluation}<span class="{$store.dynamicEvaluation.shipped.compare.name}">{$store.dynamicEvaluation.shipped.value}<i>{$lang.{$store.dynamicEvaluation.shipped.compare.name}}</i></span></div>
+                </li>
+            </ul>
+            
+            <div class="get-into">
+            	<a href="{url route='store/category' id=$store.store_id}" class="fs12">{$lang.view_category}</a>
+                <a href="{url route='store/index' id=$store.store_id}" class="fs12">{$lang.enter_store}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pop-layer-common pop-wrap-b pop-select-spec J_SelectSpecLayer">
+  <div class="wraper">
+    <div class="bd">
+      <div class="info clearfix"> <img src="{$goods.default_image|url_format}" height="80" width="80" />
+        <div class="goods-attr flex1">
+          <p class="clearfix J_IsPro"> <span class="promo-price mr10 float-left yahei pri" ectype="goods_pro_price"></span> <del ectype="goods_price" class="float-left fff yahei">{$goods.price|price_format}</del> </p>
+          <p class="J_IsNotPro"> <span class="yahei fw-normal pri" ectype="goods_price">{$goods.price|price_format}</span> </p>
+          <p><i class="gray">{$lang.stock}{$lang.colon}<span class="stock gray" ectype="goods_stock">{$goods.goodsSpec.0.stock}</span>{$lang.unit}</i></p>
+          <p>{$lang.your_select}{$lang.colon}<span class="aggregate" ectype="current_spec"></span></p>
+        </div>
+      </div>
+      <div class="close-pop popClosed">&#xe670;</div>
+      <div class="handle"> 
+        <!--{if $goods.spec_qty gt 0}-->
+        <ul class="clearfix w-full mb5">
+          <li class="handle_title">{$goods.spec_name_1|escape} </li>
+        </ul>
+        <!--{/if}--> 
+        <!--{if $goods.spec_qty gt 1}-->
+        <ul class="clearfix w-full mb5">
+          <li class="handle_title">{$goods.spec_name_2|escape}</li>
+        </ul>
+        <!--{/if}-->
+        <ul class="clearfix w-full mb10">
+          <li class="handle_title mr5">{$lang.quantity}</li>
+          <li class="buy-quantity"> <em class="reduce" change="reduce"><b><i class="wind-icon-font">&#xe633;</i></b></em>
+            <input type="text" class="text width1" name="quantity" id="quantity" value="1" />
+            <em class="add" change="increase"><b><i class="wind-icon-font">&#xe632;</i></b></em> </li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft">
+      <div class="confirm-btn J_BtnConfirm"> <a href="javascript:buy(true);" class="buy-now pop-btn">{$lang.confirm}</a> <a href="javascript:buy(false);" class="buy pop-btn">{$lang.confirm}</a> </div>
+    </div>
+  </div>
+</div>
+
+<!--{if $goods.exchange_price || $promotool.storeFullfreeInfo || $promotool.storeFullPreferInfo}-->
+<div class="pop-layer-common promotool-pop-layer J_PromotoolPopLayer">
+  <div class="wraper">
+    <div class="bd"> 
+      <!--{if $goods.exchange_price}-->
+      <dl class="clearfix">
+        <dt><i class="wind-icon-font f60 mr5">&#xe614;</i>积分抵扣</dt>
+        <dd class="flex1 overflow-ellipsis">可使用 {$goods.max_exchange} 积分抵 {$goods.exchange_price} 元</dd>
+      </dl>
+      <!--{/if}--> 
+      <!--{if $promotool.storeFullfreeInfo}-->
+      <dl class="clearfix">
+        <dt><i class="wind-icon-font f60 mr5">&#xe614;</i>满包邮</dt>
+        <dd class="flex1 overflow-ellipsis">{$promotool.storeFullfreeInfo}</dd>
+      </dl>
+      <!--{/if}--> 
+      <!--{if $promotool.storeFullPreferInfo}-->
+      <dl class="clearfix">
+        <dt><i class="wind-icon-font f60 mr5">&#xe614;</i>满折满减</dt>
+        <dd class="flex1 overflow-ellipsis">{$promotool.storeFullPreferInfo}</dd>
+      </dl>
+      <!--{/if}-->
+    </div>
+    <div class="ft pop-btn popClosed">{$lang.finished}</div>
+  </div>
+</div>
+<!--{/if}--> 
+<!--{if $buyIntegral.price}-->
+<div class="pop-layer-common promotool-pop-layer J_GetIntegralPopLayer">
+  <div class="wraper">
+    <div class="bd">
+      <dl class="clearfix">
+        <dt><i class="wind-icon-font f60 mr5">&#xe614;</i>购物送积分</dt>
+        <dd class="flex1 overflow-ellipsis">购买商品可获得 <i class="J_BuyIntegralNum f60" data-value="{$buyIntegralRadio}"></i> 积分</dd>
+      </dl>
+    </div>
+    <div class="ft pop-btn popClosed">{$lang.finished}</div>
+  </div>
+</div>
+<!--{/if}-->
+
+<!--{if $goods.props}-->
+<div class="pop-layer-common goodsprops-pop-layer J_GoodsPropsPopLayer">
+  <div class="wraper has-title">
+    <div class="hd"><i class="closed popClosed"></i>产品参数</div>
+    <div class="bd padding10">
+      <!--{foreach from=$goods.props item=prop name=fe_prop}-->
+      <dl class="{if !$smarty.foreach.fe_prop.last}border-bottom{/if} pt10 pb10 clearfix">
+        <dt class="float-left">{$prop.name}{$lang.colon}</dt>
+        <dd class="float-left">{$prop.value}</dd>
+      </dl>
+      <!--{/foreach}-->
+    </div>
+    <div class="ft pop-btn popClosed">{$lang.finished}</div>
+  </div>
+</div>
+<!--{/if}-->
+
+<div class="btn-fixed clearfix">
+  <div class="small-ico clearfix">
+    <div class="ico-it"> <a href="{url route='store/index' id=$store.store_id}" class="btn-to-cart yahei"> <em style="color:#DD2727;">&#xe656;</em><br />
+      进店 </a> </div>
+    <div class="ico-it"> <a href="javascript:;" class="float-webim J_StartLayim" data-toid="{$store.store_id}"> <em>&#xe642;</em><br />
+      客服 </a> </div>
+    <div class="ico-it"> <a href="javascript:;" class="J_AjaxRequest btn-to-cart yahei {if $goods.collected}collected{/if}" uri="{if $goods.collected}{url route='my_favorite/delete' item_id=$goods.goods_id type='goods'}{else}{url route='my_favorite/add' item_id=$goods.goods_id type='goods'}{/if}"> {if $goods.collected}<em>&#xe615;</em><br />
+      已收藏
+      {else}<em>&#xe616;</em><br />
+      收藏{/if} </a> </div>
+  </div>
+  <div class="large-btn clearfix">
+    <div class="btn-it it1"><a ectype="buy-now" {if $goods.spec_name_1 || $goods.spec_name_2}href="javascript:;" class="btn-buy yahei J_GoBuy"{else}class="btn-buy yahei" href="javascript:buy(true);" {/if}>{$lang.buy_now}</a></div>
+    <div class="btn-it it2"><a ectype="buy" {if $goods.spec_name_1 || $goods.spec_name_2}href="javascript:;" class="J_GoBuy btn-cart yahei"{else}class="btn-cart yahei" href="javascript:buy(false);"{/if}>{$lang.add_to_cart}</a></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var specs = new Array();
+<!--{foreach from=$goods.goodsSpec item=spec}-->
+specs.push(new spec({$spec.spec_id|default:0}, '{$spec.spec_1}', '{$spec.spec_2}', '{$spec.spec_image|url_format}', {$spec.price|default:0}, {$spec.stock|default:0}, {$goods.goods_id|default:0}));
+<!--{/foreach}-->
+var specQty = {$goods.spec_qty};
+var defSpec = {$goods.default_spec|default};
+var goodsspec = new goodsspec(specs, specQty, defSpec);
+
+$(function() {
+
+	/* 加载运费情况 */
+	load_city_logistic({$goods.dt_id|default:0},{$goods.store_id|default:0}, 0);
+	
+	<!--{if $signPackage} // 微信分享-->
+	wxshare({ signPackage: {$signPackage}, content: { desc:"{$app->params['site_title']}", imgUrl:'{$goods.default_image|default:$app->params["resourceUrl"]|url_format}'}});
+	<!--{/if}-->
+	
+	$('.ratyItem').each(function(index, element) {
+		        var score = parseFloat($(this).attr('score'));
+            $(this).raty({
+			        readOnly: true,
+			        score: score,
+              targetType: 'hint',
+              targetKeep: true,
+              starType: 'i'
+		        });
+          });
+})
+</script>

@@ -1,0 +1,61 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.integral_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='integral/index'}">{$lang.integral_list}</a></li>
+      <li><span>{$lang.integral_setting}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.integral_enabled}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.enabled}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.enabled}selected{/if}">{$lang.close}</label>
+            <input name="enabled" value="1" type="radio" {if $setting.enabled}checked{/if}>
+            <input name="enabled" value="0" type="radio" {if !$setting.enabled}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.exchange_rate}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="rate" value="{$setting.rate}"/>
+            <span class="grey">{$lang.exchange_rate_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.register_integral}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="register" value="{$setting.register}"/>
+            <span class="grey">{$lang.register_integral_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.signin_integral}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="signin" value="{$setting.signin}"/>
+            <span class="grey">{$lang.signin_integral_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.open_integral}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="openshop" value="{$setting.openshop}"/>
+            <span class="grey">{$lang.open_integral_note}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.buying_integral}:</th>
+          <td class="paddingT15 wordSpacing5"><span class="grey" style="width:70px;margin-right:10px;display:inline-block;">{$lang.store_sgrade}</span> <span class="grey">{$lang.give_integral}</span></td>
+        </tr>
+        <!--{foreach from=$sgrades item=item}-->
+        <tr>
+          <th class="paddingT15"> </th>
+          <td class="paddingT15 wordSpacing5"><span style="width:70px;margin-right:10px;display:inline-block;">{$item.grade_name}:</span>
+            <input style="width:55px;" type="text" name="buygoods[{$item.grade_id}]" value="{$item.buygoods|default:0}"/></td>
+        </tr>
+        <!--{/foreach}-->
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

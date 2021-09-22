@@ -1,0 +1,58 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.prop_list}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='goodsprop/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='goodsprop/add'}">{$lang.add_prop}</a></li>
+      <li><span>{$lang.distribute_prop}</span></li>
+    </ul>
+  </div>
+  <div class="info2 distribute">
+    <form method="post">
+      <input type="hidden" name="r" value="goodsprop/distribute" />
+      <table class="distinction">
+        <tr style="background:none">
+          <td colspan="2" class="td" style="width:100%;background:none; height:40px; text-indent:15px;"> {$lang.cur_gcate} 
+            <!--{foreach from=$ancestor item=item}--> 
+            / <a href="{url route='goodsprop/distribute' cate_id=$item.cate_id}">{$item.cate_name}</a> 
+            <!--{/foreach}--></td>
+        </tr>
+        <!--{foreach from=$props item=prop}-->
+        <tr>
+          <td class="td" style="width:15%;padding-left:15px;"><input type="checkbox" name="pid[]" value="{$prop.pid}" ectype="pid" {if $prop.checked} checked="checked"{/if} id="pid{$prop.pid}" />
+            <label for="pid{$prop.pid}"> {$prop.name}</label></td>
+          <td class="td" id="pvs{$prop.pid}" style="width:80%"><!--{foreach from=$prop.goodsPropValue item=item}-->
+            
+            <input type="checkbox" name="vid[]" value="{$prop.pid}:{$item.vid}" id="vid{$item.vid}" ectype="pid{$item.pid}" {if $item.checked} checked="checked"{/if} />
+            <label for="vid{$item.vid}"> {$item.pvalue}</label>
+            
+            <!--{/foreach}--></td>
+        </tr>
+        <!--{foreachelse}-->
+        <tr class="no_data">
+          <td colspan="2">{$lang.no_data}</td>
+        </tr>
+        <!--{/foreach}-->
+        <tfoot>
+        
+        {if $props}
+        <tr class="tr_pt10">
+          <td colspan="2" id="batchAction" style="padding-left:15px;"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.ok_save}" />
+            {include file="page.bottom.html"} </td>
+        </tr>
+          </tfoot>
+        
+        {/if}
+      </table>
+    </form>
+  </div>
+</div>
+<script>
+$(function(){
+	$('input[ectype="pid"]').click(function(){
+		$('input[ectype="pid'+$(this).val()+'"]').prop('checked', $(this).prop('checked'));
+	})
+});
+</script> 
+{include file="footer.html"}

@@ -1,0 +1,115 @@
+{use class='\common\library\Def'}
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-buyer-order" class="buyer-order-body"> 
+    <!--TAB-->
+    <div class="listTab">
+      <div class="fixed-gap"></div>
+      <div class="fixed-bd bgf border-bottom">
+        <ul class="items webkit-box">
+          <li class="flex1 center"><a class="{if $smarty.get.type eq '' || $smarty.get.type eq 'all_orders'}active{/if}" href="{url route='buyer_order/index'}">{$lang.all}</a></li>
+          <li class="flex1 center"><a class="{if $smarty.get.type eq 'pending'}active{/if}" href="{url route='buyer_order/index' type='pending'}">{$lang.pending}</a></li>
+          <li class="flex1 center"><a class="{if $smarty.get.type eq 'accepted'}active{/if}" href="{url route='buyer_order/index' type='accepted'}">{$lang.accepted}</a></li>
+          <li class="flex1 center"><a class="{if $smarty.get.type eq 'shipped'}active{/if}" href="{url route='buyer_order/index' type='shipped'}">{$lang.shipped}</a></li>
+          <li class="flex1 center"><a class="{if $smarty.get.type eq 'finished' && $smarty.get.evaluation_status eq '0'}active{/if}" href="{url route='buyer_order/index' type='finished' evaluation_status=0}">{$lang.finished_evaluation}</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!--AJAX DATA-->
+    <div class="clearfix J_InfiniteList">
+      <div class="infinite-result clearfix hidden"> </div>
+      <div class="infinite-template">
+        <div class="order-form mb10">
+          <h2 class="webkit-box">
+            <p class="name pl10 flex1"><a href="[1]"><i class="wind-icon-font fs16">&#xe656;</i> [2]<i class="wind-icon-font fs12">&#xe629;</i></a></p>
+            <p class="status ml10 mr10"> <em>[3]</em> </p>
+          </h2>
+          <div class="goods-list"> 
+            <!--ORDER GOODS FIELDS -->
+            <div class="order-goods-list clearfix"> <a href="[1]" class="block webkit-box">
+              <div class="pic"><img src="[2]"/></div>
+              <div class="txt flex1">
+                <p class="goods-name line-clamp-2">[3]</p>
+                <p class="attr mt5">[4]</p>
+                <p class="fs12 mt5 green" style="display:[5]">{$lang.refund_success}</p>
+                <p class="fs12 mt5 gray" style="display:[6]">{$lang.refund_closed}</p>
+                <p class="fs12 mt5 f60" style="display:[7]">{$lang.refund_waiting}</p>
+              </div>
+              <div class="qua-pri">
+                <p class="pri">[8]</p>
+                <p class="qua">x [9]</p>
+              </div>
+              </a> </div>
+            <!--END--> 
+          </div>
+
+          <p class="align-right static"> <em>{$lang.gong}<span class="ml5 mr5">[4]</span>{$lang.zhongshangping}</em><em>{$lang.heji}<span class="ml5 mr5">[5]</span></em><em>({$lang.hanyunfei}<span class="ml5">[6]</span>)</em> </p>
+          <div class="operate-btn pt10"> 
+            <a class="btn2 mr5" href="[7]" id="order[8]_action_pay" style="display:[9]" >{$lang.pay}</a> 
+            <a class="btn2 mr5" href="javascript:;" ectype="dialog" dialog_id="buyer_order_confirm_order" dialog_title="{$lang.confirm_order}" uri="[10]"  id="order[11]_action_confirm" style="display:[12]" dialog_class="simple-blue" dialog_opacity="0.5" dialog_position="bottom" />{$lang.confirm_order}</a>
+            <a class="btn2 mr5" href="[13]" style="display:[14]">{$lang.cancel_order}</a> 
+            <a class="btn1 mr5" href="[15]" style="display:[16]">{$lang.view_delivery_track}</a> 
+            <a class="btn2 mr5" href="[17]"  id="order[18]_evaluate" style="display:[19]">{$lang.evaluate}</a> 
+            <a class="btn1 mr5" href="[20]" style="display:[21]">{$lang.refund_detail}</a> 
+            <a class="btn1 mr5" href="[22]" style="display:[23]">{$lang.refund_money_goods}</a> 
+            <a class="btn1 mr10" href="[24]">{$lang.view_order}</a> </div>
+        </div>
+      </div>
+      <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+      <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+      <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+      <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+        <p>{$lang.no_records}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 5, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			$.each(data, function(k, order) {
+				var template = TEMP.clone(true);
+				
+				var items = '';
+				$.each(order.orderGoods, function(k1, goods) {
+					items += sprintf(template.find('.goods-list').html(), url(['buyer_order/view', { order_id:order.order_id}]), url_format(goods.goods_image), goods.goods_name, goods.specification, order.refund_status == 'SUCCESS' ? "inline-block" : "none", order.refund_status == 'CLOSED' ? "inline-block" : "none",($.inArray(order.refund_status, ['', undefined]) < 0 && $.inArray(order.refund_status, ['SUCCESS', 'CLOSED']) < 0) ? "inline-block" : "none", price_format(goods.price), goods.quantity);
+				});
+				if(items) {
+					template.find('.goods-list').html(items);
+				} else template.find('.goods-list').remove();
+			
+				html += sprintf(template.html(), 
+					url(['store/index', { id:order.seller_id}]), // [1]
+					order.seller_name, // [2]
+					order.status_label, // [3]
+					order.goods_quantities, // [4]
+					price_format(order.order_amount), // [5]
+					price_format(order.shipping_fee), // [6]
+					url(['cashier/index', { order_id:order.order_id}]), // [7] 
+					order.order_id, // [8]
+					(order.status != {Def::ORDER_PENDING}) ? "none" : "inline-block", // [9]
+					url(['buyer_order/confirm', { order_id:order.order_id}]), // [10]
+					order.order_id, // [11]
+					(order.status != {Def::ORDER_SHIPPED}) ? "none" : "inline-block", // [12]
+					url(['buyer_order/cancel', { order_id:order.order_id}]), // [13]
+					(order.status != {Def::ORDER_SUBMITTED} && order.status != {Def::ORDER_PENDING}) ? "none" : "inline-block", // [14]
+					url(['express/index', { order_id:order.order_id}]), // [15]
+					(order.status != {Def::ORDER_SHIPPED} && order.status != {Def::ORDER_FINISHED}) ? "none" : "inline-block", // [16]
+					url(['buyer_order/evaluate', { order_id:order.order_id}]), // [17]
+					order.order_id, // [18]
+					(order.status != {Def::ORDER_FINISHED} || order.evaluation_status != 0) ? "none" : "inline-block", // [19]
+					url(['refund/view', { id:order.refund_id}]), // [20]
+					(order.payment_code == 'cod' || (order.refund_status == '' || order.refund_status == undefined)) ? "none" : "inline-block", // [21]
+					url(['refund/add', { order_id:order.order_id}]), // [22]
+					((order.refund_status == '' || order.refund_status == undefined) && order.payment_code != 'cod' && ($.inArray(parseInt(order.status), [{Def::ORDER_ACCEPTED},{Def::ORDER_SHIPPED}]) > -1)) ? "inline-block" : "none",	// [23]				
+					url(['buyer_order/view', { order_id:order.order_id}]) // [24]
+				);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"}

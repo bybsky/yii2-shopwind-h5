@@ -1,0 +1,96 @@
+{include file="user.header.html"}
+<div id="deposit-index" class="deposit-index">
+	<!--{if $deposit_account}-->
+    <div class="cover">
+    <div class="d-info">
+    	<p class="available hidden">可用余额</p>
+    	<p class="money"><a class="block fff" href="{url route='deposit/recordlist'}">{$deposit_account.money|default:0}</a></p>
+        <p class="frozen mb20">
+        	<a class="block fff" href="{url route='deposit/frozenlist'}">{$deposit_account.frozen|default:0}元被冻结<i class="wind-icon-font">&#xe629;</i></a>
+        </p>
+    	<div class="wraper">
+            <div class="portrait">
+               <img src="{$visitor.portrait|url_format}" width="80" height="80" />
+            </div>
+            <!--
+            <div class="dt">
+                <p class="l1 fff fs10">{$deposit_account.account}<i class="wind-icon-font">&#xe659;</i></p>
+            </div>-->
+        </div>
+    </div>
+    </div>
+    <div class="oper-list">
+    	<div class="deposit-amount webkit-box mb10">
+        	<span>
+            	<i class="wind-icon-font fs18">&#xe64d;</i>
+               <em class="txt fs16">交易记录</em>
+            </span>
+        		<a href="{url route='deposit/tradelist'}" class="block flex1 fs14 align-right">
+                <p class="yahei gray">{$deposit_account.account}<i class="wind-icon-font gray">&#xe629;</i></p>
+            </a>
+        </div>
+        <div class="list">
+        	<ul class="clearfix">
+            	<li class="config">
+                    <a href="{url route='deposit/config'}"> 
+                        <div class="lp wind-icon-font">&#xe674;</div>
+                        <div class="rp">
+                            <span class="tt">账户管理</span>
+                            <em class="desc">修改支付密码，开启/关闭余额支付</em>
+                        </div>
+                    </a>
+           		</li>
+                <li  class="transform">
+                    <a href="{url route='deposit/recordlist'}"> 
+                        <div class="lp wind-icon-font">&#xe794;</div>
+                        <div class="rp">
+                            <span class="tt">财务明细</span>
+                            <em class="desc">显示收支明细</em>
+                        </div>
+                    </a>
+               </li>
+        		<li class="recharge">
+                    <a href="{url route='deposit/recharge'}"> 
+                        <div class="lp wind-icon-font">&#xe678;</div>
+                        <div class="rp">
+                            <span class="tt">充值</span>
+                            <em class="desc">支持支付宝，微信，银联，财付通</em>
+                        </div>
+                    </a>
+           		</li>
+           		<li class="withdraw">
+                    <a href="{url route='deposit/withdraw'}"> 
+                        <div class="lp wind-icon-font">&#xe675;</div>
+                        <div class="rp">
+                            <span class="tt">提现</span>
+                            <em class="desc">将余额提现到银行卡</em>
+                        </div>
+                    </a>
+               </li>
+               <li  class="transform">
+                    <a href="{url route='deposit/transfer'}"> 
+                        <div class="lp wind-icon-font">&#xe677;</div>
+                        <div class="rp">
+                            <span class="tt">转账</span>
+                            <em class="desc">会员间转账即时到帐</em>
+                        </div>
+                    </a>
+               </li>
+               
+               <li class="banks">
+                    <a href="{url route='bank/index'}"> 
+                        <div class="lp wind-icon-font">&#xe676;</div>
+                        <div class="rp">
+                            <span class="tt">银行卡</span>
+                            <em class="desc">已绑定{$myBank.count|default:0}张</em>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--{else}-->
+    <div class="notice-empty"><i>&#xe715;</i><p>请先配置预存款帐户</p><a href="{url route='deposit/config'}" class="btn mt10">立即配置</a></div>
+    <!--{/if}-->
+</div>
+{include file="footer.html"}

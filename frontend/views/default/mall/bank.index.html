@@ -1,0 +1,84 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="bank"> 
+      
+      <!--AJAX DATA-->
+      <div class="bank-list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li item_id="[1]" class="item ml10 mr10 bank-bg-[2]"> <i class="bank-ico bank-ico-[3] bank-ico-big"></i>
+            <div class="l1 webkit-box">
+              <div class="lp"> <i class="bank-ico bank-ico-[4]"></i> </div>
+              <div class="rp flex1">
+                <p class="account-name">[5]</p>
+                <p class="type">[6]</p>
+                <div class="num align-right">[7]</div>
+              </div>
+            </div>
+          </li>
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+      
+      <div class="extra">
+        <div class="fixed-gap"></div>
+        <a class="btn-alipay btn-alipay-fixed" href="{url route='bank/add'}">{$lang.bank_add}</a> </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('body').on('touchend', '.weui_actions_mask', function(){
+		$.closeActions();
+	});
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, bank) {
+				html += sprintf(template.html(), bank.bid, bank.short_name, bank.short_name, bank.short_name, bank.account_name, bank.type_label, bank.num);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+});
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		o.unbind('click');
+		o.click(function(){
+		 
+		 $.actions({
+			title: "{$lang.select_handle}",
+			actions: [
+			{
+				text: "{$lang.edit}",
+				onClick: function() {
+					window.location.href = url(['bank/edit', { bid:item_id}]);
+					return false;
+				}
+			},
+			{
+			   text: "{$lang.drop}",
+			   onClick: function() {
+				  ajaxSubmit('GET', url(['bank/delete', { bid:item_id}]));
+			   }
+			 }]
+		  });
+		});  
+	});
+}
+</script> 
+{include file="footer.html"} 

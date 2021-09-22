@@ -1,0 +1,155 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='store/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='store/index' state='applying'}">{$lang.applying}</a></li>
+      <li><span>{$lang.edit}</span></li>
+    </ul>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+      <h4>{$lang.operation_tip}</h4></div>
+    <ul>
+      <li><i class="fa fa-angle-double-right"></i> 请填写店铺信息,提交完成操作。</li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15">{$lang.owner_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="owner_name" type="text" id="owner_name" value="{$store.owner_name|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.identity_card}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" name="identity_card" type="text" id="identity_card" value="{$store.identity_card|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.store_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" name="store_name" type="text" id="store_name" value="{$store.store_name|escape}"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.scategory}:</th>
+          <td class="paddingT15 wordSpacing5" ><select name="cate_id">
+              <option value="0">{$lang.select_pls}</option>
+                {html_options options=$scategories selected=$store.scate_id}
+            </select></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.region}:</th>
+          <td class="paddingT15 wordSpacing5" ><div id="region">
+              <input type="hidden" name="region_id" value="{$store.region_id}" class="mls_id" />
+              <input type="hidden" name="region_name" value="{$store.region_name|escape}" class="mls_names" />
+              <span>{$store.region_name|escape}</span>
+              <input type="button" value="{$lang.edit}" class="edit_region default-btn" />
+              <select style="display:none">
+                <option>{$lang.select_pls}</option>
+                
+              {html_options options=$regions}
+            
+              </select>
+            </div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.address}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" name="address" type="text" id="address" value="{$store.address|escape}"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.zipcode}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="zipcode" type="text" id="zipcode" value="{$store.zipcode|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.tel}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="tel" type="text" id="tel" value="{$store.tel|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.sgrade}: </th>
+          <td class="paddingT15 wordSpacing5"><select name="sgrade" id="sgrade">
+              
+          {html_options options=$sgrades selected=$store.sgrade}
+          
+            </select></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.end_time}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2 pick_date" name="end_time" type="text" id="end_time" value="{$store.end_time|date_format:'%Y-%m-%d %H:%M:%S'}" />
+            <label class="field_notice">{$lang.note_for_end_time}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.state}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $store.state eq 1}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if in_array($store.state, array(0,2))}selected{/if}">{$lang.close}</label>
+            <input name="state" value="1" type="radio" {if $store.state eq 1}checked{/if}>
+            <input name="state" value="2" type="radio" {if in_array($store.state, array(0,2))}checked{/if}>
+            </span></td>
+        </tr>
+        <tr id="tr_close_reason">
+          <th class="paddingT15" valign="top">{$lang.close_reason}:</th>
+          <td class="paddingT15 wordSpacing5"><label for="close_reason"></label>
+            <textarea name="close_reason" id="close_reason">{$store.close_reason}</textarea></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.certification}:</th>
+          <td class="paddingT15 wordSpacing5"><label for="autonym">
+              <input name="autonym" type="checkbox" id="autonym" value="1" {if $store.certifications && in_array('autonym', $store.certifications)}checked="checked"{/if} />
+              {$lang.autonym}</label>
+            <label for="material">
+              <input type="checkbox" name="material" value="1" id="material" {if $store.certifications && in_array('material', $store.certifications)}checked="checked"{/if} />
+              {$lang.material}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.recommend}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $store.recommended}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$store.recommended}selected{/if}">{$lang.no}</label>
+            <input name="recommended" value="1" type="radio" {if $store.recommended}checked{/if}>
+            <input name="recommended" value="0" type="radio" {if !$store.recommended}checked{/if}>
+            </span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" name="sort_order" type="text" id="sort_order" value="{$store.sort_order}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.uploaded_image}:</th>
+          <td class="paddingT15 wordSpacing5">
+            {if $store.identity_front}<a href="{$store.identity_front|url_format}" target="_blank">{$lang.view}</a>{/if}
+            {if $store.identity_back}<a href="{$store.identity_back|url_format}" target="_blank">{$lang.view}</a>{/if}
+            {if $store.business_license}<a href="{$store.business_license|url_format}" target="_blank">{$lang.view}</a>{/if} </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+  regionInit("region");
+	$('#end_time').datetimepicker({
+    timeText: '时间',
+    hourText: '小时',
+    minuteText: '分钟',
+    secondText: '秒',
+    currentText: '现在',
+    closeText: '完成',
+    showSecond: true, //显示秒  
+    timeFormat: 'HH:mm:ss' //格式化时间
+  });
+
+  $("input[name='state']").click(function(){
+    if (this.value == 2) {
+      $("#tr_close_reason").show();
+    } else {
+      $("#tr_close_reason").hide();
+    }
+  });
+  $("input[name='state']:checked").click();
+});
+</script> 
+{include file="footer.html"}

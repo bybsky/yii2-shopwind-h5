@@ -1,0 +1,96 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='setting/index'}">{$lang.base_setting}</a></li>
+      <li><span>{$lang.base_information}</span></li>
+      <li><a class="btn1" href="{url route='setting/email'}">{$lang.email_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/verifycode'}">{$lang.captcha_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/store'}">{$lang.store_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/api'}">{$lang.api_setting}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> <label for="site_name">{$lang.site_name}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="site_name" type="text" name="site_name" value="{$setting.site_name}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="site_title">{$lang.site_title}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="site_title" type="text" name="site_title" value="{$setting.site_title}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15" valign="top"> <label for="site_description">{$lang.site_description}:</label></th>
+          <td class="paddingT15 wordSpacing5"><textarea name="site_description" id="site_description">{$setting.site_description}</textarea></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.site_keywords}:</th>
+          <td class="paddingT15 wordSpacing5"><input id="site_keywords" type="text" name="site_keywords" value="{$setting.site_keywords}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="hot_search">{$lang.hot_keywords}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="hot_keywords" type="text" name="hot_keywords" value="{$setting.hot_keywords}" class="infoTableInput"/>
+            <label class="field_notice">{$lang.hot_keywords_note}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="site_logo">{$lang.site_logo}:</label></th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="site_logo" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal_site_logo" value="site_logo" />
+              <label class="field_notice">{$lang.site_logo_desc}</label>
+              </span> 
+              <!--{if $setting.site_logo}-->
+              <div class="show_img"><img src="{$setting.site_logo|url_format}" width="100" height="100" /></div>
+              <!--{/if}--> 
+            </div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="icp_number">{$lang.icp_number}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="icp_number" type="text" name="icp_number" value="{$setting.icp_number}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="site_phone_tel">{$lang.site_phone_tel}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="site_phone_tel" type="text" name="site_phone_tel" value="{$setting.site_phone_tel}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="site_email">{$lang.site_email}:</label></th>
+          <td class="paddingT15 wordSpacing5"><input id="site_email" type="text" name="site_email" value="{$setting.site_email}" class="infoTableInput"/></td>
+        </tr>
+
+        <tr>
+          <th class="paddingT15">{$lang.site_mode}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.site_mode neq 'debug'}selected{/if}">{$lang.site_normal}</label>
+            <label class="cb-disable {if $setting.site_mode eq 'debug'}selected{/if}">{$lang.site_debug}</label>
+            <input name="site_mode" value="normal" type="radio" {if $setting.site_mode neq 'debug'}checked{/if}>
+            <input name="site_mode" value="debug" type="radio" {if $setting.site_mode eq 'debug'}checked{/if}>
+            </span> <span class="grey notice">{$lang.note_for_site_mode}</span></td>
+        </tr>
+
+        <tr>
+          <th class="paddingT15">{$lang.site_status}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.site_status}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$setting.site_status}selected{/if}">{$lang.close}</label>
+            <input name="site_status" value="1" type="radio" {if $setting.site_status}checked{/if}>
+            <input name="site_status" value="0" type="radio" {if !$setting.site_status}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15" valign="top"> <label for="closed_reason">{$lang.closed_reason}:</label></th>
+          <td class="paddingT15 wordSpacing5"><textarea name="closed_reason" id="closed_reason">{$setting.closed_reason}</textarea></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

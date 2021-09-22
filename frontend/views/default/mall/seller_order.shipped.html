@@ -1,0 +1,52 @@
+{include file="user.header.html"}
+<div id="page-seller-order">
+  <div class="order-shipped-body">
+    <div class="orderNo">
+    	<p class="text box-align-center">{$lang.order_sn}{$lang.colon}{$order.order_sn}</p>
+    </div>
+    <form method="post" class="fun-form-style">
+      <div class="form"> 
+        
+        <!--{if $express_company}-->
+        <dl class="J_Express J_PopLayer J_PopLayer__INIT" data-PopLayer="{ popLayer:'.J_ExpressPopLayer',top:'35%', fixedBody: true}">
+          <dd class="webkit-box"> <span>{$lang.express_company}</span>
+            <p class="flex1">{$order.express_comkey}</p>
+            <i class="wind-icon-font mr10 f99 box-align-center gray">&#xe629;</i> </dd>
+        </dl>
+        <div class="pop-layer-common express-pop-layer J_ExpressPopLayer">
+          <div class="wraper has-title no-ft">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.select_express_company}</div>
+            <ul class="bd radioUiWraper">
+              <!--{foreach from=$express_company item=company key=key name=fe_company}-->
+              <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if (!$order.express_comkey && $smarty.foreach.fe_company.first) || ($key eq $order.express_comkey)}active{/if} {if $smarty.foreach.fe_company.last}border-b-0{/if}">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$company}</span></div>
+                <div class="input rp box-align-center pr10" style="margin-right:10px;">
+                  <input type="radio" name="express_comkey" value="{$key}" {if (!$order.express_comkey && $smarty.foreach.fe_company.first) || ($key eq $order.express_comkey)} checked="checked" {/if}>
+                </div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+          </div>
+        </div>
+        <!--{/if}-->
+        
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.express_no}</span>
+            <input type="text" id="express_no" name="express_no" class="input clearInput flex1" value="{$order.express_no}" oninput="javascript:clearInput(this)" placeholder="{$lang.express_no}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.operate_reason}</span>
+            <input type="text" id="remark" name="remark" class="input clearInput flex1" value="{$order.remark}" oninput="javascript:clearInput(this)" placeholder="{$lang.operate_reason}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <div class="clearfix">
+		  <p class="fixed-gap"></p>
+		  <input type="hidden" name="redirect" class="J_AjaxFormRetUrl" value="{url route='seller_order/index' type='shipped'}" />
+		  <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+		</div>
+      </div>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

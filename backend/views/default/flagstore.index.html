@@ -1,0 +1,65 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.store}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+      <!-- {if !$flagstore} -->
+      <li><a class="btn1" href="{url route='flagstore/add'}">{$lang.add}</a></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['flagstore/index']),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.store_name}', name : 'store_name', width : 200, sortable : false, align: 'center'},
+    		{ display: '{$lang.brand_name}', name : 'brand_name', width : 100, sortable : false, align: 'center'},
+			{ display: '{$lang.cate_name}', name : 'cate_name', width : 300, sortable : false, align: 'center'},
+    		{ display: '{$lang.keyword}', name : 'keyword', width : 150, sortable : true, align: 'center'},    		
+			{ display: '{$lang.sort_order}', name : 'sort_order', width: 80, sortable : true, align : 'center'},
+			{ display: '{$lang.status}', name : 'status', width: 80, sortable : true, align : 'center'}	
+    	],
+        buttons : [
+            { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }
+        ],
+    	title: '{$lang.flagstore_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = url(['flagstore/add']);
+		return false;
+	}
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist, 'flagstore');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length == 0){
+			layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'flagstore');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'flagstore');
+	   }
+	}
+}
+</script> 
+{include file="footer.html"} 

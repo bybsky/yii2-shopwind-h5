@@ -1,0 +1,81 @@
+<form method="post" action="{$action_url}">
+  <div class="dialog-form scroll captcha-form">
+    <div class="dialog_content_scroll">
+      <ul class="tab J_Tab clearfix">
+        <li class="active" codeType="phone"><span>{$lang.phone_verify}</span></li>
+        <li codeType="email"><span>{$lang.email_verify}</span></li>
+      </ul>
+      <div class="eject_con">
+        <div class="add">
+          <div id="warning"></div>
+          <div class="dialog-form-bd captcha-fields J_TabForm">
+            <ul class="each">
+              <li class="clearfix">
+                <p class="first">{$lang.phone_mob}</p>
+                <p>
+                  <input type="hidden" name="phone_mob" value="{$user.phonb_mob}" />
+                  {$user.phone_mob}</p>
+              </li>
+              <li class="clearfix">
+                <p class="first">{$lang.yanzhengma}</p>
+                <p class="clearfix">
+                  <input type="text" name="phone_code" class="input" maxlength="10" />
+                  <input type="button" value="{$lang.get_captcha}" id="send_phonecode" class="btn" />
+                </p>
+              </li>
+            </ul>
+            <ul class="each hidden">
+              <li class="clearfix">
+                <p class="first">{$lang.email}</p>
+                <p>
+                  <input type="hidden" name="email" value="{$user.email}" />
+                  {$user.email}</p>
+              </li>
+              <li class="clearfix">
+                <p class="first">{$lang.yanzhengma}</p>
+                <p>
+                  <input type="text" name="email_code" class="input" maxlength="10" />
+                  <input type="button" value="{$lang.get_captcha}" id="send_emailcode" class="btn" />
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <input type="hidden" value="phone" class="J_CodeType" />
+      <input type="button" value="{$lang.submit}" id="gs_submit" class="btn-alipay" />
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+$(function(){
+	$('.J_Tab li').click(function(){
+		$('.J_CodeType').val($(this).attr('codeType'));
+		$(this).parent().find('li').removeClass('active');
+		$('.J_TabForm').find('.each').hide();		
+		$(this).addClass('active');
+		$('.J_TabForm').find('.each:eq('+$(this).parent().children('li').index(this)+')').fadeIn();		
+	});
+	
+	/* unbind first before click */
+	$(document.body).find('#send_phonecode').unbind('click').on('click', function(){
+		$(this).attr("disabled", true);
+		send_phonecode($(this), { purpose: "{$captcha.purpose}", userid: "{$user.userid}", "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+	});
+	$(document.body).find('#send_emailcode').unbind('click').on('click', function(){
+		$(this).attr("disabled", true);
+		send_emailcode($(this), { purpose: "{$captcha.purpose}", userid: "{$user.userid}"}, 120);
+	});
+	$(document.body).find('#gs_submit').unbind('click').on('click', function(){
+		var codeType = $('.J_CodeType').val();
+		if($.trim($('input[name="'+codeType+'_code"]').val()) == '') {
+			layer.open({ content:lang.input_captcha});
+		}
+		else {
+			gs_callback('{$smarty.get.id}', codeType, $.trim($('input[name="'+codeType+'_code"]').val()));
+		}
+	});
+});
+</script>

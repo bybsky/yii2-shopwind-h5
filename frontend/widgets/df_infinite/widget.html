@@ -1,0 +1,35 @@
+<div class="product-interest floor"> 
+	<!--{if $widget_data.model_name}-->
+  	<div class="mt mt5" style="color:{$widget_data.model_color};">
+    	<em style="border-color:{$widget_data.model_color};" class="vline vleft"></em>
+    	<span class="fs14">{$widget_data.model_name|escape}</span>
+    	<em  style="border-color:{$widget_data.model_color};" class="vline vright"></em>
+    </div>
+	<!--{/if}-->
+  <div class="product-list J_S{$widget_data.model_id}">
+  	<ul class="infinite-result clearfix hidden"></ul>
+    <div class="infinite-template">
+    	<li><div class="product-div"><a href="[1]"><img class="lazyload" initial-url="[2]" src="{res file='images/empty.gif'}" /></a><div class="product-text"><h4><a class="line-clamp-2" href="[3]">[4]</a></h4><p class="price">[5]</p></div></div></li>
+    </div>
+    <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>加载更多<ins class="vline vright"></ins></div>
+      <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>加载中...</em></span><ins class="vline vright"></ins></div>
+      <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>已经到底了<ins class="vline vright"></ins></div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	var gateway = "{url route='default/infinite'}";
+	var params = { cate_id: "{$widget_data.cate_id|default:0}", recom_id:"{$widget_data.recom_id|default:0}", order:"{$widget_data.sort_by|default:''}"};
+	var maxshow = "{$widget_data.maxShow|default:100}";
+	$('.J_S{$widget_data.model_id}').infinite({ url: gateway, pageper: 4, params: params, maxshow: maxshow, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image), url(['goods/index', { id:goods.goods_id}]), goods.goods_name, price_format(goods.price));
+				
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script>

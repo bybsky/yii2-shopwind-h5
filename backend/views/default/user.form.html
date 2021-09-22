@@ -1,0 +1,104 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.user}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='user/index'}">{$lang.manage}</a></li>
+      <li> <span>{if $user.userid}{$lang.edit}{else}{$lang.add}{/if}</span> </li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.username}:</th>
+          <td class="paddingT15 wordSpacing5"><!-- {if $user.userid} --> 
+            {$user.username|escape} 
+            <!-- {else} -->
+            
+            <input class="infoTableInput2" id="username" type="text" name="username" value="{$user.username|escape}" />
+            <label class="field_notice">{$lang.username}</label>
+            
+            <!-- {/if} --></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.password}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="password" type="text" id="password" />
+            
+            <!--{if $user.userid} --> 
+            <span class="grey">{$lang.note_password}</span> 
+            <!-- {/if} --></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.email}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="email" type="text" id="email" value="{$user.email|escape}" />
+            <label class="field_notice">{$lang.email}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.phone_mob}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="phone_mob" type="text" id="phone_mob" value="{$user.phone_mob|escape}" />
+            <label class="field_notice">{$lang.phone_mob}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.real_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="real_name" type="text" id="real_name" value="{$user.real_name|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.gender}:</th>
+          <td class="paddingT15 wordSpacing5"><p>
+              <label>
+                <input name="gender" type="radio" value="0" {if $user.gender eq 0}checked="checked"{/if} />
+                {$lang.unknown}</label>
+              <label>
+                <input type="radio" name="gender" value="1" {if $user.gender eq 1}checked="checked"{/if} />
+                {$lang.male}</label>
+              <label>
+                <input type="radio" name="gender" value="2" {if $user.gender eq 2}checked="checked"{/if} />
+                {$lang.female}</label>
+            </p></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.im_qq}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="im_qq" type="text" id="im_qq" value="{$user.im_qq|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.locked}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $user.locked}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$user.locked}selected{/if}">{$lang.no}</label>
+            <input name="locked" value="1" type="radio" {if $user.locked}checked{/if}>
+            <input name="locked" value="0" type="radio" {if !$user.locked}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <!-- <tr>
+          <th class="paddingT15"> {$lang.imforbid}:</th>
+          <td class="paddingT15 wordSpacing5"><label>
+              <input name="imforbid" type="radio" id="imforbid" value="0" {if !$user.imforbid} checked="checked" {/if} />
+              {$lang.no}</label>
+            <label>
+              <input name="imforbid" type="radio" id="imforbid" value="1" {if $user.imforbid} checked="checked"{/if} />
+              {$lang.yes}</label></td>
+        </tr> -->
+        <tr>
+          <th class="paddingT15">{$lang.portrait}:</th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" name="textfield" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="portrait" id="portrait" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal" value="portrait" />
+              <label class="field_notice">{$lang.note_portrait}</label>
+              </span> 
+              
+              <!--{if $user.portrait}-->
+              <div class="show_img"><img src="{$user.portrait|url_format}" width="50" height="50" /></div>
+              <!--{/if}--> </div></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,132 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.cashcard_manage}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+      <li><a class="btn1" href="{url route='cashcard/add'}">{$lang.add}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+	  <input type="hidden" name="r" value="cashcard/index" />
+      {$lang.name}
+      <input class="queryInput" type="text" name="name" value="{$smarty.get.name}" style="width:100px;" />
+      {$lang.cardNo}
+      <input class="queryInput" type="text" name="cardNo" value="{$smarty.get.cardNo}" style="width:200px;" />
+      {$lang.add_time_from}
+      <input class="queryInput" type="text" value="{$query.add_time_from}" id="add_time_from" name="add_time_from" class="pick_date" />
+      {$lang.to}
+      <input class="queryInput" type="text" value="{$query.add_time_to}" id="add_time_to" name="add_time_to" class="pick_date" />
+      {$lang.print_status}
+      <select name="printed">
+        <option value="0" {if !in_array($smarty.get.printed, array(1,2))} selected="selected"{/if}>{$lang.no_limit}</option>
+        <option value="1" {if in_array($smarty.get.printed, array(1))} selected="selected"{/if}>{$lang.no_print}</option>
+        <option value="2" {if in_array($smarty.get.printed, array(2))} selected="selected"{/if}>{$lang.printed}</option>
+      </select>
+      {$lang.active_status}
+      <select name="active_time">
+        <option value="0" {if !in_array($smarty.get.active_time, array(1,2))} selected="selected"{/if}>{$lang.no_limit}</option>
+        <option value="1" {if in_array($smarty.get.active_time, array(1))} selected="selected"{/if}>{$lang.no_active}</option>
+        <option value="2" {if in_array($smarty.get.active_time, array(2))} selected="selected"{/if}>{$lang.actived}</option>
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='cashcard/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+		url: url(['cashcard/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.name}', name : 'name', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.cardNo}', name : 'cardNo', width : 150, sortable : true, align: 'center'},
+    		{ display: '{$lang.password}', name : 'password', width : 100, sortable : false, align: 'center'},
+			{ display: '{$lang.money}', name : 'money', width : 80, sortable : true, align: 'center'},
+			{ display: '{$lang.add_time}', name : 'add_time', width: 120, sortable : true, align : 'center'},
+			{ display: '{$lang.expire_time}', name : 'expire_time', width: 120, sortable : true, align : 'center'},
+			{ display: '{$lang.print_status}', name : 'printed', width: 80, sortable : true, align : 'center'}, 
+			{ display: '{$lang.usedname}', name : 'username', width: 80, sortable : true, align : 'center'},    
+			{ display: '{$lang.active_time}', name : 'active_time', width: 120, sortable : true, align : 'center'}
+    	],
+        buttons : [
+            { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+			{ display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+            { display: '<i class="fa fa-edit"></i>{$lang.print}', name : 'print', bclass : 'add', title : '{$lang.batch_print_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-ban"></i>{$lang.unprint}', name : 'unprint', bclass : 'del', title : '{$lang.batch_unprint_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-file-excel-o"></i>{$lang.export_data}', name : 'csv', bclass : 'csv', title : '{$lang.export_data}', onpress : fg_operate }	
+        ],
+		sortname: "add_time",
+    	sortorder: "desc",
+    	title: '{$lang.cashcard_list}'
+    });
+	
+	$('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = url(['cashcard/add']);
+		return false;
+	}
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length==0){
+		   	layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'cashcard');
+	}
+	if(name == 'csv'){
+		if($('.trSelected',bDiv).length==0){
+			layer.confirm(lang.download_all_data,{ icon: 3, title:lang.notice},function(index){
+				fg_csv(itemlist, 'cashcard');
+				layer.close(index);
+			},function(index){
+				layer.close(index);
+			});
+	   }else{
+		   fg_csv(itemlist, 'cashcard');
+	   }
+	}
+	if(name == 'print'){
+		if($('.trSelected',bDiv).length ==0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	    }
+		layer.confirm(lang.batch_print_for_selected,{ icon: 3, title:lang.notice},function(index){
+			fg_print(itemlist.join(','), 1);
+			layer.close(index);
+		},function(index){
+			layer.close(index);
+		});
+	}
+	if(name == 'unprint'){
+		if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	    }
+		layer.confirm(lang.batch_unprint_for_selected,{ icon: 3, title:lang.notice},function(index){
+			fg_print(itemlist.join(','), 0);
+			layer.close(index);
+		},function(index){
+			layer.close(index);
+		});
+	}
+}
+function fg_print(id, value) {
+	var that = $("#flexigrid");
+	ajaxSubmit('get', url(['cashcard/printed', { id:id, value: value}]), null, null, null, function(){
+		that.flexReload();
+	});
+}
+</script> 
+{include file="footer.html"}

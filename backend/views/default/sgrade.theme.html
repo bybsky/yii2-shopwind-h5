@@ -1,0 +1,31 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.sgrade}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='sgrade/index'}">{$lang.manage}</a></li>
+      <li><span>{$lang.skin}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <ul style="margin: 5px;">
+        <!--{foreach from=$themes item=styles key=theme}-->
+        <!--{foreach from=$styles item=style}-->
+        <li class="float-left" style="margin:5px; text-align:center;"><a href="{$baseUrl}/templates/store/{$theme}/styles/{$style.name}/screenshot.jpg" target="_blank"><img style="border:1px #ddd solid;" src="{$baseUrl}/templates/store/{$theme}/styles/{$style.name}/preview.jpg" width="160" height="160" /></a><br />
+          <input type="checkbox" name="skins[]" value="{$style.value}" {if in_array($style.value, $skins)} checked="checked"{/if} class="mt5" />
+        </li>
+        <!--{/foreach}-->
+        <!--{/foreach}--> 
+      </ul>
+      <div class="clear"></div>
+      <table class="infoTable">
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

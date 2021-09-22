@@ -1,0 +1,49 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.theme_setting}</p>
+    <ul class="subnav">
+      <li><span>{$lang.theme_setting}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <ul id="rightCon" class="page-theme">
+      <h3> {$lang.current_theme} : <em>{$cur_template_name}</em> </h3>
+      <!--{foreach from=$templates item=template_name}--> 
+      
+      <li>
+       
+        <div class="templet_style">
+          <img width="115" src='{res file="preview.jpg" baseUrl=$homeUrl}' />
+        </div>
+        
+        <div class="templet_btn"> 
+          <!--{if $cur_template_name neq $template_name}-->
+          <input type="submit" value="{$lang.use}" confirm="{$lang.set_theme_warning}" uri="{url route='theme/set' template_name=$template_name client=$smarty.get.client}" class="formbtn J_AjaxRequest" />
+          <!--{else}-->
+     
+          <a style="background-color: #2e8ded; display:block; color:#ffffff; margin:5px; line-height: 30px;" href="{$homeUrl}" target="_blank">{$lang.go_index}</a>
+          <!--{/if}--> 
+        </div>
+      </li>
+     
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+<script type="text/javascript">
+var template_name = '{$cur_template_name}';
+function use_theme(template){
+    if (template != template_name) {
+		layer.confirm(lang.set_theme_warning,{ icon: 3, title:lang.notice},function(index){
+			  layer.close(index);
+			  window.location.href = url(['theme/set', { template_name:template}]);
+			  return false;	
+		  },function(index){
+			  layer.close(index);
+			  return false;
+		});
+  } 
+}
+</script> 
+{include file="footer.html"} 

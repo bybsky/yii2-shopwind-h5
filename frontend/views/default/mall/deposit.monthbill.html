@@ -1,0 +1,30 @@
+{include file="user.header.html"}
+<div class="deposit">
+  <div class="monthbilllist">
+    <div class="content"> 
+      <!--{if $monthbill}-->
+      <ul class="subtit padding10" style="background:#EAF9F7;color:#444;">
+        <li class="clearfix">
+          <div class="month float-left">{$lang.bill_month}</div>
+          <div class="download float-right">{$lang.handle}</div>
+        </li>
+      </ul>
+      <div> 
+        <!--{foreach from=$monthbill item=bill key=key}-->
+        <ul>
+          <li class="padding10 clearfix" style="border-bottom:#ddd solid 1px; background:#fff;">
+            <div class="month float-left">{$key}</div>
+            <div class="download float-right"> <a target="_blank" href="{url route='deposit/downloadbill' month=$key}" class="f60">{$lang.download}</a> </div>
+          </li>
+        </ul>
+        <!--{/foreach}--> 
+      </div>
+      <!--{else}-->
+      <div class="notice-empty"><i>&#xe661;</i>
+        <p>{$lang.no_records_monthbill}</p>
+      </div>
+      <!--{/if}--> 
+    </div>
+  </div>
+</div>
+{include file="footer.html"} 

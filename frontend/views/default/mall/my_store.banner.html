@@ -1,0 +1,51 @@
+{use class="common\library\Def"}
+{include file="user.header.html"} 
+<div id="main">
+  <div class="my-store">
+    <form method="post" id="my-store" class="fun-form-style" enctype="multipart/form-data">
+      <div class="form">
+      	<div class="store-banner relative bgf webkit-box"> 
+        	<!--{if $store.store_banner}-->
+        	<img src="{$store.store_banner|url_format}" class="flex1" />
+            <!--{/if}-->
+        </div>
+        <div class="webkit-box relative bgf pt10 pb10"> 
+          	<input type="hidden" name="store_banner" value="{$store.store_banner}" />
+            <div class="filePicker"></div>
+          	<div class="flex1 title ml10">
+            	<h3>{$lang.store_banner}</h3>
+            	<span class="gray mt5 mr10 block">{$lang.change_store_banner_desc}</span>
+            </div>
+          	<i class="wind-icon-font mr10 gray mt10 fs14">&#xe629;</i> 
+        </div>
+        <div class="extra">
+          <p class="fixed-gap"></p>
+          <input type="submit" class="btn-alipay J_AjaxSubmit btn-alipay-fixed" value="{$lang.submit}" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.filePicker').compressUpload({
+		server: url(['upload/index']),
+		pick: '.filePicker',
+		fileVal: 'store_banner',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_STORE}",
+			filename: "store_banner"
+		},
+		compressWidth: 640,
+		compressHeight:150,
+		callback: function(file, response, pick, target) {
+			if($('.store-banner').find('img').length > 0) {
+				$('.store-banner').find('img').attr( 'src', url_format(response.retval)+"?"+Math.random());
+			} else $('.store-banner').html('<img src="'+url_format(response.retval)+"?"+Math.random()+'" class="flex1 border-bottom" />');
+			$('input[name="store_banner"]').val(response.retval);
+		}
+	});
+});
+</script>
+{include file="footer.html"}

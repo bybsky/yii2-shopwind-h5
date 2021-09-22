@@ -1,0 +1,65 @@
+{include file="header.html"}
+<style>
+input[type="text"] { width:400px;}
+</style>
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.plugin_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='plugin/index' instance=$smarty.get.instance}">{$lang.manage}</a></li>
+      <li><span>{if $app->controller->action->id eq 'install'}{$lang.install}{else}{$lang.config}{/if}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> <label for="plugin_name">{$lang.plugin_name}:</label></th>
+          <td class="paddingT15 wordSpacing5"> {$plugin.name} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="plugin_desc">{$lang.plugin_description}:</label></th>
+          <td class="paddingT15 wordSpacing5"> {$plugin.desc} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="module_desc">{$lang.version}:</label></th>
+          <td class="paddingT15 wordSpacing5"> {$plugin.version} </td>
+        </tr>
+        <!--{foreach from=$plugin.config item=info key=conf}-->
+        <tr>
+          <th class="paddingT15"> <label for="plugin_{$conf}">{$info.text}:</label></th>
+          <td class="paddingT15 wordSpacing5">
+            <!--{if $info.type eq 'text'}-->
+            <input type="text" name="config[{$conf}]" value="{$config.$conf}" size="{$info.size}" />
+            <!--{elseif $info.type eq 'select'}-->
+            <select name="config[{$conf}]">
+            {html_options options=$info.items selected=$config.$conf}
+            </select> 
+            <!--{elseif $info.type eq 'textarea'}--> 
+            <textarea cols="{$info.cols}" rows="{$info.rows}" name="config[{$conf}]">{$config.$conf}</textarea>
+            <!--{elseif $info.type eq 'radio'}--> 
+            {html_radios options=$info.items checked=$config.$conf name=$info.name}
+            <!--{elseif $info.type eq 'checkbox'}--> 
+            {html_checkboxes options=$info.items selected=$config.$conf name=$info.name}
+            <!--{/if}-->
+          </td>
+        </tr>
+        <!--{/foreach}-->
+        <tr>
+          <th class="paddingT15"> <label>{$lang.if_enabled}:</label></th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if !isset($plugin.enabled) || $plugin.enabled}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if isset($plugin.enabled) && !$plugin.enabled}selected{/if}">{$lang.close}</label>
+            <input name="enabled" value="1" type="radio" {if !isset($plugin.enabled) || $plugin.enabled}checked{/if}>
+            <input name="enabled" value="0" type="radio" {if isset($plugin.enabled) && !$plugin.enabled}checked{/if}>
+            </span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}

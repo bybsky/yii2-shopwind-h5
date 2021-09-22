@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.deposit_manage}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='deposit/index'}">{$lang.manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/tradelist'}">{$lang.trade_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/drawlist'}">{$lang.withdraw_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/rechargelist'}">{$lang.recharge_manage}</a></li>
+      <li><a class="btn1" href="{url route='deposit/setting'}">{$lang.system_setting}</a></li>
+      <li><span>{$lang.download_monthbill}</span></li>
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['deposit/monthbill', { userid: '{$smarty.get.userid}'}]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 100, sortable : false, align: 'center', className: 'handle'},
+			  { display: '{$lang.month}', name : 'month', width : 100, sortable : true, align: 'center'},
+			  { display: '{$lang.income_count}', name : 'income_count', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.income_money}', name : 'income_money', width : 100, sortable : true, align: 'center'},
+			  { display: '{$lang.outlay_count}', name : 'outlay_count', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.outlay_money}', name : 'outlay_money', width : 100, sortable : true, align: 'center'},    		
+			  { display: '{$lang.charge_count}', name : 'charge_count', width: 100, sortable : true, align : 'center'},
+			  { display: '{$lang.charge_money}', name : 'charge_money', width: 200, sortable : true, align : 'center'},  		
+    	],
+    	title: '{$lang.username} : <em class="red" style="font-size:14px">{$user.username}</em>'+' {$lang.monthbill}'
+    });
+});
+</script> 
+{include file="footer.html"}

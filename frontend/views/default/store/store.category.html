@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="main">
+  <div id="page-store-category">
+    <div id="gcategory">
+      <div class="gcategory">
+        <ul class="gcategory-list">
+          <!--{foreach from=$gcategories item=gcategory name=fe_gcategory}-->
+          <li class="bgf" {if $smarty.foreach.fe_gcategory.iteration % 2 eq 0} style="background:#fbfbfb"{/if}> <a class="webkit-box gcategory-value" href="{url route='store/search' id=$store.store_id cate_id=$gcategory.id}"><span class="ml10 fs13 flex1">{$gcategory.value|escape}</span><i class="wind-icon-font mr10">&#xe629;</i></a> 
+            <!--{if $gcategory.children}-->
+            <dl class="category-child bgf" {if $smarty.foreach.fe_gcategory.iteration % 2 neq 0} style="background:#fbfbfb"{/if}>
+              <dd class="clearfix"> 
+                <!--{foreach from=$gcategory.children item=child name=fe_child}--> 
+                <a href="{url route='store/search' id=$store.store_id cate_id=$child.id}" class="child-value"><span>{$child.value|escape}</span></a> 
+                <!--{if $smarty.foreach.fe_child.last && count($gcategory.children) % 2 neq 0}-->
+                <a href="javascript:;" class="child-value"><span>&nbsp;</span></a> 
+                <!--{/if}-->
+                <!--{if $smarty.foreach.fe_child.iteration % 2 eq 0 and !$smarty.foreach.fe_child.last}-->
+              </dd>
+              <dd class="clearfix"> 
+     		  <!--{/if}-->
+              <!--{/foreach}--> 
+              </dd>
+            </dl>
+            <!--{/if}--> 
+          </li>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}
+
+

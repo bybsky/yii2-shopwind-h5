@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="{$app->charset}">
+<style>
+.payform-submit {
+	margin: 20px;
+	border: 1px #40B3FF solid;
+	padding: 20px;
+	background: #E5F5FF;
+	font-weight: normal;
+	font-size: 16px;
+}
+</style>
+</head>
+<body>
+<div class="payform-submit" style="display:none">{$lang.connecting_pay_gateway}</div>
+<form action="{$payform.gateway}" id="payform" method="{$payform.method}" style="display:none">
+  <!-- {foreach from=$payform.params item=_v key=_k} -->
+  <input type='hidden' name='{$_k}' value='{$_v}' />
+  <!-- {/foreach} -->
+</form>
+<script type="text/javascript">
+	document.getElementById('payform').submit();
+</script>
+</body>
+</html>

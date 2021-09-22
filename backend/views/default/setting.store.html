@@ -1,0 +1,38 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='setting/index'}">{$lang.base_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/baseinfo'}">{$lang.base_information}</a></li>
+      <li><a class="btn1" href="{url route='setting/email'}">{$lang.email_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/verifycode'}">{$lang.captcha_setting}</a></li>
+      <li><span>{$lang.store_setting}</span></li>
+      <li><a class="btn1" href="{url route='setting/api'}">{$lang.api_setting}</a></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.store_allow}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $setting.store_allow}selected{/if}">{$lang.enable}</label>
+            <label class="cb-disable {if !$setting.store_allow}selected{/if}">{$lang.disable}</label>
+            <input name="store_allow" value="1" type="radio" {if $setting.store_allow}checked{/if}>
+            <input name="store_allow" value="0" type="radio" {if !$setting.store_allow}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.upgrade_required}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="upgrade_required" type="text" name="upgrade_required" value="{$setting.upgrade_required}"/></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

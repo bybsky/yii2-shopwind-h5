@@ -1,0 +1,95 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.navigation}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='navigation/index'}">{$lang.manage}</a></li>
+      <!--{if $navigation.nav_id}-->
+      <li><a class="btn1" href="{url route='navigation/add'}">{$lang.add}</a></li>
+      <li><span>{$lang.edit}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.add}</span></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.nav_type}</th>
+          <td class="paddingT15 wordSpacing5"><input id="diy" type="radio" name="nav_type" value="diy" checked="checked" />
+            <label for="diy">{$lang.diy}</label>
+            <input id="gcategory" type="radio" name="nav_type" value="gcategory" />
+            <label for="gcategory">{$lang.gcategory}</label>
+            <input type="hidden" id="gcategory_cate_id" name="gcategory_cate_id" class="mls_id" />
+            <span id='select_gcategory'>
+            <select>
+              <option value="">{$lang.select_pls}</option>
+              
+            {html_options options=$gcategories}
+          
+            </select>
+            </span>
+            <input id="acategory" type="radio" name="nav_type" value="acategory" />
+            <label for="acategory">{$lang.acategory}</label>
+            <select id="acategory_cate_id" name="acategory_cate_id">
+              <option value="">{$lang.select_pls}</option>
+              
+            {html_options options=$acategories}
+          
+            </select></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.title}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="mls_name infoTableInput2" id="title" type="text" name="title" value="{$navigation.title|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.link}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="link" type="text" name="link" value="{$navigation.link|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="type">{$lang.type}:</label></th>
+          <td class="paddingT15 wordSpacing5"> {html_radios options=$positions checked=$navigation.type name=type} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label>{$lang.open_new}:</label></th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $navigation.open_new}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$navigation.open_new}selected{/if}">{$lang.no}</label>
+            <input name="open_new" value="1" type="radio" {if $navigation.open_new}checked{/if}>
+            <input name="open_new" value="0" type="radio" {if !$navigation.open_new}checked{/if}>
+            </span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="if_show">{$lang.if_show}:</label></th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $navigation.if_show}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$navigation.if_show}selected{/if}">{$lang.no}</label>
+            <input name="if_show" value="1" type="radio" {if $navigation.if_show}checked{/if}>
+            <input name="if_show" value="0" type="radio" {if !$navigation.if_show}checked{/if}>
+            </span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.sort_order}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="sort_order" id="sort_order" type="text" name="sort_order" value="{$navigation.sort_order}" /></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script type="text/javascript" src="{res file='js/navigation.js'}" charset="{$app->charset}"></script> 
+<script type="text/javascript">
+$(function(){ 
+	$('#diy').click(function(){
+ 		on('diy');
+      $('#link').prop('disabled',false);
+    	$('#link').val("{$navigation.link|escape}");
+     	$('#gcategory_cate_id').val('');
+	});
+});
+</script> 
+{include file="footer.html"} 

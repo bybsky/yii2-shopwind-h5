@@ -1,0 +1,30 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.recommend}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='recommend/index'}">{$lang.manage}</a></li>
+      <!-- {if $recommend} -->
+      <li><a class="btn1" href="{url route='recommend/add'}">{$lang.add}</a></li>
+      <li><span>{$lang.edit}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.add}</span></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.recom_name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="recom_name" type="text" value="{$recommend.recom_name|escape}" /></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

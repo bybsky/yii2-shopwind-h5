@@ -1,0 +1,106 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-promotool" class="page-promotool">
+    <div class="seller-meal">
+      <div class="promotool-form meal-form">
+        <form method="post" class="fun-form-style">
+          <div class="form">
+            <dl>
+              <dd class="webkit-box"> <span>{$lang.title}</span>
+                <input type="text" name="title" value="{$meal.title}" class="input clearInput flex1" oninput="javascript:clearInput(this)" />
+                <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+            </dl>
+            <dl>
+              <dt> <a href="javascript:;" gs_id="seller_meal" gs_name="goods_name" gs_callback="gs_callback" gs_title="{$lang.gselector}" gs_type="goods" gs_store_id="{$visitor.store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" gs_class="simple-blue scroll" gs_position="bottom" class="webkit-box"><span class="flex1">{$lang.gselector}</span><i class="wind-icon-font mr10 fs12">&#xe629;</i></a></dt>
+            </dl>
+            <div class="goods-list bgf">
+              <div class="selectedGoods hidden" ectype="selected">
+                
+              </div>
+              <div ectype="template" class="hidden">
+              	<div class="item border-bottom">
+                  <div class="webkit-box pl10 pr10 pt5 pb5">
+                  	<img src="[1]">
+                    <p class="name flex1 goods-name mt10">[2]<span class="block price mt5 J_GetPrice" price="[3]">[4]</span></p>
+                    <input type="hidden" ecname="selected[]" value="[5]">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="padding10 fs12 gray center J_NoSelected">{$lang.add_records}</div>
+            </div>
+            <dl class="mt20">
+              <dd class="webkit-box"> <span>{$lang.org_price}</span>
+                <input type="text" class="input clearInput flex1 J_priceTotal" oninput="javascript:clearInput(this)" readonly />
+                <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+            </dl>
+            <dl>
+              <dd class="webkit-box"> <span>{$lang.yikoujia}</span>
+                <input type="text" name="price" value="{$meal.price}" class="input clearInput flex1" oninput="javascript:clearInput(this)" />
+                <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+            </dl>
+            <div class="extra">
+              <p class="fixed-gap"></p>
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	$('body').on('touchend click', '.masker', function(){
+		DialogManager.close("seller_meal");
+	});
+	
+	gs_query_info(0, '{$meal.meal_id|default:0}');
+})
+
+function gs_callback(id, allId)
+{
+	DialogManager.close(id);
+	gs_query_info(allId, 0);
+}
+
+function gs_query_info(id, toolId)
+{
+	$.getJSON(url(['seller_meal/query']),{ id: id, toolId: toolId}, function(data){
+
+		if(data.done){
+			var html = '';
+			var template = $('[ectype="template"]').clone(true);
+			$.each(data.retval.goodsList, function(k, goods){
+				html += sprintf(replace_all(template.html(), 'ecname', 'name'), url_format(goods.default_image), goods.goods_name, goods.price, goods.price, goods.goods_id);
+			});
+			if(html) {
+				$('.J_NoSelected').hide();
+				$('[ectype="selected"]').html(html).show();
+				updatePriceTotal();
+			} else $('.J_NoSelected').show();
+		}
+	});
+}
+
+/* 更新选中的搭配宝贝的总价 */
+function updatePriceTotal()
+{
+	price_min = price_max = 0;
+	$('*[ectype="selected"]').find('.J_GetPrice').each(function() {
+		price = $(this).attr('price').split('-');
+		if(price[0] != undefined) {
+			price_min += Number(price[0]);
+		}
+		if(price[1] != undefined) {
+			price_max += Number(price[1]);
+		} else price_max += Number(price[0]);
+	});
+	
+	if(price_max > price_min) {
+		$('.J_priceTotal').val(price_min.toFixed(2) + '~' + price_max.toFixed(2));
+	} else $('.J_priceTotal').val(price_min.toFixed(2));
+}
+</script> 
+{include file="footer.html"}

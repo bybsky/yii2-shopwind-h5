@@ -1,0 +1,180 @@
+{include file="header.html"}
+{$build_editor}
+{$build_upload}
+<style type="text/css">
+.period input{ vertical-align:middle;margin-right:3px; display:inline-block}
+.period label{ margin-right:10px; width:90px; display:inline-block;margin-bottom:5px;}
+</style>
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.appmarket}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='appmarket/index'}">{$lang.manage}</a></li>
+      <!--{if $appmarket.aid}-->
+      <li><a class="btn1" href="{url route='appmarket/add'}">{$lang.add}</a></li>
+      <li><span>{$lang.edit}</span></li>
+      <!--{else}-->
+      <li><span>{$lang.add}</span></li>
+      <!--{/if}-->
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post" enctype="multipart/form-data">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.appid}:</th>
+          <td class="paddingT15 wordSpacing5"><!--{if $appmarket.appid}--> 
+            {$lang.{$appmarket.appid}} 
+            <!--{else}-->
+            
+            <select name="appid">
+              <option value="">{$lang.select_pls}</option>
+              <!--{foreach from=$applist item=item key=key}-->
+              <option value="{$item.key}" {if $item.key eq $appmarket.appid} selected="selected"{/if}>{$item.value}</option>
+              <!--{/foreach}-->
+            </select>
+            
+            <!--{/if}--></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.category}:</th>
+          <td class="paddingT15 wordSpacing5"><select name="category">
+              <option value="1">{$lang.promotool}</option>
+            </select></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.title}:</th>
+          <td class="paddingT15 wordSpacing5"><input style="width:400px;" id="title" type="text" name="title" value="{$appmarket.title}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.summary}:</th>
+          <td class="paddingT15 wordSpacing5"><textarea class="infoTableInput" style="width:400px;height:34px;" id="summary" name="summary">{$appmarket.summary|escape}</textarea></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.logo}:</th>
+          <td class="paddingT15 wordSpacing5"><div class="input-file-show"> <span class="show"><a href="javascript:;" class="show_image"><i class="fa fa-image"></i></a></span> <span class="type-file-box">
+              <input type="text" name="textfield" class="type-file-text" />
+              <input type="button" name="button" value="选择上传..." class="type-file-button" />
+              <input class="type-file-file" name="logo" type="file" size="30" hidefocus="true">
+              <input type="hidden" name="fileVal" value="logo" />
+              <label class="field_notice">{$lang.logo_notice}</label>
+              </span> 
+              
+              <!--{if $appmarket.logo}-->
+              <div class="show_img"><img src="{$appmarket.logo|url_format}" height="50" /></div>
+              <!--{/if}--> </div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.charge}:</th>
+          <td class="paddingT15 wordSpacing5"><input type="text" class="width_short" id="config[charge]" type="text" name="config[charge]" value="{$appmarket.config.charge}">
+            {$lang.yuan}/{$lang.month} </td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.period}:</th>
+          <td class="paddingT15 wordSpacing5 period">
+          <!--{foreach from=$period item=item name=fe_item}-->
+            <label>
+              <input type="checkbox" name="config[period][]" value="{$item.key}" {if $appmarket.config.period && in_array($item.key, $appmarket.config.period)} checked="checked"{/if} />
+              {$item.value}</label>
+            
+            <!--{if $smarty.foreach.fe_item.iteration % 7 eq 0}--><br />
+            
+            <!--{/if}--> 
+            <!--{/foreach}--></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label for="article">{$lang.description}:</label></th>
+          <td class="paddingT15 wordSpacing5"><div class="editor">
+              <div>
+                <textarea name="description" id="description" style="width:765px; height:400px;">{$appmarket.description|escape}</textarea>
+              </div>
+              <div class="multimage-wrapper descimage-wrapper">
+                <ul class="multimage-tabs clearfix">
+                  <li class="selected">插入描述图片</li>
+                </ul>
+                <div class="multimage-panels clearfix">
+                  <div class="upload_btn">
+                    <div class="btn-upload-image"><b class="hide EDITOR_SWFU_filePicker"></b></div>
+                  </div>
+                  <div class="text">{$lang.note_for_upload}</div>
+                </div>
+                <div class="multimage-piclist clearfix">
+                  <ul id="desc_images" class="preview J_descriptioneditor">
+                    <!--{foreach from=$appmarket.desc_images item=image}-->
+                    <li ectype="handle_pic" file_name="{$image.file_name|escape}" file_path="{$image.file_path|url_format}" file_id="{$image.file_id}">
+                      <input type="hidden" name="desc_file_id[]" value="{$image.file_id}">
+                      <div class="pic"> <img src="{$image.file_path|url_format}" width="80" height="80" alt="{$image.file_name|escape}" title="{$image.file_name|escape}" /> </div>
+                      <div ectype="handler" class="bg">
+                        <p class="operation"> <a class="cut_in" ectype="insert_editor" href="javascript:void(0);" ecm_title="{$lang.insert_editor}"></a> <span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span> </p>
+                      </div>
+                    </li>
+                    <!--{/foreach}-->
+                  </ul>
+                </div>
+                <!--{if $appmarket.desc_images}-->
+                <div class="notice-word" style="padding:14px;">
+                  <p class="yellow">插入方法：将鼠标移至需要插入的图片上面，然后点击插入按钮，即可将图片插入到编辑器中。</p>
+                </div>
+                <!--{/if}--> 
+              </div>
+              <div class="clear"></div>
+            </div></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label>{$lang.purchase}:</label></th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $appmarket.purchase}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$appmarket.purchase}selected{/if}">{$lang.no}</label>
+            <input name="purchase" value="1" type="radio" {if $appmarket.purchase}checked{/if}>
+            <input name="purchase" value="0" type="radio" {if !$appmarket.purchase}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> <label>{$lang.status}:</label></th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $appmarket.status}selected{/if}">{$lang.yes}</label>
+            <label class="cb-disable {if !$appmarket.status}selected{/if}">{$lang.no}</label>
+            <input name="status" value="1" type="radio" {if $appmarket.status}checked{/if}>
+            <input name="status" value="0" type="radio" {if !$appmarket.status}checked{/if}>
+            </span> <span class="grey notice"></span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+function add_uploadedfile(file_data)
+{
+	$('#desc_images').append('<li style="z-index:4" file_name="'+ file_data.file_name +'" file_path="'+ url_format(file_data.file_path) +'" ectype="handle_pic" file_id="'+ file_data.file_id +'"><input type="hidden" name="desc_file_id[]" value="'+ file_data.file_id +'"><div class="pic" style="z-index: 2;"><img src="' + url_format(file_data.file_path) +'" width="80" height="80" alt="'+ file_data.file_name +'" /></div><div ectype="handler" class="bg" style="z-index: 3;display:none"><p class="operation"><a href="javascript:void(0);" class="cut_in" ectype="insert_editor" ecm_title="{$lang.insert_editor}"></a><span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span></p></div></li>');
+	trigger_uploader();
+ 	if(EDITOR_SWFU.getStats().progressNum == 0){
+   		window.setTimeout(function(){
+        $('#editor_uploader').css('opacity', 0);
+			  $('*[ectype="handle_pic"]').css('z-index', 999);
+     	},5000);
+ 	}
+}
+function drop_image(file_id)
+{
+	layer.open({ content:lang.uploadedfile_drop_confirm, btn:[lang.confirm, lang.cancel],
+		yes:function(index){
+			$.getJSON("{url route='appmarket/deleteimage'}", { id:file_id}, function(data) {
+				if (data.done){
+					$('*[file_id="' + file_id + '"]').remove();
+				} else {
+					layer.msg(data.msg);
+				}
+				layer.close(index);
+			});
+		},
+		no: function(index) {
+			layer.close(index);
+		}
+	}); 
+}
+</script> 
+{include file="footer.html"} 

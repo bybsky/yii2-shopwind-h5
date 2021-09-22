@@ -1,0 +1,53 @@
+{include file="top.html"}
+<div id="header" class="w-full">
+  <div class="bar-wrap J_BarWrap">
+    <div class="top-bar {if in_array($app->controller->id, array('goods'))}J_BarGradient{/if}">
+      <div class="barbg"></div>
+      <ul class="barbtn">
+        <li class="webkit-box">
+          <div class="lp"> 
+            <!--{if $index}--> 
+            <a href="{url route='category/index'}" class="float-left category"><i>&#xe644;</i></a> 
+            <!--{else}--> 
+            <a href="javascript:pageBack();" class="float-left pageback"><i>&#xe628;</i></a> 
+            <!--{/if}--> 
+          </div>
+          <div class="mp flex1 ml10 mr10"> 
+            <!--{if !in_array($app->controller->id, array('search'))}-->
+            	<!--{if $index}-->
+                <span class="yahei curlocal-title line-clamp-2 J_SearchInputHome"><i class="wind-icon-font mr5 fs11">&#xe62a;</i>{$smarty.get.keyword|default:{$lang.input_search_keyword}}</span>
+                <!--{else}-->
+            	<span class="yahei curlocal-title line-clamp-2">{$smarty.get.keyword|default:$page.menu}</span>
+                <!--{/if}-->
+            <!--{else}-->
+            <form action="{url route='search/index'}" method="get">
+              <!--{foreach from=$formSearchBoxParams item=item key=key}-->
+              <input type="hidden" name="{$key}" value="{$item}" />
+              <!--{/foreach}-->
+              <div class="input-wraper">
+              	<i class="wind-icon-font">&#xe62a;</i>
+                <input class="{if $app->controller->action->id neq 'form'}J_SearchInputGradient{/if}" searchType="{$app->controller->action->id}" value="{$smarty.get.keyword}" name="keyword" placeholder="{$lang.input_search_keyword}" />
+              </div>
+            </form>
+            <!--{/if}--> 
+          </div>
+          <div class="rp"> <a href="javascript:;" class="float-right pagemore J_PageMenu"><i>&#xe648;</i></a> 
+            <!--{if !$index}--> 
+            <a href="{url route='cart/index'}" class="float-right mr5 pagecart"><i>&#xe663;</i></a> 
+            <!--{/if}--> 
+          </div>
+        </li>
+      </ul>
+      <div class="J_PageMenuBox hidden">
+        <div class="page-menu-box"> <span class="arrow"></span>
+          <ul class="clearfix">
+            <li><a href="{$siteUrl}"><i class="wind-icon-font">&#xe63c;</i> {$lang.home}</a></li>
+            <li><a href="{url route='cart/index'}"><i class="wind-icon-font">&#xe663;</i> {$lang.cart}</a></li>
+            <li><a href="{url route='user/index'}"><i class="wind-icon-font">&#xe635;</i> {$lang.user_center}</a></li>
+           <li><a href="{url route='my_message/index' folder='newpm'}"><i class="wind-icon-font">&#xe642;</i> {$lang.message}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

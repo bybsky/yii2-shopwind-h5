@@ -1,0 +1,14 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+  <div id="page-order" class="w-full">
+    <div class="order-form">
+      <form method="post" id="order_form">
+        {include file="order.shipping.html"}
+        {include file="order.goods.html"}
+        {include file="order.postscript.html"}
+        {include file="order.amount.html"}
+      </form>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

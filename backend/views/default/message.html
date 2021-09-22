@@ -1,0 +1,24 @@
+{include file="header.html"}
+<div id="main" class="clearfix">
+    <div class="particular">
+        <div class="particular_wrap">
+            <p class="{if $notice.done}success{else}defeated{/if}">
+                <span>{$lang.sys_notice}</span>
+                <b class="float-left mr10 inline-block" style="font-weight:normal">{$notice.msg}</b>
+                <!--{if !$notice.done}-->
+                <!--{foreach from=$notice.links item=item}-->
+               	<a href="{$item.url}" class="mr10 inline-block">>>{$item.label}</a>
+                <!--{/foreach}-->
+                <!--{/if}-->
+            </p>
+        </div>
+    </div>
+</div>
+<!--{if $notice.redirect}-->
+<script type="text/javascript">
+window.setTimeout(function(){
+	location.href = "{$notice.redirect}";
+}, 2000);
+</script>
+<!--{/if}-->
+{include file="footer.html"} 

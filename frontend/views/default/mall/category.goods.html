@@ -1,0 +1,62 @@
+{include file="header.html"}
+<style>
+body{ background:#f3f5f7;}
+#header{ position:fixed;left:0;right:0;top:0;z-index:99;}
+#footer{ display:none;}
+</style>
+<div id="main">
+  <div id="gcategory" class="category-viewport clearfix">
+    <div id="left-part" class="jd-category-tab left-part">
+      <div class="wraper">
+        <ul id="category11" class="inner-wrap">
+          <!--{foreach from=$gcategories item=gcategory name=fe_gcategory}-->
+          <li class="{if $smarty.foreach.fe_gcategory.first}active{/if} tt-item" > <a href="javascript:;">{$gcategory.value|escape}</a> </li>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+    </div>
+    <div class="jd-category-content right-part" id="right-part">
+      <div class="jd-category-content-wrapper">
+        <div id="branchList"> 
+          <!--{foreach from=$gcategories item=gcategory name=fe_gcategory}-->
+          <div class="content-item {if !$smarty.foreach.fe_gcategory.first}hidden{/if}"> 
+            <!--{if $gcategory.gads}-->
+            <div class="jd-category-third-promotion">
+              <!--{foreach from=$gcategory.gads item=ad name=fe_ad}-->
+              <a href="{$ad.link_url}" class="mb10"><img src="{$ad.file_path|url_format}" /></a>
+              <!--{/foreach}--> 
+            </div>
+            <!--{/if}--> 
+            <!--{foreach from=$gcategory.children item=child name=fe_child}-->
+            <div class="jd-category-div ct-item">
+              <h4><a href="{url route='search/index' cate_id=$child.id}">{$child.value}</a></h4>
+              <ul class="jd-category-style-1 clearfix"{if !$child.children} style="padding:0;{/if}">
+                <!--{foreach from=$child.children item=child2 name=fe_child2}-->
+                <li> <a href="{url route='search/index' cate_id=$child2.id}"> <img src="{$child2.image|default:$app->params['default_goods_image']|url_format}" /> <span>{$child2.value}</span> </a> </li>
+                <!--{/foreach}-->
+              </ul>
+            </div>
+            <!--{/foreach}--> 
+          </div>
+          <!--{/foreach}-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="{res file='js/iscroll.js'}" charset="utf-8"></script> 
+<script type="text/javascript">
+ 	var leftScroll;
+	window.onload=function() {
+	 	leftScroll = new IScroll('#left-part', { mouseWheel: true, click: true});
+	}
+	$(function(){
+		$(".left-part .inner-wrap .tt-item").click(function(){
+			$(this).addClass("active").siblings().removeClass("active");
+			var index = $(this).index();
+			leftScroll.scrollToElement(document.querySelector('#left-part .tt-item:nth-child('+(index+1)+')'), null, null, true);
+			$("#right-part .content-item:eq("+index+")").show().siblings().hide();
+		})
+	})
+</script> 
+{include file="footer.html"}

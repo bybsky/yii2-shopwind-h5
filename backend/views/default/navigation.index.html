@@ -1,0 +1,70 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.navigation}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+      <li><a class="btn1" href="{url route='navigation/add'}">{$lang.add}</a></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="navigation/index" />
+      {$lang.title}
+      <input class="queryInput" type="text" name="title" value="{$smarty.get.title|escape}" />
+      {$lang.type}
+      <select class="querySelect" name="type">
+        <option value="">{$lang.select_pls}</option>
+        
+    		{html_options options=$positions selected=$smarty.get.type}
+  		
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='navigation/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['navigation/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+    		{ display: '{$lang.title}', name : 'title', width : 200, sortable : true, align: 'center'},
+			  { display: '{$lang.type}', name : 'type', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.link}', name : 'link', width : 400, sortable : true, align: 'center'},  
+			  { display: '{$lang.sort_order}', name : 'sort_order', width: 100, sortable : true, align : 'center'},
+			  { display: '{$lang.if_show}', name : 'if_show', width: 100, sortable : true, align : 'center'},
+			  { display: '{$lang.open_new}', name : 'open_new', width: 100, sortable : true, align : 'center'}
+    	],
+      buttons : [
+        { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+        { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate }
+      ],
+    	sortname: "nav_id",
+    	sortorder: "desc",
+    	title: '{$lang.navigation_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = "{url route='navigation/add'}";
+		return false;
+	}
+  var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+    if($('.trSelected',bDiv).length == 0){
+      layer.msg(lang.no_selected_item);
+			return false;
+    }
+    fg_delete(itemlist,'navigation');
+	}
+}
+</script> 
+{include file="footer.html"} 

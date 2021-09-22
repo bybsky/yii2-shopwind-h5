@@ -1,0 +1,56 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-message">
+    <div class="page-actions"><i></i></div>
+    <div class="tabs">
+      <ul class="tab-list clearfix">
+        <li {if in_array($smarty.get.folder,['','newpm'])}class="active"{/if}><a href="{url route='my_message/index' folder='newpm'}">{$lang.newpm}</a></li>
+        <li {if $smarty.get.folder eq 'privatepm'}class="active"{/if}><a href="{url route='my_message/index' folder='privatepm'}">{$lang.privatepm}</a></li>
+        <li {if $smarty.get.folder eq 'systempm'}class="active"{/if}><a href="{url route='my_message/index' folder='systempm'}">{$lang.systempm}</a></li>
+        
+        <li {if $smarty.get.folder eq 'announcepm'}class="active"{/if}><a href="{url route='my_message/index' folder='announcepm'}" style="border-right:0;">{$lang.announcepm}</a></li>
+      </ul>
+    </div>
+    <div class="pm-list"> 
+      
+      <!--AJAX DATA-->
+      <div class="list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <ul class="infinite-template">
+          <li> <a href="[1]" class="block webkit-box">
+            <div class="send-user-logo padding10"> <img width="60" height="60" src="[2]" /> </div>
+            <div class="detail pt10 pr10 pb10 flex1">
+              <div class="t clearfix"><span class="block float-left"> [3][4]</span><em class="float-right">[5]</em></div>
+              <p class="d line-clamp-2 mt5"> <span style="color:#FF2700; display:[6]">[{$lang.new_message_mark}]</span> [7]</p>
+            </div>
+            </a> </li>
+        </ul>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+    </div>
+    <div class="extra">
+      <div class="fixed-gap"></div>
+      <a href="{url route='my_message/send'}" class="btn-alipay btn-alipay-fixed">{$lang.send_message}</a> </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, message) {
+				var content = (message.content).replace('&nbsp;','').replace(/<\/?.+?>/g,"");
+				html += sprintf(template.html(), url(['my_message/view', { msg_id:message.msg_id}]), url_format(message.user.portrait), message.i_send ? '<i class="wind-icon-font mr5 i-send">&#xe6a5;</i>' : '<i class="wind-icon-font mr5 no-i-send">&#xe6a6;</i>', message.user.username, message.last_update, message.new ? 'inline-block' : 'none', content.substr(0,60) + (content.length > 60 ? '...' : ''));
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+});
+</script> 
+{include file="footer.html"} 

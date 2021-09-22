@@ -1,0 +1,30 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-refund">
+    <div class="refund-send"> 
+      <form method="post" enctype="multipart/form-data" class="fun-form-style">
+        <div class="form">
+          <dl>
+            <dt><span>{$lang.refund_sn}{$lang.colon}{$refund.refund_sn}</span></dt>
+          </dl>
+          <dl class="textarea" >
+            <dd class="webkit-box" style="height:70px;">
+              <textarea name="content" class="flex1" placeholder="{$lang.input_reason}" ></textarea>
+            </dd>
+          </dl>
+          <div class="bgf padding10">
+            <p class="add-image-btn"> <i class="wind-icon-font">&#xe6ce;</i>
+              <input type="file" name="image" onChange="getTempPath(this);" />
+              <input type="hidden" name="fileVal" value="image" />
+            </p>
+          </div>
+          <div class="extra">
+          	<input type="hidden" name="id" value="{$refund.refund_id}" />
+            <input type="submit" value="{$lang.submit}" class="btn-alipay J_AjaxSubmit" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

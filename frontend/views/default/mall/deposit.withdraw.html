@@ -1,0 +1,82 @@
+{include file="user.header.html"}
+<div class="deposit">
+  <div class="deposit-withdraw"> 
+    <!--{if $deposit_account.money gt 0}--> 
+    <!--{if !$myBank.list}-->
+    <div class="notice-empty"><i>&#xe715;</i>
+      <p>{$lang.card_setting_notice}</p>
+      <a class="btn mt10" href="{url route='bank/add' redirect=$redirect}">{$lang.setting_imm}</a></div>
+    <!--{else}-->
+    <form method="get" id="deposit-withdraw" class="fun-form-style" action="{url route='deposit/withdrawconfirm'}">
+      <!--{if !$app->urlManager->enablePrettyUrl}-->
+      <input type="hidden" name="r" value="deposit/withdrawconfirm" />
+      <!--{/if}-->
+      <div class="title webkit-box">
+        <p class="fs14 flex1">
+          {sprintf($lang.available_balance, $deposit_account.money)}
+          <!--{if $deposit_account.nodrawal}-->
+          {sprintf($lang.money_nodrawal, $deposit_account.nodrawal)}
+          <!--{/if}-->
+        </p>
+        <a class="fs14" href="{url route='deposit/drawlist'}">{$lang.deposit_drawlist}<i class="wind-icon-font fs12">&#xe629;</i></a>
+      </div>
+      <div class="form"> 
+        
+        <!--{if $myBank.list}-->
+        <div class="pop-layer-common bank-pop-layer J_BankPopLayer">
+          <div class="wraper has-title no-ft">
+            <div class="hd"><i class="closed popClosed"></i>{$lang.select_bank}</div>
+            <ul class="bd radioUiWraper">
+              <!--{foreach from=$myBank.list item=bank key=key name=fe_bank}-->
+              <li class="webkit-box radioUiStyle radioUiStyle1 border-bottom popClosed {if $smarty.foreach.fe_bank.first}active{/if} {if $smarty.foreach.fe_bank.last}border-b-0{/if}">
+                <div class="lp flex1 webkit-box"><span class="pl10">{$bank.bank_name}({$bank.num})</span></div>
+                <div class="input rp box-align-center pr10">
+                  <input type="radio" name="bid" value="{$bank.bid}" {if $smarty.foreach.fe_bank.first} checked="checked" {/if}>
+                </div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+          </div>
+        </div>
+        <!--{/if}-->
+        
+        <dl class="J_Bank mt10 J_PopLayer" data-PopLayer="{ popLayer:'.J_BankPopLayer',top:'35%', fixedBody: true}">
+          <dd class="webkit-box"> <span>{$lang.draw_to_card}</span>
+            <p class="flex1"></p>
+            <i class="wind-icon-font mr10 f99 box-align-center">&#xe629;</i> </dd>
+        </dl>
+        <dl class="clearfix">
+          <dd class="webkit-box"> <span>{$lang.draw_money}</span>
+            <input type="text" name="money" value="" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.unit_yuan}" />
+            <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+        </dl>
+        <div class="extra mt10">
+          <input class="btn-alipay" type="submit" value="{$lang.next_step}" />
+        </div>
+      </div>
+    </form>
+    <!--{/if}--> 
+    <!--{else}-->
+    <div class="notice-empty"><i>&#xe715;</i>
+      <p>{$lang.withdraw_money_not_enough}</p>
+    </div>
+    <!--{/if}--> 
+  </div>
+</div>
+<script>
+$(function(){
+	
+	$('.J_Bank p').html($('.J_BankPopLayer').find('li.active:last').find('.lp span').html());
+	$('.J_BankPopLayer li').click(function(){
+		$('.J_Bank p').html($(this).find('.lp span').html());
+	});
+	
+	$('#deposit-withdraw').submit(function(){
+		if($(this).find('input[name="money"]').val()=='' || $(this).find('input[name="money"]').val() <= 0) {
+			layer.open({ content:'{$lang.withdraw_money_error}'});
+			return false;
+		}
+	});
+})
+</script>
+{include file="footer.html"} 

@@ -1,0 +1,65 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-address">
+    <div class="page-body fun-form-style my-address">
+      <form  method="post">
+        <div class="form">
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.consignee}</span>
+              <input type="text" class="input flex1" name="consignee" id="consignee" value="{$address.consignee|escape}" placeholder="{$lang.consignee_desc}" />
+            </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>手机号码</span>
+              <input type="text" class="input flex1" id="phone_mob" name="phone_mob" value="{$address.phone_mob}" placeholder="{$lang.phone_mob_desc}" />
+            </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>固定电话</span>
+              <input type="text"   class="input flex1" id="phone_tel" name="phone_tel" value="{$address.phone_tel}" placeholder="{$lang.phone_tel_desc}" />
+            </dd>
+          </dl>
+          <dl class="mt10 edit-region J_Region">
+            <dd class="webkit-box"> <span>所在地区</span>
+              <input type="hidden" name="region_id" value="{$address.region_id}" class="mls_id" />
+              <input type="hidden" name="region_name" value="{$address.region_name|escape}" class="mls_names" />
+              <p class="flex1 mls_names gray">{$address.region_name|escape}</p>
+              <i class="wind-icon-font box-align-center mr10 gray">&#xe629;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>详细地址</span>
+              <input type="text" class="input flex1" id="address" name="address" value="{$address.address|escape}" placeholder="{$lang.address_desc}"/>
+            </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.zipcode}</span>
+              <input type="text" class="input flex1" placeholder="{$lang.zipcode}" id="zipcode" name="zipcode" value="{$address.zipcode|escape}" />
+            </dd>
+          </dl>
+          <div class="extra">
+            <p>
+              <label class="w-full switch-checkbox-radio block mb20 box-align-center J_SwtcherInput {if $address.defaddr}checked{/if}" for="switcher"> <em class="block flex1 gray fs14 ml5">设为默认</em> <span class="switcher-style block"></span> </label>
+              <input name="defaddr" {if $address.defaddr} checked="checked" {/if} value="1" id="switcher" type="checkbox" class="hidden" >
+            </p>
+            <div class="clearfix">
+              <div class="fixed-gap"></div>
+              <input type="hidden" class="J_AjaxFormRetUrl" name="redirect" value="{$redirect}" />
+              <input type="submit" class="J_AjaxSubmit btn-alipay btn-alipay-fixed" value="{$lang.submit}" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('.J_Region').ajaxSwitcher({
+		model: '.switcher-region',
+		url: "{url route='mlselection/index' type='region'}",
+		title:'请选择收货地区',
+		startId: 0
+	});
+});
+</script> 
+{include file="footer.html"}

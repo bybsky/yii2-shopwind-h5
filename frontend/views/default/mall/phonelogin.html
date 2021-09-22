@@ -1,0 +1,49 @@
+{include file="header.html"}
+<div id="main" class="pb20">
+  <div id="page-login" class="page-auth">
+    <form method="POST" class="fun-form-style">
+      <div class="form pb20">
+        <dl>
+          <dd class="webkit-box"> <span>{$lang.phone_mob}</span>
+            <input type="text" name="phone_mob" id="phone_mob" class="input flex1 w-full"  placeholder="{$lang.phone_mob}" />
+          </dd>
+        </dl>
+        <dl class="J_PhoneCaptcha">
+          <dd class="captchaCode webkit-box clearfix"> <span>验<s style="margin:0 7px">证</s>码</span>
+            <input type="text" name="code" id="code" class="input flex1 w-full" placeholder="{$lang.phone_captcha}" />
+            <s class="line"></s>
+            <input type="button" id="send_phonecode" class="btn-captcha" value="{$lang.get_captcha}" />
+          </dd>
+        </dl>
+        <div class="extra">
+          <p style="display:none">
+            <label class="switch-checkbox-radio w-full block mb20 box-align-center J_SwtcherInput checked" for="switcher"> <em class="block flex1 gray">七日内免登录</em> <span class="switcher-style block"></span> </label>
+            <input name="rememberMe" class="autoLogin hidden" id="switcher" value="1" type="checkbox" checked="checked">
+          </p>
+          <p>
+            <input type="hidden" class="J_AjaxFormRetUrl" name="redirect" value="{$redirect}" />
+            <input type="submit" class="J_AjaxSubmit btn-alipay mt10" value="{$lang.login}" />
+          </p>
+        </div>
+      </div>
+    </form>
+    <div class="auth-fixed webkit-box"> 
+    <a class="fs14 center flex1" href="{url route='user/register' redirect=$redirect}">{$lang.register}</a> 
+    <a class="fs14 center flex1" href="{url route='user/login' redirect=$redirect}">{$lang.username_password_login}</a> 
+    <a class="fs14 center flex1" href="{url route='find_password/index'}" style="border-right:0;">{$lang.find_password}</a> </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#send_phonecode').click(function(){
+		var phone_mob = $.trim($("input[name='phone_mob']").val());
+		if(phone_mob =='' || !is_phone(phone_mob)){
+			layer.open({ content: "{$lang.phone_mob_invalid}", className:'layer-popup', time: 3});
+			return;
+		}
+		$(this).attr("disabled", true);
+		send_phonecode($(this), { from: "login", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+	});
+});
+</script>
+{include file="footer.html"}

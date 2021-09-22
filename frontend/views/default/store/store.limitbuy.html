@@ -1,0 +1,99 @@
+{include file="header.html"}
+<div id="main">
+  <div class="page-store page J_page">
+    <div class="page-body store-limitbuy">
+      <div class="store-info">
+        <div class="store-banner"> 
+          <!--{if $store.store_banner}--> 
+          <img src="{$store.store_banner|url_format}" height="150" /> 
+          <!--{/if}--> 
+        </div>
+        <div class="d-info clearfix">
+          <h3 class="float-left ml5"><a class="block" href="{url route='store/index' id=$store.store_id}"><img src="{$store.store_logo|url_format}" /></a></h3>
+          <div class="name-and-credit float-left">
+            <p class="name" style="margin-top:8px;"><a href="{url route='store/index' id=$store.store_id}">{$store.store_name}</a></p>
+            <p><!--{if $store.credit_value ge 0}--><img src="{$store.credit_image|url_format}" alt="" /><!--{/if}--></p>
+          </div>
+          <div class="collect clearfix"> 
+            <!--{if $store.collected}-->
+            <div class="collect-btn collected">已收藏</div>
+            <!--{else}-->
+            <div class="collect-btn J_AjaxRequest" uri="{url route='my_favorite/add' item_id=$store.store_id type='store'}">收藏</div>
+            <!--{/if}-->
+            <div class="collect-cn">
+              <p class="num">{$store.collects|default:0}</p>
+              <p class="txt">粉丝</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="store-menus">
+        <ul class="webkit-box">
+        <li class="flex1"><a class="block center fs14" href="{url route='store/index' id=$store.store_id}"><span>首页</span></a></li>
+        <li class="flex1"><a class="block center fs14" href="{url route='store/search' id=$store.store_id}"><span>全部商品</span></a></li>
+        <li class="flex1"><a class="block center fs14" href="{url route='store/search' id=$store.store_id new=1}"><span>上新</span></a></li>
+        <li class="flex1"><a class="block center active fs14" href="{url route='store/limitbuy' id=$store.store_id}"><span>促销</span></a></li>
+      </ul>
+      </div>
+      
+      <div class="border-top">
+      
+       <!--AJAX DATA-->
+      <div class="list goods-list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <div class="infinite-template">
+          <li class="pt10 pb10"> <a href="[1]">
+            <dl class="webkit-box">
+              <dt class="ml10"><img src="[2]"  /></dt>
+              <dd class="flex1 ml10 mr10">
+                <p class="name line-clamp-2">[3]</p>
+                
+                <div class="countdown waiting mt5"> <span class="time NumDays" >[4]</span><em>天</em> <span class="time NumHours">[5]</span><em>小时</em> <span class="time NumMins" >[6]</span><em>分</em> <span class="time NumSeconds">[7]</span><em>秒</em> </div>
+
+                <div class="mt5"><span class="pro-name"><em>[8]</em></span></div>
+                <div class="extra mt5">
+                  <div class="lp"><em class="price mr10">[9]</em><del>[10]</del></div>
+                </div>
+              </dd>
+            </dl>
+            </a> </li>
+          
+        </div>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+      </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, goods) {
+				html += sprintf(template.html(), url(['goods/index', { id:goods.goods_id}]), url_format(goods.default_image), goods.goods_name, goods.lefttime.d, goods.lefttime.h, goods.lefttime.m, goods.lefttime.s, goods.title, price_format(goods.pro_price), price_format(goods.price));
+			});
+			target.find('.infinite-result').append(html).show();
+			
+			$.each($('.countdown.waiting'), function(index, element) {
+				var theDaysBox  = $(this).find('.NumDays');
+				var theHoursBox = $(this).find('.NumHours');
+				var theMinsBox  = $(this).find('.NumMins');
+				var theSecsBox  = $(this).find('.NumSeconds');	
+				countdown(theDaysBox, theHoursBox, theMinsBox, theSecsBox)
+			});
+			// 避免下拉刷新后，多个倒计时作用
+			target.find('.infinite-result').find('.countdown').removeClass('waiting');
+		}
+	});
+	
+});
+</script> 
+{include file="footer.html"} 

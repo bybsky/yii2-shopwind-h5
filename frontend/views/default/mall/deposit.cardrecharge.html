@@ -1,0 +1,37 @@
+{include file="user.header.html"}
+<div id="main">
+  <div class="deposit">
+    <div class="deposit-withdraw deposit-recharge">
+      <form method="post" id="deposit-recharge" class="fun-form-style">
+      	<div class="title">
+        <a class="fs14 webkit-box" href="{url route='deposit/rechargelist'}"><span class="flex1">{$lang.deposit_rechargelist}</span><i class="wind-icon-font fs12">&#xe629;</i></a>
+      </div>
+      <div class="title border-top">
+        <a class="fs14 webkit-box" href="{url route='deposit/recharge'}"><span class="flex1">{$lang.online_recharge}</span><i class="wind-icon-font fs12">&#xe629;</i></a>
+      </div>
+        <div class="form">
+          <dl class="mt10">
+            <dd class="webkit-box"> <span>{$lang.cardNo}</span>
+              <input type="text" name="cardNo" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_cardNo}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+            <dd class="webkit-box"> <span>{$lang.card_password}</span>
+              <input type="text" name="password" class="input clearInput flex1" oninput="javascript:clearInput(this)" placeholder="{$lang.input_card_password}" />
+              <i class="input-del J_InputDel wind-icon-font hidden">&#xe66e;</i> </dd>
+          </dl>
+          <dl>
+          <dd class="webkit-box captcha"> <span>{$lang.captcha}</span>
+            <input type="text" name="captcha" class="input flex1" id="captcha1" placeholder="{$lang.input_captcha}" />
+            <img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" /> </dd>
+        </dl>
+        </div>
+        <div class="extra padding10 mt10">
+          <input class="btn-alipay J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+          </dd>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
+{include file="footer.html"}

@@ -1,0 +1,100 @@
+{include file="user.header.html"}
+<div id="main">
+  <div id="page-my-delivery" class="mb10">
+    <div class="page-body my-delivery mb10"> 
+      <!--AJAX DATA-->
+      <div class="delivery-list clearfix J_InfiniteList">
+        <ul class="infinite-result clearfix hidden">
+        </ul>
+        <ul class="infinite-template">
+           <li item_id="[1]" class="item mb10">
+            <h2 class="webkit-box">
+              <p class="name pl10 flex1 fs13"><span>[2]</span></p>
+              <p class="status mr10 fs13">[3]</p>
+            </h2>
+            <div class="area-list">
+              <div class="list-item clearfix">
+               	<p class="type">[1]</p>
+               	<p class="area">[2]</p>
+               	<p>首邮：[3]</p>
+               	<p>续件：[4]</p>
+               </div>
+            </div>
+          </li>
+        </ul>
+        <div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+        <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+        <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+        <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+          <p>{$lang.no_records}</p>
+        </div>
+        <div class="clearfix">
+        <p class="fixed-gap"></p>
+        <a href="{url route='my_delivery/add'}" class="btn-alipay btn-alipay-fixed">{$lang.delivery_add}</a> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('body').on('touchend', '.weui_actions_mask', function(){
+		$.closeActions();
+	});
+	
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			$.each(data, function(k, delivery) {
+				var items = '';
+				var template = TEMP.clone(true);
+				$.each(delivery.area_fee, function(k1, area) {
+					items += sprintf(template.find('.area-list').html(), area.type, area.dests, price_format(area.start_fees) + '/' + (area.start_standards>1 ? area.start_standards : '') + '件',price_format(area.add_fees) + '/' + (area.add_fees>1 ? area.add_fees : '') + '件');
+				});
+				if(items) {
+					template.find('.area-list').html(items);
+				} else template.find('.area-list').parent().remove();
+				html += sprintf(template.html(), delivery.template_id, delivery.name, delivery.created);
+			});
+			if(html) {
+				target.find('.infinite-result').append(html).show();
+				actions(target);
+			}
+		}
+	});
+	
+});
+function actions(target)
+{
+	target.find('.item').each(function(index, element) {
+		var o = $(this);
+		var item_id = o.attr('item_id');
+		o.unbind('click');
+		o.click(function(){
+			$.actions({
+				title: "{$lang.select_handle}",
+				actions: [{
+					text: "{$lang.copy}",
+					onClick: function() {
+						ajaxSubmit('GET', url(['my_delivery/copytpl', { id:item_id}]), null, '', o);
+					}
+				},
+				{
+					text: "{$lang.edit}",
+					onClick: function() {
+						$.closeActions();
+						setTimeout(function(){ // 确保点击后关闭弹层，避免返回后弹出还在无法关闭
+							window.location.href = url(['my_delivery/edit', { id:item_id}]);
+						}, 500);
+					}
+				},
+				{
+					text: "{$lang.drop}",
+					onClick: function() {
+						ajaxSubmit('GET', url(['my_delivery/delete', { id:item_id}]), null, '', o);
+					}
+				}]
+			});
+		})
+	});
+}
+</script> 
+{include file="footer.html"}

@@ -1,0 +1,41 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.setting}</p>
+    <ul class="subnav">
+      <li><a class="btn1" href="{url route='setting/index'}">{$lang.base_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/baseinfo'}">{$lang.base_information}</a></li>
+      <li><a class="btn1" href="{url route='setting/email'}">{$lang.email_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/verifycode'}">{$lang.captcha_setting}</a></li>
+      <li><a class="btn1" href="{url route='setting/store'}">{$lang.store_setting}</a></li>
+      <li><span>{$lang.api_setting}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15">{$lang.baidukey}</th>
+          <td class="paddingT15"></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.baidukey_browser}</th>
+          <td class="paddingT15 wordSpacing5"><input type="text" name="baidukey[browser]" value="{$setting.baidukey.browser}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.baidukey_server}</th>
+          <td class="paddingT15 wordSpacing5"><input type="text" name="baidukey[server]" value="{$setting.baidukey.server}" class="infoTableInput"/></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"></th>
+          <td class="paddingT15 wordSpacing5"><label class="field_notice">{$lang.baidukey_note}</label></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"} 

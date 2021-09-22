@@ -1,0 +1,109 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.report_manage}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+    </ul>
+  </div>
+  <div class="search-form clearfix">
+    <form method="get" id="formSearch">
+      <input type="hidden" name="r" value="report/index" />
+      <select class="querySelect" name="field">
+        
+			{html_options options=$search_options selected=$smarty.get.field}
+		
+      </select>
+      <input class="queryInput" type="text" name="search_name" value="{$smarty.get.search_name|escape}" style="width:300px;" />
+      
+      {$lang.status}
+      <select name="status">
+        <option value="-1" {if !in_array($smarty.get.status, array(0,1))} selected="selected"{/if}>不限制</option>
+        <option value="0" {if $smarty.get.status eq '0'} selected="selected"{/if}>未审核</option>
+        <option value="1" {if $smarty.get.status eq '1'} selected="selected"{/if}>已审核</option>
+      </select>
+      <input type="submit" class="formbtn" value="{$lang.query}" />
+      <!--{if $filtered}--> 
+      <a class="formbtn formbtn1" href="{url route='report/index'}">{$lang.cancel_query}</a> 
+      <!--{/if}-->
+    </form>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['report/index', $("#formSearch").serializeJson()]),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: '{$lang.add_time}', name : 'add_time', width : 120, sortable : true, align: 'center'},
+			{ display: '{$lang.username}', name : 'username', width : 50, sortable : false, align: 'center'},
+			{ display: '{$lang.report_goods}', name : 'goods_name', width : 350, sortable : false, align: 'center'},
+    		{ display: '{$lang.report_store}', name : 'store_name', width : 150, sortable : false, align: 'center'},
+			{ display: '{$lang.content}', name : 'content', width : 200, sortable : false, align: 'center'},
+			{ display: '{$lang.status}', name : 'status', width: 80, sortable : true, align : 'center'}		
+    	],
+        buttons : [
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate },
+			{ display: '<i class="fa fa-edit"></i>{$lang.batch_verify}', name : 'verify', bclass : 'add', title : '{$lang.batch_verify}', onpress : fg_operate }
+        ],
+    	sortname: "id",
+    	sortorder: "desc",
+    	title: '{$lang.report_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'verify') {
+	   if($('.trSelected',bDiv).length==0){
+		   layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_verify(itemlist);
+	}
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'report','delete', true);
+	}
+}
+
+function fg_verify(id){
+	layer.confirm(lang.verify_msg,{ icon: 3, title:lang.tip, btn: [lang.agree, lang.refuse]},function(index){
+		layer.close(index);
+		layer.prompt({
+			formType: 2,
+			value: '',
+			title: lang.submit_verify_content
+		}, function(value, index, elem){
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: url(['report/verify']),
+				data: "id="+id+"&verify="+value,
+				success: function(data){				
+					if (data.done){
+						layer.msg(lang.verify_ok);
+						layer.close(index);
+						$("#flexigrid").flexReload();
+					} else {
+						layer.msg(data.msg);
+					}
+				},
+				error: function(data){
+					layer.msg(data.msg);
+				}
+			});
+			layer.close(index);
+		});
+	},function(index){
+		layer.close(index);
+	});	
+}
+</script> 
+{include file="footer.html"} 
