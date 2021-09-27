@@ -1,7 +1,7 @@
 ## yii2-shopwind-h5
 
 #### 介绍
-演示地址：[http://m.test.shopwind.net](http://http://m.test.shopwind.net)
+演示地址：[http://m.test.shopwind.net](http://m.test.shopwind.net)
 
 #### 软件架构
 Yii2.0
