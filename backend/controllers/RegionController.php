@@ -60,7 +60,7 @@ class RegionController extends \common\controllers\BaseAdminController
 		if(!Yii::$app->request->isPost)
 		{
 			$this->params['region'] = ['parent_id' => intval(Yii::$app->request->get('pid')), 'sort_order' => 255];
-			$this->params['parents'] = RegionModel::getOptions();
+			$this->params['parents'] = RegionModel::getOptions(-1, null, 0, false);
 			
 			$this->params['page'] = Page::seo(['title' => Language::get('region_add')]);
 			return $this->render('../region.form.html', $this->params);
@@ -87,7 +87,7 @@ class RegionController extends \common\controllers\BaseAdminController
 		if(!Yii::$app->request->isPost)
 		{
 			$this->params['region'] = ArrayHelper::toArray($region);
-			$this->params['parents'] = RegionModel::getOptions(-1, $id);
+			$this->params['parents'] = RegionModel::getOptions(-1, $id, 0, false);
 			
 			$this->params['page'] = Page::seo(['title' => Language::get('region_edit')]);
 			return $this->render('../region.form.html', $this->params);
