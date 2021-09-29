@@ -69,15 +69,11 @@ class SgradeController extends \common\controllers\BaseAdminController
 			{
 				$list = array();
 				$operation = "<a class='btn red' onclick=\"fg_delete({$key},'sgrade')\"><i class='fa fa-trash-o'></i>删除</a>";
-				$operation .= "<span class='btn'><em><i class='fa fa-cog'></i>设置 <i class='arrow'></i></em><ul>";
-				$operation .= "<li><a href='".Url::toRoute(['sgrade/edit', 'id' => $key])."'>编辑</a></li>";
-				$operation .= "<li><a href='".Url::toRoute(['sgrade/theme', 'id' => $key])."'>手机模板</a></li>";
-				$operation .= "</ul>";
+				$operation .= "<a class='btn red' href='".Url::toRoute(['sgrade/edit', 'id' => $key])."'><i class='fa fa-pencil-square-o'></i>编辑</a>";
 				$list['operation'] = $operation;
 				$list['grade_name'] = $val['grade_name'];
 				$list['goods_limit'] = $val['goods_limit'] ? $val['goods_limit'] : Language::get('no_limit');
 				$list['space_limit'] = $val['space_limit'] ? $val['space_limit'] : Language::get('no_limit');
-				$list['skins_limit'] = count(explode(',', $val['skins']));
 				$list['charge'] = $val['charge'];
 				$list['need_confirm']	= ($val['need_confirm'] == 0) ? '<em class="no" ectype="inline_edit" controller="sgrade" fieldname="need_confirm" fieldid="'.$key.'" fieldvalue="0" title="'.Language::get('editable').'"><i class="fa fa-ban"></i>否</em>' : '<em class="yes" ectype="inline_edit" controller="sgrade" fieldname="need_confirm" fieldid="'.$key.'" fieldvalue="1" title="'.Language::get('editable').'"><i class="fa fa-check-circle"></i>是</em>';
 				$list['sort_order'] 	= '<span ectype="inline_edit" controller="sgrade" fieldname="sort_order" fieldid="'.$key.'" datatype="pint" class="editable" title="'.Language::get('editable').'">'.$val['sort_order'].'</span>';
