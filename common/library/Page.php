@@ -441,15 +441,17 @@ class Page
 	public static function export($config = [])
 	{
 		$writer = new \XLSXWriter();
-		header('Content-disposition: attachment; filename="'.$writer->sanitize_filename($config['fileName']).'"');
+		header('Content-disposition: attachment; filename="'.$writer->sanitize_filename($config['fileName']).'.xlsx"');
 		header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		header('Content-Transfer-Encoding: binary');
 		header('Cache-Control: must-revalidate');
 		header('Pragma: public');
-
-		$writer->setTempDir(Yii::getAlias('@runtime'));
+		
+		$writer->setTempDir(Yii::getAlias('@frontend/runtime'));
 		$writer->writeSheet($config['models']);
+	
 		$writer->writeToStdOut();
+		exit(0);
 	}
 	
 	public static function writeLog($key = '', $word = '') 
