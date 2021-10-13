@@ -108,8 +108,9 @@ class Alidayu extends BaseSms
 
     /**
      * 检测是否配置
+     * @var boolean $force 是否验证短信模板内容
      */
-    public function verify()
+    public function verify($force = true)
     {
         if(!$this->config['AppKey']) {
             $this->errors = Language::get('The "AppKey" property must be set');
@@ -122,7 +123,7 @@ class Alidayu extends BaseSms
 
         // 如果是验证非具体短信场景，可以不用验证短信模板
         // 比如某个地方仅仅需要判断密钥是否配置，从而进行开关控制
-        if(!$this->scene) {
+        if(!$force) {
             return true;
         }
 
