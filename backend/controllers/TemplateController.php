@@ -258,11 +258,18 @@ class TemplateController extends \common\controllers\BaseAdminController
 	/* 获取欲编辑的页面的HTML */
     public function getPageHtml($page = null)
     {
+		$contextOptions = [
+			'ssl' => [
+				'verify_peer' => false,
+				'verify_peer_name' => false
+			]
+		];
+
         $pages = $this->getEditablePages();
-	
 		foreach($pages as $key => $val){
 			if($key == $page){
-				return file_get_contents($val['url']);
+				//return file_get_contents($val['url']);
+				return file_get_contents($val['url'], false, stream_context_create($contextOptions));
 			}
 		}
 		return false;
