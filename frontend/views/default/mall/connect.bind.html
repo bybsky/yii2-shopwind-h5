@@ -76,7 +76,7 @@ $(function(){
 			return false;
 		}
 		$(this).attr("disabled", true);
-		send_phonecode($(this), { from: "bind", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+		send_phonecode($(this), { purpose: "bind", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
 	});
 });
 </script> 

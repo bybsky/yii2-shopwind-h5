@@ -69,7 +69,7 @@ $(function(){
 			layer.open({ content: "{$lang.phone_mob_invalid}", className:'layer-popup', time: 3});
 			return;
 		}
-		send_phonecode($(this), { from: "register", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+		send_phonecode($(this), { purpose: "register", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
 	});
 });
 </script>
