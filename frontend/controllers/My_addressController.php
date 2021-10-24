@@ -105,7 +105,7 @@ class My_addressController extends \common\controllers\BaseUserController
 			
 			$this->params['_foot_tags'] = Resource::import('jquery.plugins/jquery.form.js');
 			
-			$this->params['page'] = Page::seo(['title' => Language::get('address_add')]);
+			$this->params['page'] = Page::seo(['title' => Language::get('address_edit')]);
 			return $this->render('../my_address.form.html', $this->params);
 		}
 		else

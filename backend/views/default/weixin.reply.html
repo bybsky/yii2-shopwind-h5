@@ -1,0 +1,62 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.weixin_reply}</p>
+    <ul class="subnav">
+      <li><span>{$lang.replys_list}</span></li>
+      <li><a class="btn1" href="{url route='weixin/addreply'}">{$lang.add}</a></li>
+    </ul>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+      <h4 title="{$lang.operation_tip}">{$lang.operation_tip}</h4>
+    </div>
+    <ul>
+      <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_1}</li>
+      <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_2}</li>
+      <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_3}</li>
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#flexigrid").flexigrid({
+    	url: url(['weixin/index']),
+    	colModel : [
+    		{ display: '{$lang.operation}', name : 'operation', width : 150, sortable : false, align: 'center', className: 'handle'},
+			{ display: 'ID', name : 'reply_id', width : 50, sortable : true, align: 'center'},
+			{ display: '{$lang.reply_type}', name : 'action', width : 100, sortable : true, align: 'center'},
+    		{ display: '{$lang.rule_name}', name : 'rule_name', width : 200, sortable : false, align: 'center'},
+			{ display: '{$lang.keywords}', name : 'keywords', width : 200, sortable : false, align: 'center'},
+    		{ display: '{$lang.msg_type}', name : 'type', width : 100, sortable : true, align: 'center'},
+			{ display: '{$lang.reply_content}', name : 'content', width: 300, sortable : false, align : 'center'}	
+    	],
+        buttons : [
+            { display: '<i class="fa fa-plus"></i>{$lang.add_data}', name : 'add', bclass : 'add', title : '{$lang.add_data}', onpress : fg_operate },
+            { display: '<i class="fa fa-trash"></i>{$lang.batch_del}', name : 'del', bclass : 'del', title : '{$lang.batch_del_for_selected}', onpress : fg_operate }
+        ],
+		sortname: "id",
+    	sortorder: "desc",
+    	title: '{$lang.replys_list}'
+    });
+});
+function fg_operate(name, bDiv) {
+	if(name == 'add'){
+		window.location.href = "{url route='weixin/addreply'}";
+		return false;
+	}
+	var itemlist = new Array();
+	$('.trSelected',bDiv).each(function(){
+		itemlist.push($(this).attr('data-id'));
+	});
+	if (name == 'del') {
+	   if($('.trSelected',bDiv).length == 0){
+			layer.msg(lang.no_selected_item);
+			return false;
+	   }
+       fg_delete(itemlist,'weixin', 'deletereply');
+	}
+}
+</script> 
+{include file="footer.html"} 

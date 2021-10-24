@@ -1,0 +1,55 @@
+{include file="header.html"}
+<div id="page_main" class="main-right">
+  <div id="rightTop">
+    <p>{$lang.weixin_setting}</p>
+    <ul class="subnav">
+      <li><span>{$lang.manage}</span></li>
+    </ul>
+  </div>
+  <div class="info">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"> {$lang.name}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="name" value="{$weixin.name|escape}" /></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.appid}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="appid" type="text" name="appid" value="{$weixin.appid|escape}" />
+            <label class="field_notice">{$lang.appid_desc}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.appsecret}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" name="appsecret" type="text" id="appsecret" value="{$weixin.appsecret|escape}"  />
+            <label class="field_notice">{$lang.appsecret_desc}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.token}:</th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput" name="token" type="text" id="token" value="{$weixin.token|escape}" />
+            <label class="field_notice">{$lang.token_desc}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"> {$lang.autologin}:</th>
+          <td class="paddingT15"><span class="onoff">
+            <label class="cb-enable {if $weixin.autologin}selected{/if}">{$lang.open}</label>
+            <label class="cb-disable {if !$weixin.autologin}selected{/if}">{$lang.close}</label>
+            <input name="autologin" value="1" type="radio" {if $weixin.autologin}checked{/if}>
+            <input name="autologin" value="0" type="radio" {if !$weixin.autologin}checked{/if}>
+            </span> <span class="grey notice">{$lang.autologin_desc}</span></td>
+        </tr>
+        <tr>
+          <th class="paddingT15">{$lang.gatewayUrl}:</th>
+          <td class="paddingT15 wordSpacing5"><div class="notice-word">
+              <p style="background: #E5F5FF;padding:10px; display:inline-block;margin-bottom:0;">{$weixin.gatewayUrl}<span style="color:#999;"><br />
+                {$lang.url_desc}</span></p>
+            </div></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="formbtn J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+{include file="footer.html"}
