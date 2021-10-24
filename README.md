@@ -1,37 +1,60 @@
-## yii2-shopwind-h5
+<div align="center">&nbsp;</div>
+<div align="center">
+  <a href="https://www.shopwind.net">
+    <img width="300" src="https://www.shopwind.net/templates/mall/default/styles/default/images/logo.png">
+  </a>
+</div>
+<h1 align="center">yii2-shopwind开源商城系统-公众号H5</h1>
+<div align="center">
 
-#### 介绍
-演示地址：[http://m.test.shopwind.net](http://m.test.shopwind.net)
+基于Yii2框架开发 • 免费开源的B2B2C商城系统
 
-#### 软件架构
-Yii2.0
+</div>
+<div align="center">
 
+[![php语言](https://img.shields.io/badge/language-php-red)](https://www.shopwind.net/)
+[![V3.3.4](https://img.shields.io/badge/release-3.3.4-blue)](https://www.shopwind.net/product/download.html)
+[![license](https://img.shields.io/badge/license-Apache2.0-green)](https://www.shopwind.net/license/)
 
-#### 安装教程
+</div>
+<div align="center">
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+  [官网](https://www.shopwind.net/) |
+  [在线体验](http://m.test.shopwind.net/) |
+  [一键安装](https://www.shopwind.net/forum/thread-282.html) |
+  [开源框架](https://www.yiichina.com/) 
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+</div>
 
 
-#### 特技
+## 项目介绍
+ShopWind是一款基于Yii2.0框架深度重构的B2B2C多用户商城系统，微商城/H5版本基于Apache License 2.0开源协议，前后端代码开源无加密，支持二次开发，支持商用。让您快速、无成本搭建起自己的微商城和H5多商户商城。
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+**ShopWind无偿供大家使用，您的star是我们前进的动力** 
+
+## 运行环境
+
+- Nginx/Apache/IIS
+- PHP7.0+
+- MySQL5.1+
+
+建议环境Linux+Nginx+PHP7.0+MySQL5.5.29 以上
+
+## 安装教程
+<a href="https://www.shopwind.net/forum/portal.html" target="_blank"> **查看常见问题/安装教程** </a>
+
+## 演示体验
+* <a href="http://m.test.shopwind.net" target="_blank"> **m.test.shopwind.net** </a>
+
+* <a href="http://m.test.shopwind.net/admin" target="_blank"> **后台体验** </a>
+* 账号:admin 密码:123456
+
+* <a href="http://m.test.shopwind.net/login.html" target="_blank"> **商家体验** </a>
+* 账号:seller 密码:123456
+
+
+## 项目截图
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/120728_7c1c03da_7967349.jpeg "h5-1.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/120741_cf01b3f6_7967349.jpeg "h5-2.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/120754_bcfbdb08_7967349.jpeg "h5-3.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/1024/120805_1041d39b_7967349.jpeg "h5-4.jpg")
