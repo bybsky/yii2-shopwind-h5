@@ -38,7 +38,7 @@ ShopWind是一款基于Yii2.0框架深度重构的B2B2C多用户商城系统，�
 - PHP7.0+
 - MySQL5.1+
 
-建议环境Linux+Nginx+PHP7.0+MySQL5.5.29 以上
+  建议环境Linux+Nginx+PHP7.0+MySQL5.5.29 以上
 
 ## 安装教程
 <a href="https://www.shopwind.net/forum/portal.html" target="_blank"> **查看常见问题/安装教程** </a>
