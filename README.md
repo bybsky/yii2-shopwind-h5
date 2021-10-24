@@ -44,12 +44,12 @@ ShopWind是一款基于Yii2.0框架深度重构的B2B2C多用户商城系统，�
 <a href="https://www.shopwind.net/forum/portal.html" target="_blank"> **查看常见问题/安装教程** </a>
 
 ## 演示体验
-* <a href="http://m.test.shopwind.net" target="_blank"> **m.test.shopwind.net** </a>
+* <a href="http://m.test.shopwind.net" target="_blank"> **演示体验 http://m.test.shopwind.net** </a>
 
-* <a href="http://m.test.shopwind.net/admin" target="_blank"> **后台体验** </a>
+* <a href="http://m.test.shopwind.net/admin" target="_blank"> **后台体验 http://m.test.shopwind.net/admin** </a>
 * 账号:admin 密码:123456
 
-* <a href="http://m.test.shopwind.net/login.html" target="_blank"> **商家体验** </a>
+* <a href="http://m.test.shopwind.net/login.html" target="_blank"> **商家体验 http://m.test.shopwind.net/login.html** </a>
 * 账号:seller 密码:123456
 
 
