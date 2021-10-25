@@ -41,7 +41,7 @@ class CashcardController extends \common\controllers\BaseAdminController
 	
 	public function actionIndex()
 	{
-		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['rp', 'page', 'active_time', 'printed']);
+		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['rp', 'page', 'printed']);
 		
 		if(!Yii::$app->request->isAjax) 
 		{
@@ -106,7 +106,7 @@ class CashcardController extends \common\controllers\BaseAdminController
 		}
 		else
 		{
-			$post = Basewind::trimAll(Yii::$app->request->post(), true, ['quantity', 'expire_time']);
+			$post = Basewind::trimAll(Yii::$app->request->post(), true, ['quantity']);
 			
 			$model = new \backend\models\CashcardForm();
 			if(!($cashcard = $model->create($post, true))) {
