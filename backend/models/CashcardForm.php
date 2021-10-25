@@ -38,10 +38,7 @@ class CashcardForm extends Model
 			$this->errors = Language::get('money_error');
 			return false;
 		}
-		if($post->quantity <= 0 || $post->quantity > 1000) {
-			$this->errors = Language::get('quantity_limit');
-			return false;
-		}
+		
 		if($post->password && (strlen($post->password) < 6) || strlen($post->password) > 30) {
 			$this->errors = Language::get('password_len_error');
 			return false;
@@ -59,14 +56,43 @@ class CashcardForm extends Model
 		if(!$this->id || !($model = CashcardModel::findOne($this->id))) {
 			$model = new CashcardModel();
 		}
-		// TODO..
-		
+
+		// 如果充值卡已被激活，则不允许修改
+		if($model->id && $model->active_time > 0) {
+			$this->errors = Language::get('actived_disallow');
+			return false;
+		}
+	
+		// 允许编辑的字段（编辑模式下，非仅行内编辑）
+		foreach(['name', 'money', 'password', 'expire_time', 'printed'] as $key => $value) {
+
+			if(isset($post->$value)) {
+				if($value == 'expire_time') {
+					$post->$value = $post->$value ? Timezone::gmstr2time_end($post->expire_time) : 0;
+				}
+				$model->$value = $post->$value;
+			}
+		}
+
+		if(!$model->save()) {
+			$this->errors = $model->errors;
+			return false;
+		}
+
 		return $model;
 	}
 	
+	/**
+	 * 创建充值卡
+	 */
 	public function create($post, $valid = true)
 	{
 		if($valid === true && !$this->valid($post)) {
+			return false;
+		}
+
+		if($post->quantity <= 0 || $post->quantity > 1000) {
+			$this->errors = Language::get('quantity_limit');
 			return false;
 		}
 		
@@ -76,7 +102,7 @@ class CashcardForm extends Model
 			$model->cardNo = CashcardModel::genCardNo();
 			$model->money = $post->money;
 			$model->password = $post->password ? $post->password : mt_rand(100000,999999);
-			$model->expire_time = $post->expire_time ? Timezone::gmstr2time($post->expire_time) : 0;
+			$model->expire_time = $post->expire_time ? Timezone::gmstr2time_end($post->expire_time) : 0;
 			$model->active_time = 0;
 			$model->useId = 0;
 			$model->add_time = Timezone::gmtime();

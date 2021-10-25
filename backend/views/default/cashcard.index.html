@@ -25,10 +25,10 @@
         <option value="2" {if in_array($smarty.get.printed, array(2))} selected="selected"{/if}>{$lang.printed}</option>
       </select>
       {$lang.active_status}
-      <select name="active_time">
-        <option value="0" {if !in_array($smarty.get.active_time, array(1,2))} selected="selected"{/if}>{$lang.no_limit}</option>
-        <option value="1" {if in_array($smarty.get.active_time, array(1))} selected="selected"{/if}>{$lang.no_active}</option>
-        <option value="2" {if in_array($smarty.get.active_time, array(2))} selected="selected"{/if}>{$lang.actived}</option>
+      <select name="actived">
+        <option value="0" {if !in_array($smarty.get.actived, array(1,2))} selected="selected"{/if}>{$lang.no_limit}</option>
+        <option value="1" {if in_array($smarty.get.actived, array(1))} selected="selected"{/if}>{$lang.no_active}</option>
+        <option value="2" {if in_array($smarty.get.actived, array(2))} selected="selected"{/if}>{$lang.actived}</option>
       </select>
       <input type="submit" class="formbtn" value="{$lang.query}" />
       <!--{if $filtered}--> 

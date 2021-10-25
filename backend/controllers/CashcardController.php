@@ -41,7 +41,7 @@ class CashcardController extends \common\controllers\BaseAdminController
 	
 	public function actionIndex()
 	{
-		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['rp', 'page', 'active_time', 'printed']);
+		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['rp', 'page', 'printed', 'actived']);
 		
 		if(!Yii::$app->request->isAjax) 
 		{
@@ -106,7 +106,7 @@ class CashcardController extends \common\controllers\BaseAdminController
 		}
 		else
 		{
-			$post = Basewind::trimAll(Yii::$app->request->post(), true, ['quantity', 'expire_time']);
+			$post = Basewind::trimAll(Yii::$app->request->post(), true, ['quantity']);
 			
 			$model = new \backend\models\CashcardForm();
 			if(!($cashcard = $model->create($post, true))) {
@@ -166,10 +166,15 @@ class CashcardController extends \common\controllers\BaseAdminController
 	/* 异步修改数据 */
     public function actionEditcol()
     {
-		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['id', 'if_show', 'sort_order', 'recommended']);
-		if(in_array($post->column, ['name', 'if_show', 'sort_order', 'recommended', 'tag'])) {
+		$post = Basewind::trimAll(Yii::$app->request->get(), true, ['id']);
+		if(in_array($post->column, ['printed', 'password', 'name'])) {
 			$model = new \backend\models\CashcardForm(['id' => $post->id]);
 			$query = CashcardModel::findOne($post->id);
+			if(!$query) {
+				return Message::warning(Language::get('no_data'));
+			} elseif($query->active_time > 0) {
+				return Message::warning(Language::get('actived_disallow'));
+			}
 			$query->{$post->column} = $post->value;
 			if(!($cashcard = $model->save($query, true))) {
 				return Message::warning($model->errors);
@@ -200,7 +205,7 @@ class CashcardController extends \common\controllers\BaseAdminController
 	{
 		if($query === null) {
 			foreach(array_keys(ArrayHelper::toArray($post)) as $field) {
-				if(in_array($field, ['cardNo', 'name', 'add_time_from', 'add_time_to', 'active_time', 'printed'])) {
+				if(in_array($field, ['cardNo', 'name', 'add_time_from', 'add_time_to', 'actived', 'printed'])) {
 					return true;
 				}
 			}
@@ -224,10 +229,10 @@ class CashcardController extends \common\controllers\BaseAdminController
 		if(!$post->add_time_from && ($post->add_time_to && ($post->add_time_to > Timezone::gmtime()))) {
 			$query->andWhere(['<=', 'add_time', $post->add_time_to]);
 		}
-		if($post->active_time == 1) {
+		if($post->actived == 1) {
 			$query->andWhere(['active_time' => 0]);
 		}
-		if($post->active_time == 2) {
+		if($post->actived == 2) {
 			$query->andWhere(['>', 'active_time', 0]);
 		}
 		if($post->printed == 1) {
