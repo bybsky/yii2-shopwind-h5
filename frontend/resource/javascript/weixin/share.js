@@ -49,25 +49,25 @@ function wxshare(params)
     });
 		
     // 微信分享给好友，旧接口即将废弃
-		wx.onMenuShareAppMessage({
-      title: title,
-      desc: desc,
-      link: linkUrl,
-      imgUrl: imgUrl,
-      trigger: function (res) {
-        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
-        //alert('用户点击发送给朋友');
-      },
-      success: function (res) {
-        layer.open({content:'已分享',time:3});
-      },
-      cancel: function (res) {
-        //alert('已取消');
-      },
-      fail: function (res) {
-        layer.open({content:JSON.stringify(res),time:3});
-      }
-    });
+		// wx.onMenuShareAppMessage({
+    //   title: title,
+    //   desc: desc,
+    //   link: linkUrl,
+    //   imgUrl: imgUrl,
+    //   trigger: function (res) {
+    //     // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+    //     //alert('用户点击发送给朋友');
+    //   },
+    //   success: function (res) {
+    //     layer.open({content:'已分享',time:3});
+    //   },
+    //   cancel: function (res) {
+    //     //alert('已取消');
+    //   },
+    //   fail: function (res) {
+    //     layer.open({content:JSON.stringify(res),time:3});
+    //   }
+    // });
     
     // 微信分享给好友新接口
     wx.updateAppMessageShareData({ 
@@ -81,25 +81,25 @@ function wxshare(params)
     });
 
     // 微信分享到朋友圈，旧接口即将废弃
-    wx.onMenuShareTimeline({
-      title: title,
-      desc: desc,
-      link: linkUrl,
-      imgUrl: imgUrl,
-      trigger: function (res) {
-        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
-        //alert('用户点击分享到朋友圈');
-      },
-      success: function (res) {
-        layer.open({content:'已分享',time:3});
-      },
-      cancel: function (res) {
-        //alert('已取消');
-      },
-      fail: function (res) {
-        layer.open({content:JSON.stringify(res),time:3});
-      }
-    });
+    // wx.onMenuShareTimeline({
+    //   title: title,
+    //   desc: desc,
+    //   link: linkUrl,
+    //   imgUrl: imgUrl,
+    //   trigger: function (res) {
+    //     // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+    //     //alert('用户点击分享到朋友圈');
+    //   },
+    //   success: function (res) {
+    //     layer.open({content:'已分享',time:3});
+    //   },
+    //   cancel: function (res) {
+    //     //alert('已取消');
+    //   },
+    //   fail: function (res) {
+    //     layer.open({content:JSON.stringify(res),time:3});
+    //   }
+    // });
     
     // 微信分享到朋友圈 新接口
     wx.updateTimelineShareData({ 
