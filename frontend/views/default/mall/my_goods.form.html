@@ -142,7 +142,7 @@ function dropImage(goods_file_id)
                                     <li class="flex1">
                                         {$brand.brand_name}
                                     </li>
-                                    <li class="input"><input  {if $goods.brand_id eq $brand.brand_id}checked="checked"{/if} type="radio" name="brand_id" value="{$brand.brand_id}"/></li>
+                                    <li class="input"><input  {if $goods.brand eq $brand.brand_name}checked="checked"{/if} type="radio" name="brand" value="{$brand.brand_name}"/></li>
                                 </ol>
                                 <!--{/foreach}-->
                             </div>

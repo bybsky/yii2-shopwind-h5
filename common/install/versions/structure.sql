@@ -701,7 +701,6 @@ CREATE TABLE IF NOT EXISTS `swd_goods` (
   `content` text DEFAULT NULL,
   `cate_id` int(10) unsigned DEFAULT '0',
   `cate_name` varchar(255) DEFAULT '',
-  `brand_id` int(11) DEFAULT '0',
   `brand` varchar(100)  DEFAULT '',
   `spec_qty` tinyint(4) unsigned DEFAULT '0',
   `spec_name_1` varchar(60) DEFAULT '',
