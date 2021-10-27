@@ -90,7 +90,8 @@ class GoodsController extends \common\controllers\BaseMallController
 		
 		$this->params['_head_tags'] = Resource::import('goodsinfo.js');
 		$this->params['_foot_tags'] = Resource::import([
-			'script' => 'jquery.plugins/jquery.form.js,cart.js,jquery.plugins/raty/jquery.raty.js,jquery.ui/jquery.ui.js,dialog/dialog.js,weixin/jweixin-1.0.0.js,weixin/share.js,jquery.plugins/jquery.lazyload.js',
+			'remote' => 'http://res2.wx.qq.com/open/js/jweixin-1.6.0.js',
+			'script' => 'jquery.plugins/jquery.form.js,cart.js,jquery.plugins/raty/jquery.raty.js,jquery.ui/jquery.ui.js,dialog/dialog.js,weixin/share.js,jquery.plugins/jquery.lazyload.js',
             'style' =>  'dialog/dialog.css,jquery.plugins/raty/jquery.raty.css'
 		]);
 	

@@ -58,7 +58,7 @@ class StoreController extends \common\controllers\BaseMallController
 
 		if(Basewind::isWeixin()){
 			$this->params['signPackage'] = Weixin::getInstance()->GetSignPackage();
-			$this->params['_foot_tags'] = Resource::import('weixin/jweixin-1.0.0.js,weixin/share.js');
+			$this->params['_foot_tags'] = Resource::import(['remote' => 'http://res2.wx.qq.com/open/js/jweixin-1.6.0.js','script' => 'weixin/share.js']);
 		}
 		
 		$this->params['page'] = Page::seo(['title' => $store['store_name']]);

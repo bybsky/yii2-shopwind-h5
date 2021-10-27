@@ -49,7 +49,7 @@ class DefaultController extends \common\controllers\BaseMallController
 			$this->params['signPackage'] = Weixin::getInstance()->GetSignPackage();
 		}
 		
-		$this->params['_foot_tags'] = Resource::import('weixin/jweixin-1.0.0.js,weixin/share.js,jquery.plugins/jquery.infinite.js');
+		$this->params['_foot_tags'] = Resource::import(['remote' => 'http://res2.wx.qq.com/open/js/jweixin-1.6.0.js', 'script' =>'weixin/share.js,jquery.plugins/jquery.infinite.js']);
 		
 		$this->params['page'] = Page::seo();
         return $this->render('../index.html', $this->params);
