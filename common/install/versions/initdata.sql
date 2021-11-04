@@ -2180,22 +2180,22 @@ INSERT INTO `swd_integral_setting` (`setting_id`, `rate`, `register`, `signin`, 
 delete from `swd_limitbuy`;
 INSERT INTO `swd_limitbuy` (`id`, `goods_id`, `title`, `summary`, `start_time`, `end_time`, `store_id`, `rules`, `image`) VALUES
 (1, 26, '春节大促', '', 1617065980, 1622422780, 2, 'a:1:{i:26;a:2:{s:5:"price";s:1:"9";s:8:"pro_type";s:8:"discount";}}', NULL),
-(2, 25, '春节大促', '', 1617066017, 1625014817, 2, 'a:1:{i:25;a:2:{s:5:"price";s:1:"9";s:8:"pro_type";s:8:"discount";}}', NULL),
-(3, 15, '年中大促', '', 1617066289, 1627693489, 2, 'a:1:{i:15;a:2:{s:5:"price";s:1:"6";s:8:"pro_type";s:8:"discount";}}', NULL),
-(4, 14, '年中大促', '', 1617066326, 1627693526, 2, 'a:1:{i:14;a:2:{s:5:"price";s:1:"6";s:8:"pro_type";s:8:"discount";}}', NULL),
-(5, 12, '春节大促', '', 1617066422, 1632964022, 2, 'a:1:{i:12;a:2:{s:5:"price";s:1:"8";s:8:"pro_type";s:8:"discount";}}', NULL),
-(6, 17, '春节大促', '', 1617066451, 1627693651, 2, 'a:1:{i:17;a:2:{s:5:"price";s:1:"7";s:8:"pro_type";s:8:"discount";}}', NULL),
-(7, 18, '春节大促', '', 1617066481, 1630372081, 2, 'a:1:{i:18;a:2:{s:5:"price";s:1:"8";s:8:"pro_type";s:8:"discount";}}', NULL),
-(8, 20, '春节大促', '', 1617066504, 1627693704, 2, 'a:1:{i:20;a:2:{s:5:"price";s:1:"5";s:8:"pro_type";s:8:"discount";}}', NULL);
+(2, 25, '春节大促', '', 1617066017, 1640966399, 2, 'a:1:{i:25;a:2:{s:5:"price";s:1:"9";s:8:"pro_type";s:8:"discount";}}', NULL),
+(3, 15, '年中大促', '', 1617066289, 1640966399, 2, 'a:1:{i:15;a:2:{s:5:"price";s:1:"6";s:8:"pro_type";s:8:"discount";}}', NULL),
+(4, 14, '年中大促', '', 1617066326, 1640966399, 2, 'a:1:{i:14;a:2:{s:5:"price";s:1:"6";s:8:"pro_type";s:8:"discount";}}', NULL),
+(5, 12, '春节大促', '', 1617066422, 1640966399, 2, 'a:1:{i:12;a:2:{s:5:"price";s:1:"8";s:8:"pro_type";s:8:"discount";}}', NULL),
+(6, 17, '春节大促', '', 1617066451, 1640966399, 2, 'a:1:{i:17;a:2:{s:5:"price";s:1:"7";s:8:"pro_type";s:8:"discount";}}', NULL),
+(7, 18, '春节大促', '', 1617066481, 1640966399, 2, 'a:1:{i:18;a:2:{s:5:"price";s:1:"8";s:8:"pro_type";s:8:"discount";}}', NULL),
+(8, 20, '春节大促', '', 1617066504, 1640966399, 2, 'a:1:{i:20;a:2:{s:5:"price";s:1:"5";s:8:"pro_type";s:8:"discount";}}', NULL);
 
 --
 -- 转存表中的数据 `swd_coupon`
 --
 delete from `swd_coupon`;
 INSERT INTO `swd_coupon` (`coupon_id`, `store_id`, `coupon_name`, `coupon_value`, `use_times`, `start_time`, `end_time`, `min_amount`, `available`, `image`, `total`, `surplus`, `clickreceive`) VALUES
-(1, 2, '新春大促', '10.00', 1, 1617004800, 1625039999, '100.00', 1, NULL, 1000, 1000, 1),
-(2, 2, '年中大促', '5.00', 1, 1617004800, 1627718399, '50.00', 1, NULL, 999, 999, 1),
-(3, 2, '618活动', '18.00', 1, 1617004800, 1627718399, '88.00', 1, NULL, 999, 999, 1);
+(1, 2, '新春大促', '10.00', 1, 1617004800, 1640966399, '100.00', 1, NULL, 1000, 1000, 1),
+(2, 2, '年中大促', '5.00', 1, 1617004800, 1640966399, '50.00', 1, NULL, 999, 999, 1),
+(3, 2, '618活动', '18.00', 1, 1617004800, 1640966399, '88.00', 1, NULL, 999, 999, 1);
 
 --
 -- 转存表中的数据 `swd_channel`
