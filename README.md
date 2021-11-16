@@ -13,7 +13,7 @@
 <div align="center">
 
 [![php语言](https://img.shields.io/badge/language-php-red)](https://www.shopwind.net/)
-[![V3.3.4](https://img.shields.io/badge/release-3.3.4-blue)](https://www.shopwind.net/product/download.html)
+[![V3.3.4](https://img.shields.io/badge/release-2.0-blue)](https://www.shopwind.net/product/download.html)
 [![license](https://img.shields.io/badge/license-Apache2.0-green)](https://www.shopwind.net/license/)
 
 </div>
