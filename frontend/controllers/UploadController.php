@@ -100,7 +100,7 @@ class UploadController extends \common\controllers\BaseUserController
 			{
 				// 生成缩略图
 				$thumbnail = $filePath . '.thumb.'.$model->file->extension;
-				\yii\imagine\Image::thumbnail(Def::fileSavePath() . DIRECTORY_SEPARATOR . $filePath, 400, 400, \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET)->save(Def::fileSavePath() . DIRECTORY_SEPARATOR . $thumbnail, ['quality' => 100]);
+				\yii\imagine\Image::thumbnail(Def::fileSavePath() . DIRECTORY_SEPARATOR . $filePath, 400, 400, \Imagine\Image\ManipulatorInterface::THUMBNAIL_OUTBOUND)->save(Def::fileSavePath() . DIRECTORY_SEPARATOR . $thumbnail, ['quality' => 100]);
 				 
 				 // 更新商品相册
 				 $imageModel = new GoodsImageModel();
