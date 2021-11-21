@@ -142,6 +142,16 @@ class Menu
 					'name' => 'distribute_apply',
 			);
 		}
+
+        if(Yii::$app->params['store_allow'])
+		{
+			// 没有拥有店铺，且开放申请，则显示申请开店链接
+			$menu['im_buyer']['submenu']['apply_store'] = array(
+				'text' => Language::get('apply_store'),
+				'url'  => Url::toRoute(['apply/index']),
+				'name' => 'apply_store'
+			);
+		}
 		
 		// 包含关闭状态，是为了查看店铺历史数据
 		if(StoreModel::find()->where(['and', ['store_id' => Yii::$app->user->id], ['in', 'state', [Def::STORE_OPEN,Def::STORE_CLOSED]]])->exists())
@@ -258,16 +268,6 @@ class Menu
 					'url' => Url::toRoute(['distribute/index']),
 					'name' => 'distribute',
 			);
-			
-			if(Yii::$app->params['store_allow'])
-			{
-				// 没有拥有店铺，且开放申请，则显示申请开店链接
-				$menu['overview'] = array(
-					'text' => Language::get('apply_store'),
-					'url'  => Url::toRoute(['apply/index']),
-					'name' => 'apply_store'
-				);
-			}
 		}
 
         return $menu;
