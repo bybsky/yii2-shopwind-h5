@@ -42,36 +42,39 @@ class UploadForm extends Model
 	/**
 	 * 上传文件
 	 * 如果安装了OSS上传插件，则同时上传到OSS
+	 * 注意：即使使用OSS上传，也需要将文件先上传到服务器，因为OSS上传也是将实际文件上传到OSS服务器
 	 */
-	public function upload($path = '', $baseName = false, $scheme = '')
+	public function upload($path = '', $baseName = false)
 	{
 		if($baseName === false) {
 			$baseName = $this->file->baseName;
 		}
 
-		// 上传文件的物理路径
-		$savePath = $path . '/' .  $baseName . '.' . $this->file->extension;
+		// 上传路径
+		$file = $path . '/' .  $baseName . '.' . $this->file->extension;
+		$object = str_replace(Def::fileSavePath() . '/', '', $file);
 		
-		// 上传文件的url访问地址
-		$saveUrl = str_replace(Def::fileSavePath() . '/', '', $savePath);
-
 		// 先上传到本地
-		if(!$this->file->saveAs($savePath)) {
+		if(!$this->file->saveAs($file)) {
 			return false;
 		}
 
 		// 上传到OSS云存储
 		if(($oss = Plugin::getInstance('oss')->autoBuild())) 
 		{
-			// 包含路径层级，如：data/files/...
-			$fileName = $saveUrl;
-			if(!($absoluteUrl = $oss->upload($fileName, $savePath))) {
-				return false;
+			// 如果上传成功，删除本地文件，释放空间
+			if(($saveUrl = $oss->upload($object, $file))) {
+				unlink($file);
 			}
-			$saveUrl = $absoluteUrl;
+
+			// 如果上传不成功希望返回错误，则启用下面两行
+			else {
+				//$this->errors = 'oss config fail';
+				//return false;
+			}
 		}
-		
-		return $saveUrl;
+
+		return $saveUrl ? $saveUrl : $object;
 	}
 	public function filename()
 	{

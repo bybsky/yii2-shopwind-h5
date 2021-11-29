@@ -78,12 +78,33 @@ class UploadedFileModel extends ActiveRecord
 		$filename = $filename ? $filename : $model->filename();
 		$savePath = self::getSavePath($store_id, $belong, $unionid);
 		if(!$savePath || ($filePath = $model->upload($savePath, $filename)) === false) {
-			$this->errors = Language::get('file_save_error');
+			$this->errors = $model->errors ? $model->errors : Language::get('file_save_error');
 			return false;
 		}
-
 		$this->file = $model->file;
+
 		return $filePath;
+	}
+
+	/**
+	 * 生成缩微图/图片缩放
+	 * MODE: THUMBNAIL_INSET|THUMBNAIL_OUTBOUND 
+	 */
+	public function thumbnail($file, $width = 400, $height = 400)
+	{
+		if(($oss = Plugin::getInstance('oss')->autoBuild())) {
+			return $oss->thumbnail($file, $width, $height);
+		}
+
+		$thumbnail = $file . '.thumb.' . (substr($file, strripos($file, '.') + 1));
+		\yii\imagine\Image::thumbnail(
+			Def::fileSavePath() . DIRECTORY_SEPARATOR . $file, 
+			$width, 
+			$height, 
+			\Imagine\Image\ManipulatorInterface::THUMBNAIL_OUTBOUND)->save(Def::fileSavePath() . DIRECTORY_SEPARATOR . $thumbnail, ['quality' => 100]
+		);
+		
+		return $thumbnail;	
 	}
 	
 	/**

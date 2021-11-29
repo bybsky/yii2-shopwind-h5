@@ -60,6 +60,14 @@ class Aliyuncs extends BaseOss
     }
 
     /**
+     * 图片缩放/生成缩微图
+     */
+    public function thumbnail($file, $width = 400, $height = 400, $background = 'FFFFFF', $mode = 'pad')
+    {
+        return $this->getClient()->thumbnail($file, $width, $height, $background, $mode);
+    }
+
+    /**
      * 删除文件
      * @param $path
      */

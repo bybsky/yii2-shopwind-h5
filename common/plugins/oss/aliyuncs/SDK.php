@@ -152,14 +152,28 @@ class SDK {
     }
 
     /**
-     * @param $fileName string 文件名 eg: '824edb4e295892aedb8c49e4706606d6.png'
-     * @param $filePath string 要上传的文件绝对路径 eg: '/storage/image/824edb4e295892aedb8c49e4706606d6.png'
-     * @return null
+     * @link 访问图片提示下载，参考：https://blog.csdn.net/JGYBZX_G/article/details/111480067
+     * @param string $object
+     * @param string $file local file path
      * @throws \OSS\Core\OssException
      */
-    public function upload($fileName, $filePath)
+    public function upload($object, $file)
     {
-        return $this->getClient()->uploadFile($this->bucket, $fileName, $filePath);
+        $mime = getimagesize($file)['mime'];
+        if($mime && substr($mime, 0, 6) == 'image/') {
+            $options = ['Content-Type' => 'image/jpg'];
+        }
+   
+        return $this->getClient()->uploadFile($this->bucket, $object, $file, $options);
+    }
+    
+    /**
+     * 图片缩放/生成缩微图
+     * @link https://help.aliyun.com/document_detail/44688.html
+     */
+    public function thumbnail($file, $width = 400, $height = 400, $background = 'FFFFFF', $mode = 'pad') 
+    {
+        return $file . "?x-oss-process=image/resize,m_{$mode},h_{$height},w_{$width},color_{$background}";
     }
 
     /**

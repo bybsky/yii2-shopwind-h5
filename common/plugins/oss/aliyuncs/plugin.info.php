@@ -45,7 +45,8 @@ return array(
         ),
         'ossUrl' => array(
             'type' => 'text',
-            'text' => '空间域名'
+            'text' => '空间域名',
+            'placeholder' => 'https://'
         ),
     )
 );
