@@ -257,14 +257,15 @@ class DbForm extends Model
 	/* 下载备份文件 */
 	public function downloadBackup($backup_name,$file)
 	{
-		$path = $this->getBackUpPath() . DIRECTORY_SEPARATOR . $backup_name . '/' . $file;
+		$path = $this->getBackUpPath() . DIRECTORY_SEPARATOR . $backup_name . DIRECTORY_SEPARATOR . $file;
 		if(file_exists($path)){
 			header('Content-type: application/unknown');
             header('Content-Disposition: attachment; filename="'. $file. '"');
             header("Content-Length: " . filesize($path) ."; ");
             readfile($path);
-		} else {
-			return false;
+            exit(0);
 		}
+		
+		return false;
 	}
 }
