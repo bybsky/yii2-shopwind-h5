@@ -15,6 +15,9 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
+use common\models\UserModel;
+use common\models\UserPrivModel;
+use common\models\GoodsModel;
 use common\models\StoreModel;
 use common\models\SgradeModel;
 use common\models\RegionModel;
@@ -238,15 +241,22 @@ class StoreController extends \common\controllers\BaseAdminController
 		}
 	}
 	
-	/* 目前只有用户不存在了，才允许删除 （暂时不明白为何加这个条件，先屏蔽）*/
+	/**
+	 * 删除店铺
+	 */
 	public function actionDelete()
 	{
 		$post = Basewind::trimAll(Yii::$app->request->get(), true);
 		foreach(explode(',', $post->id) as $id) {
-			if($id && ($model = StoreModel::findOne($id)) /*&& !UserModel::findOne($id)*/) { // 用户ID同store_id
+			if($id && ($model = StoreModel::findOne($id))) {
 				if(!$model->delete()) {
 					return Message::warning($model->errors);
 				}
+				// 删除店铺管理权限表
+				UserPrivModel::deleteAll(['store_id' => $id]);
+
+				// 设置商品为禁售（不建议删除）
+				GoodsModel::updateAll(['if_show' => 0, 'closed' => 1], ['store_id' => $id]);
 			}
 		}
 		return Message::display(Language::get('drop_ok'));
