@@ -611,7 +611,7 @@ class BaseOrder
 	{
 		foreach($result as $store_id => $order_id) {
 			if(isset($coupon[$store_id]['coupon_sn'])) {
-				$query = CouponsnModel::find()->select('remain_times')->where(['coupon_sn' => $coupon[$store_id]['coupon_sn']])->one(); 
+				$query = CouponsnModel::find()->where(['coupon_sn' => $coupon[$store_id]['coupon_sn']])->one(); 
  				if ($query->remain_times > 0) {
 					$query->updateCounters(['remain_times' => -1]);
   				}

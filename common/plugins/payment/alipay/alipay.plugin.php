@@ -32,7 +32,7 @@ class Alipay extends BasePayment
 	 */
 	protected $gateway = 'https://openapi.alipay.com/gateway.do';
 
-    /**
+	/**
      * 支付插件实例
 	 * @var string $code
 	 */

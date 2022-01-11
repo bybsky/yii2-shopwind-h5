@@ -24,7 +24,7 @@ class SendEmail extends \yii\base\BaseObject implements \yii\queue\JobInterface
     
     public function execute($queue)
     {
-		echo "\n[begin send email]  to:  " .implode(',',array_keys($this->compose->getTo())). "\n";
+		//echo "\n[begin send email]  to:  " .implode(',',array_keys($this->compose->getTo())). "\n";
         //echo "[begin send email]  subject: ".$this->compose->getSubject()."\n";
         $this->compose->send();
         //echo "[end send email]  \n \n";

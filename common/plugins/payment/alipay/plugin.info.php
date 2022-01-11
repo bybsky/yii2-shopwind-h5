@@ -18,6 +18,7 @@ use common\library\Language;
 /**
  * @Id plugin.info.php 2018.6.3 $
  * @author mosir
+ *
  */
 
 return array(
@@ -56,7 +57,7 @@ return array(
             'type'      => 'select',
             'items'     => array(
                 'RSA2'   => Language::get('signType_RSA2'),
-				'RSA'   => Language::get('signType_RSA'),
+				'RSA'    => Language::get('signType_RSA'),
             ),
         ),
     ),

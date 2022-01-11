@@ -100,10 +100,12 @@ class Qq extends BaseConnect
 	 */
 	public function getAccessToken()
 	{
-		if((($response = $this->getClient()->getAccessToken($this->params->code)) == false) || !$response->access_token) {
-			$this->errors = Language::get('get_access_token_fail');
+		$client = $this->getClient();
+		if(($response = $client->getAccessToken($this->params->code)) == false || !$response->access_token) {
+			$this->errors = $client->errors ? $client->errors : Language::get('get_access_token_fail');
 			return false;
 		}
+
 		if(!$response->unionid) {
 			$this->errors = Language::get('unionid_empty');
 			return false;

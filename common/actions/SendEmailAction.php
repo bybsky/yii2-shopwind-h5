@@ -37,7 +37,12 @@ class SendEmailAction extends Action
     {
 		if(Yii::$app->request->isPost)
 		{
-			$purpose 		= trim(Yii::$app->request->post('purpose', ''));
+			// 邮件发送状态关闭了
+			if(!Yii::$app->params['mailer']['status']) {
+				return Message::warning(Language::get('email_server_disabled'));
+			}
+
+			$purpose 	= trim(Yii::$app->request->post('purpose', ''));
 			$email 		= trim(Yii::$app->request->post('email', ''));
 			$userid 	= intval(Yii::$app->request->post('userid', 0));
 			

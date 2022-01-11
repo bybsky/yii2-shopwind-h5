@@ -47,10 +47,18 @@ class Weixin
 	/* 生成自定义菜单 */
 	public function createMenus($data = null)
 	{
+		if(!($accessToken = $this->getAccessToken())) {
+			return false;
+		}
+
 		$api = $this->apiList('weixinMenus');
-		$param = array('access_token' => $this->getAccessToken());
-		$result = Basewind::curl($this->combineUrl($api, $param), 'post', $data, true);
-		return json_decode($result);	
+		$param = array('access_token' => $accessToken);
+		$response = json_decode(Basewind::curl($this->combineUrl($api, $param), 'post', $data, true));
+		if($response->errcode) {
+			$this->errors = $response->errmsg;
+			return false;
+		}
+		return $response;
 	}
 	
 	/* 获取access_token */
@@ -58,7 +66,7 @@ class Weixin
 	{
 		$api = $this->apiList('AccessToken');
 		$param = array('appid' => $this->config['appid'], 'secret' => $this->config['appsecret']);
-
+		
 		$response = json_decode(Basewind::curl($this->combineUrl($api, $param)));
 		if($response->errcode) {
 			$this->errors = $response->errmsg;
@@ -137,9 +145,13 @@ class Weixin
 	 */
 	public function getWxaCodeUnlimit($post = [], $savePath = null)
 	{
+		if(!($accessToken = $this->getAccessToken())) {
+			return false;
+		}
+
 		$api = $this->apiList('getWxaCodeUnlimit');
-		$param = array('access_token' => $this->getAccessToken());
-		
+		$param = array('access_token' => $accessToken);
+	
 		$buffer = Basewind::curl($this->combineUrl($api, $param), 'post', json_encode($post), true);
 		$result = json_decode($buffer);
 		if($result->errcode) {
@@ -165,8 +177,12 @@ class Weixin
 	 */
 	public function getWxaCode($post = [], $savePath = null)
 	{
+		if(!($accessToken = $this->getAccessToken())) {
+			return false;
+		}
+
 		$api = $this->apiList('getWxaCode');
-		$param = array('access_token' => $this->getAccessToken());
+		$param = array('access_token' => $accessToken);
 		
 		$buffer = Basewind::curl($this->combineUrl($api, $param), 'post', json_encode($post), true);
 		$result = json_decode($buffer);
@@ -192,15 +208,18 @@ class Weixin
 	 */
 	public function getWxalink($post = [])
 	{
-		$api = $this->apiList('getWxaUrlLink');
-		$param = array('access_token' => $this->getAccessToken());
-		
-		if(!($buffer = Basewind::curl($this->combineUrl($api, $param), 'post', json_encode($post), true))) {
+		if(!($accessToken = $this->getAccessToken())) {
 			return false;
 		}
 
-		// 返回的图片Buffer
-		return $buffer;
+		$api = $this->apiList('getWxaUrlLink');
+		$param = array('access_token' => $accessToken);
+		
+		if(!($urllink = Basewind::curl($this->combineUrl($api, $param), 'post', json_encode($post), true))) {
+			return false;
+		}
+
+		return $urllink;
 	}
 	
 	public function combineUrl($url, $param)
@@ -281,10 +300,19 @@ class Weixin
 			$this->errors = Language::get('fromUserName empty');
 			return false;
 		}
+
+		if(!($accessToken = $this->getAccessToken())) {
+			return false;
+		}
+
 		$api = $this->apiList('userInfo');
-		$param = array('access_token' => $this->getAccessToken(), 'openid' => $FromUserName, 'lang' => 'zh_CN');
-		$result = Basewind::curl($this->combineUrl($api, $param));
-		return json_decode($result, true);
+		$param = array('access_token' => $accessToken, 'openid' => $FromUserName, 'lang' => 'zh_CN');
+		$response = json_decode(Basewind::curl($this->combineUrl($api, $param)));
+		if($response->errcode) {
+			$this->errors = $response->errmsg;
+			return false;
+		}
+		return $response;
 	}
 	
 	/*  微信分享JSSDK */
@@ -331,10 +359,14 @@ class Weixin
 	
 	private function getJsApiTicket() 
 	{
-		$api = $this->apiList('getTicket');
-		$param = array('type' => 'jsapi', 'access_token' => $this->getAccessToken());
-		$response = json_decode(Basewind::curl($this->combineUrl($api, $param)));
+		if(!($accessToken = $this->getAccessToken())) {
+			return false;
+		}
 
+		$api = $this->apiList('getTicket');
+		$param = array('type' => 'jsapi', 'access_token' => $accessToken);
+
+		$response = json_decode(Basewind::curl($this->combineUrl($api, $param)));
 		if($response->errcode) {
 			$this->errors = $response->errmsg;
 			return false;

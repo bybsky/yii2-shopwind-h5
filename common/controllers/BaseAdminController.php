@@ -12,9 +12,12 @@
 namespace common\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 use common\models\UserPrivModel;
+
 use common\library\Page;
+use backend\library\Menu;
 
 /**
  * @Id BaseAdminController.php 2018.10.20 $
@@ -42,6 +45,7 @@ class BaseAdminController extends BaseMallController
 		if(!$this->checkAccess($action)) {
 			return false;
 		}
+		$this->params = ArrayHelper::merge($this->params, ['back_nav' => Menu::getMenus()]);
 		return parent::beforeAction($action);
 	}
 
@@ -63,7 +67,8 @@ class BaseAdminController extends BaseMallController
 
 		 // 栏目权限控制
 		 if(!$this->checkPrivs($action)) {
-			 return $this->accessWarning();
+			$params = ['back_nav' => Menu::getMenus()];
+			return $this->accessWarning($params);
 		 }
 
 		 return true;

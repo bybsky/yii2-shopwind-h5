@@ -18,7 +18,7 @@ namespace common\plugins\connect\alipay;
 
 return array(
     'code' => 'alipay',
-    'name' => '支付宝快捷登录',
+    'name' => '支付宝登录',
     'desc' => '支付宝快捷登录, 由于回调地址（域名）可能不同，手机端和PC端登录接口使用不同的配置信息',
     'author' => 'SHOPWIND',
 	'website' => 'https://www.shopwind.net',

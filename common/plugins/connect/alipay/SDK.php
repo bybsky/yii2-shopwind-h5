@@ -74,6 +74,11 @@ class SDK
 	 * @var string $format
 	 */
 	public $format = 'json';
+
+	/**
+	 * 抓取错误
+	 */
+	public $errors;
 	
 	/**
 	 * 构造函数

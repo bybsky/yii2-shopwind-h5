@@ -69,7 +69,7 @@ class WeixinController extends \common\controllers\BaseMallController
 				else
 				{
 					$wxInfo = $wx->getUserInfo($postData['FromUserName']);
-					$content = $wxInfo['nickname'].' 您好，欢迎您关注' . $wx->config['name'] .'! <a href="' . Url::toRoute(['weixin/signin', 'openid' => $postData['FromUserName']]).'">【会员中心】</a>';
+					$content = $wxInfo->nickname .' 您好，欢迎您关注' . $wx->config['name'] .'! <a href="' . Url::toRoute(['weixin/signin', 'openid' => $postData['FromUserName']]).'">【会员中心】</a>';
 				}
 			}
 			elseif($postData['Event'] == 'CLICK') //点击菜单拉取消息时的事件推送,后台设定为图文消息
@@ -161,7 +161,7 @@ class WeixinController extends \common\controllers\BaseMallController
 		
 		$wx = new Weixin();
 		
-		if(!($wx_info = $wx->getUserInfo($openid))) {
+		if(!($wxInfo = $wx->getUserInfo($openid))) {
 			return false;
 		}
 		$query = BindModel::find()->where(['and', ['or', 'openid' => $openid, 'unionid' => $openid], ['app' => 'weixin']])->one();
@@ -169,7 +169,7 @@ class WeixinController extends \common\controllers\BaseMallController
 			return false;
 		}
 		
-		$bind = (object)array('code' => 'weixin', 'unionid' => $openid, 'portrait' => $wx_info['headimgurl'], 'nickname' => $wx_info['nickname'], 'access_token' => $wx_info['access_token']);
+		$bind = (object)array('code' => 'weixin', 'unionid' => $openid, 'portrait' => $wxInfo->headimgurl, 'nickname' => $wxInfo->nickname, 'access_token' => $wxInfo->access_token);
 		
 		do {
 			$model = new \frontend\models\UserRegisterForm();

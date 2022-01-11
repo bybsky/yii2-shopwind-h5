@@ -144,10 +144,11 @@ class WeixinController extends \common\controllers\BaseAdminController
 			return Message::warning(Language::get('menu_empty'));
 		}
 		
-		$result = Weixin::getInstance()->createMenus($menus);
-		if($result->errcode) {
-			return Message::warning(sprintf(Language::get('createmenu_fail'), $result->errcode, $result->errmsg));
+		$client = Weixin::getInstance();
+		if(!($result = $client->createMenus($menus))) {
+			return Message::warning($client->errors);
 		}
+
 		return Message::display(Language::get('createmenu_successed'));
 	}
 	
@@ -368,7 +369,7 @@ class WeixinController extends \common\controllers\BaseAdminController
 			if(!$model->save($post, true)) {
 				return Message::warning($model->errors);
 			}
-			return Message::display(Language::get('setting_successed'));
+			return Message::display(Language::get('applet_successed'));
 		}
 	}
 }

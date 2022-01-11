@@ -14,7 +14,9 @@ namespace common\plugins\connect\weixin;
 use yii;
 
 use common\models\WeixinSettingModel;
+
 use common\library\Basewind;
+use common\library\Language;
 
 /**
  * @Id SDK.php 2018.6.6 $
@@ -48,6 +50,11 @@ class SDK
 	public $redirect_uri = null;
 
 	/**
+	 * 抓取错误
+	 */
+	public $errors;
+
+	/**
 	 * 构造函数
 	 */
 	public function __construct(array $config)
@@ -59,27 +66,33 @@ class SDK
 	
 	public function getAccessToken($code = '')
 	{
-		if($code && ($result = Basewind::curl($this->getOpenIdUrl($code)))) {
-			$result = json_decode($result);
-			if(!$result->errcode) {
-				$response = $result;
-				$response->unionid = isset($result->unionid) ? $result->unionid : $result->openid;
-			}
+		$response = json_decode(Basewind::curl($this->getOpenIdUrl($code)));
+		if($response->errcode) {
+			$this->errors = $response->errmsg;
+			return false;
 		}
-		
-		return $response ? $response : false;
+
+		if(!isset($response->unionid)) {
+			$response->unionid = $response->openid;
+		}
+
+		return $response;
 	}
 	
 	public function getUserInfo($resp = null)
 	{
-		$response = false;
-		
-		if($resp->access_token) 
-		{
-			$url = "https://api.weixin.qq.com/sns/userinfo?access_token=".$resp->access_token."&openid=".$resp->openid;
-			$response = Basewind::curl($url);
-			$response = json_decode($response);
+		if(!$resp->access_token) {
+			$this->errors = Language::get('access_token_empty');
+			return false;
 		}
+		
+		$url = "https://api.weixin.qq.com/sns/userinfo?access_token=".$resp->access_token."&openid=".$resp->openid;
+		$response = json_decode(Basewind::curl($url));
+		if($response->errcode) {
+			$this->errors = $response->errmsg;
+			return false;
+		}
+		
 		return $response;
 	}
 	

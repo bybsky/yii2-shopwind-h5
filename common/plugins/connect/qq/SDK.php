@@ -48,6 +48,11 @@ class SDK
 	 * @var string $redirect_uri
 	 */
 	public $redirect_uri = null;
+
+	/**
+	 * 抓取错误
+	 */
+	public $errors;
 	
 	/**
 	 * 构造函数
