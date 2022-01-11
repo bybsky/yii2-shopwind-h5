@@ -131,7 +131,7 @@ class WeixinController extends \common\controllers\BaseAdminController
 		$this->params['_foot_tags'] = Resource::import(['script' => 'treetable/wxtree.js,inline_edit.js']);
 		
 		$this->params['page'] = Page::seo(['title' => Language::get('weixin_menu')]);
-		return $this->render('../weixin.menu.html', $this->params);
+		return $this->render('../weixin.menuform.html', $this->params);
 	}
 	
 	/**
