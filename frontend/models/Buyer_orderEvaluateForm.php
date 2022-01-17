@@ -100,7 +100,7 @@ class Buyer_orderEvaluateForm extends Model
 		// 更新商品评价数 
 		$list = OrderGoodsModel::find()->where(['order_id' => $orderInfo['order_id']])->all();
 		foreach ($list as $value) {
-			GoodsStatisticsModel::updateAll(['comments' => 1], ['goods_id' => $value->goods_id]);
+			GoodsStatisticsModel::updateAllCounters(['comments' => 1], ['goods_id' => $value->goods_id]);
 		}
 		return true;
 	}
