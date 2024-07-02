@@ -20,7 +20,7 @@
 <div align="center">
 
   [官网](https://www.shopwind.net/) |
-  [在线体验](http://m.test.shopwind.net/) |
+  [在线体验](http://v2.shopwind.net/) |
   [一键安装](https://www.shopwind.net/forum/thread-282.html) |
   [开源框架](https://www.yiichina.com/) 
 
@@ -44,12 +44,12 @@ ShopWind是一款基于Yii2.0框架深度重构的B2B2C多用户商城系统，�
 <a href="https://forum.shopwind.net" target="_blank"> **查看常见问题/安装教程** </a>
 
 ## 演示体验
-* <a href="http://m.test.shopwind.net" target="_blank"> **演示体验 http://m.test.shopwind.net** </a>
+* <a href="http://v2.shopwind.net" target="_blank"> **演示体验 http://v2.shopwind.net** </a>
 
-* <a href="http://m.test.shopwind.net/admin" target="_blank"> **后台体验 http://m.test.shopwind.net/admin** </a>
+* <a href="http://v2.shopwind.net/admin" target="_blank"> **后台体验 http://v2.shopwind.net/admin** </a>
 * 账号:admin 密码:123456
 
-* <a href="http://m.test.shopwind.net/login.html" target="_blank"> **商家体验 http://m.test.shopwind.net/login.html** </a>
+* <a href="http://v2.shopwind.net/login.html" target="_blank"> **商家体验 http://v2.shopwind.net/login.html** </a>
 * 账号:seller 密码:123456
 
 
